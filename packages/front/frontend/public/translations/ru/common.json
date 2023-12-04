@@ -1,0 +1,211 @@
+{
+  "validator": {
+    "should_be_a_phone": "Поле должно содержать номер телефона",
+    "should_be_an_email": "Поле должно содержать email",
+    "should_not_be_empty": "Поле не должно быть пустым",
+    "user_flow_deadline_days_amount_validation": "Для учитывания выходных сроки должны быть указаны",
+    "passwords_should_be_equal": "Пароли должны совпадать",
+    "should_be_an_url": "Поле должно содержать валидный URL адрес",
+    "end_date_should_be_after_start_date": "Дата окончания должна быть после даты начала"
+  },
+  "menu_links": {
+    "home": "Главная",
+    "projects": "Проекты",
+    "correspondences": "Корреспонденция",
+    "tickets": "Запросы",
+    "users": "Пользователи",
+    "settings": "Настройки",
+    "user_flow": "Маршрут документа"
+  },
+  "file_size_units": {
+    "b": "б",
+    "kb": "кб",
+    "mb": "мб",
+    "gb": "гб"
+  },
+  "filters": {
+    "expander": "Фильтровать",
+    "clear_action": "Сбросить фильтр"
+  },
+  "user_roles": {
+    "admin": "Администратор",
+    "user": "Сотрудник"
+  },
+  "kanban": {
+    "ticket_priorities": {
+      "low": "Низкий",
+      "medium": "Средний",
+      "high": "Высокий"
+    },
+    "ticket_priority": {
+      "title": "Приоритет"
+    },
+    "ticket_deadline": {
+      "date": "до {date}"
+    },
+    "ticket_presentation_switch": "Переключить режим представления",
+    "ticket_list_column_headers": {
+      "name": "Название",
+      "status": "Статус",
+      "priority": "Приоритет",
+      "customer": "Заказчик",
+      "responsible": "Отвественный",
+      "deadline": "Дедлайн",
+      "attachments": "Вложения",
+      "created": "Дата создания"
+    },
+    "filters": {
+      "search": "Поиск",
+      "search_in_attachments": "Искать в содержании вложений",
+      "show_archived": "Показывать архивные",
+      "author_field": "Автор",
+      "customer_field": "Заказчик",
+      "responsible_field": "Отвественный",
+      "priority_field": "Приоритет",
+      "type_field": "Тип",
+      "status_field": "Статус"
+    }
+  },
+  "common_form_fields": {
+    "text": {
+      "empty_value": "Не заполнено"
+    },
+    "select": {
+      "none_value": "Не задано",
+      "search_placeholder": "Найти",
+      "empty_list": "Не найдено"
+    },
+    "image": {
+      "delete": "Удалить",
+      "update": "Изменить",
+      "create": "Добавить"
+    },
+    "attachments": {
+      "add_files": "Добавить файлы"
+    }
+  },
+  "common_filter_fields": {
+    "user": {
+      "search_placeholder": "Поиск сотрудников",
+      "empty_list": "Сотрудники не найдены"
+    }
+  },
+  "dictionary_types": {
+    "document_type": "Тип документа",
+    "ticket_status": "Статус запроса",
+    "document_revision_return_code": "Код возврата ревизии",
+    "ticket_type": "Тип запроса"
+  },
+  "correspondence_revision_statuses": {
+    "active": "Активна",
+    "archive": "Архив",
+    "archived_automatically_restore_active": "Архив",
+    "archived_automatically_restore_archive": "Архив"
+  },
+  "document_revision_statuses": {
+    "initial": "Новая",
+    "review": "Ожидает утверждения",
+    "returned": "Возврат",
+    "approved": "Утверждена",
+    "approved_with_comment": "Утверждена с замечаниями",
+    "revoked": "Отозвана",
+    "archive": "Архив",
+    "archived_automatically_restore_initial": "Архив",
+    "archived_automatically_restore_archive": "Архив"
+  },
+  "card_preset": {
+    "archived_tag": "Архив"
+  },
+  "move_modal": {
+    "move_here_button": "Переместить в эту папку"
+  },
+  "text_editor": {
+    "toolbar_link": {
+      "url_field": {
+        "placeholder": "Url адрес"
+      },
+      "save_button": "Сохранить"
+    },
+    "toolbar_text_type": {
+      "paragraph": "Обычный текст",
+      "h1": "H1",
+      "h2": "H2",
+      "h3": "H3",
+      "h4": "H4"
+    }
+  },
+  "user_flow_modes": {
+    "or": "ИЛИ",
+    "and": "И"
+  },
+  "file_uploader_errors": {
+    "upload_error": "Файл {name} не был загружен. Пожалуйста, попробуйте еще раз",
+    "delete_error": "Файл {name} не был удален. Пожалуйста, попробуйте еще раз"
+  },
+  "time": {
+    "today": "сегодня",
+    "days": {
+      "one": "{count} день",
+      "few": "{count} дня",
+      "many": "{count} дней",
+      "other": "-"
+    },
+    "days_past": {
+      "one": "{count} день назад",
+      "few": "{count} дня назад",
+      "many": "{count} дней назад",
+      "other": "-"
+    },
+    "days_plus_remaining": {
+      "one": "остался {count} день",
+      "few": "осталось {count} дня",
+      "many": "осталось {count} дней",
+      "other": "-"
+    },
+    "days_plus_remaining_working": {
+      "one": "остался {count} рабочий день",
+      "few": "осталось {count} рабочих дня",
+      "many": "осталось {count} рабочих дней",
+      "other": "-"
+    },
+    "days_minus_remaining": {
+      "one": "просрочено на {count} день",
+      "few": "просрочено на {count} дня",
+      "many": "просрочено на {count} дней",
+      "other": "-"
+    },
+    "days_minus_remaining_working": {
+      "one": "просрочено на {count} рабочий день",
+      "few": "просрочено на {count} рабочих дня",
+      "many": "просрочено на {count} рабочих дней",
+      "other": "-"
+    },
+    "days_pure": {
+      "one": "день",
+      "few": "дня",
+      "many": "дней",
+      "other": "-"
+    }
+  },
+  "permissions": {
+    "role": {
+      "owner": "Владелец",
+      "editor": "Редактор",
+      "reader": "Читатель"
+    },
+    "role_modifier": {
+      "can_edit_editor_permission": "Может выдавать роль редактора",
+      "can_edit_reader_permission": "Может выдавать роль читателя"
+    },
+    "errors": {
+      "create_unexpected_error": "Неизвестная ошибка при добавлении роли. Пожалуйста, попробуйте еще раз",
+      "update_unexpected_error": "Неизвестная ошибка при обновлении роли. Пожалуйста, попробуйте еще раз",
+      "delete_unexpected_error": "Неизвестная ошибка при удалении роли. Пожалуйста, попробуйте еще раз"
+    }
+  },
+  "user_row": {
+    "tooltips": {
+      "unavailable_until": "Не доступен до {date}"
+    }
+  }
+}

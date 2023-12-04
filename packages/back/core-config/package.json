@@ -1,0 +1,19 @@
+{
+  "name": "@app/core-config",
+  "version": "1.0.0",
+  "scripts": {
+    "prebuild": "rm -f .tsbuildinfo",
+    "build": "npm run prebuild && NODE_ENV=production node build-current-package.js"
+  },
+  "dependencies": {
+    "@app/builder": "1.0.0",
+    "dotenv": "16.3.1"
+  },
+  "types": "dist/main.d.ts",
+  "main": "dist/main.js",
+  "module": "dist/main.mjs",
+  "description": "",
+  "private": true,
+  "author": "",
+  "license": "ISC"
+}

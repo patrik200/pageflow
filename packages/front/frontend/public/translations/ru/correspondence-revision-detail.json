@@ -1,0 +1,91 @@
+{
+  "meta": {
+    "view": "{number}",
+    "view_not_loaded": "Ревизия",
+    "edit": "Редактирование ревизии «{number}»",
+    "edit_not_loaded": "Редактирование ревизии",
+    "create": "Создание ревизии"
+  },
+  "tabs": {
+    "main": "Основная информация",
+    "depends_on": "Зависимые от",
+    "depends_to": "Зависимый для",
+    "tickets": "Запросы"
+  },
+  "main_tab": {
+    "number_field": {
+      "placeholder": "Номер"
+    },
+    "author_field": {
+      "placeholder": "Автор"
+    },
+    "created_at_field": {
+      "placeholder": "Дата создания"
+    },
+    "updated_at_field": {
+      "placeholder": "Дата обновления"
+    },
+    "attachments_field": {
+      "placeholder": "Список вложений"
+    },
+    "comments": {
+      "title": "Комментарии",
+      "actions": {
+        "send": "Отправить"
+      }
+    }
+  },
+  "view_revision": {
+    "actions": {
+      "edit": "Редактировать",
+      "delete": "Удалить",
+      "archive": "Архивировать",
+      "active": "Разархивировать"
+    }
+  },
+  "create_revision": {
+    "error_messages": {
+      "unexpected": "Неожиданная ошибка при создании ревизии. Пожалуйста, попробуйте позже"
+    },
+    "actions": {
+      "create": "Создать",
+      "cancel": "Отмена"
+    }
+  },
+  "edit_revision": {
+    "error_messages": {
+      "unexpected": "Неожиданная ошибка при обновлении ревизии. Пожалуйста, попробуйте позже"
+    },
+    "actions": {
+      "cancel": "Отмена",
+      "save": "Сохранить"
+    }
+  },
+  "archive_revision": {
+    "success_message": "Ревизия успешно архивирована",
+    "error_messages": {
+      "unexpected": "Неожиданная ошибка при архивировании ревизии. Пожалуйста, попробуйте позже"
+    }
+  },
+  "active_revision": {
+    "success_message": "Ревизия успешно разархивирована",
+    "error_messages": {
+      "unexpected": "Неожиданная ошибка при разархивировании ревизии. Пожалуйста, попробуйте позже"
+    }
+  },
+  "delete_revision_modal": {
+    "title": "Удалении ревизии «{number}»",
+    "actions": {
+      "delete": "Удалить"
+    },
+    "success_message": "Ревизия успешно удалена",
+    "error_messages": {
+      "unexpected": "Неожиданная ошибка при удалении ревизии. Пожалуйста, попробуйте позже"
+    }
+  },
+  "change_feed_events": {
+    "created": {
+      "title": "Ревизия создана"
+    }
+  }
+}

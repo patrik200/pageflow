@@ -1,0 +1,120 @@
+{
+  "meta": {
+    "view": "{name}",
+    "create": "Создание документа"
+  },
+  "tabs": {
+    "main": "Основная информация",
+    "depends_on": "Зависим от",
+    "depends_to": "Зависимый для",
+    "tickets": "Запросы"
+  },
+  "main_tab": {
+    "private_field": {
+      "placeholder": "Видимость",
+      "checkbox_placeholder": "Приватный документ",
+      "changes_feed": {
+        "private": "Приватный",
+        "public": "Публичный"
+      }
+    },
+    "name_field": {
+      "placeholder": "Название"
+    },
+    "author_field": {
+      "placeholder": "Автор"
+    },
+    "description_field": {
+      "placeholder": "Описание"
+    },
+    "created_at_field": {
+      "placeholder": "Дата создания"
+    },
+    "updated_at_field": {
+      "placeholder": "Дата обновления"
+    },
+    "attributes_field": {
+      "placeholder": "Атрибуты"
+    },
+    "type_field": {
+      "placeholder": "Тип документа"
+    },
+    "responsible_user_card": {
+      "title": "Ответственный сотрудник"
+    },
+    "responsible_user_flow_card": {
+      "title": "Маршрут документа"
+    },
+    "members_field": {
+      "title": "Участники"
+    },
+    "status_field": {
+      "title": "Статус",
+      "changes_feed": {
+        "active": "Активный",
+        "archived": "Архив"
+      }
+    }
+  },
+  "main_tab_revisions": {
+    "title": "Ревизии",
+    "actions": {
+      "create_revision": "Добавить ревизию",
+      "show_archived": "Показывать архивные"
+    },
+    "table": {
+      "header": {
+        "number": "Номер",
+        "created_at": "Дата создания",
+        "status": "Статус",
+        "author": "Автор"
+      },
+      "body": {
+        "name_plan_remaining_warning": "Крайняя дата утверждения: {days}"
+      }
+    }
+  },
+  "edit_document": {
+    "action": {
+      "save": "Сохранить",
+      "cancel": "Отмена"
+    },
+    "error_messages": {
+      "unexpected": "Неожиданная ошибка при обновлении документа. Пожалуйста, попробуйте позже"
+    }
+  },
+  "view_document": {
+    "actions": {
+      "delete": "Удалить",
+      "move": "Переместить",
+      "edit": "Редактировать",
+      "archive": "Архивировать",
+      "active": "Разархивировать"
+    }
+  },
+  "create_document": {
+    "action": {
+      "create": "Создать"
+    },
+    "error_messages": {
+      "unexpected": "Неожиданная ошибка при создании документа. Пожалуйста, попробуйте позже"
+    }
+  },
+  "archive_document": {
+    "success_message": "Документ успешно архивирован",
+    "error_messages": {
+      "unexpected": "Неожиданная ошибка при архивировании документа. Пожалуйста, попробуйте позже"
+    }
+  },
+  "active_document": {
+    "success_message": "Документ успешно разархивирован",
+    "error_messages": {
+      "unexpected": "Неожиданная ошибка при разархивировании документа. Пожалуйста, попробуйте позже"
+    }
+  },
+  "change_feed_events": {
+    "created": {
+      "title": "Документ создан"
+    }
+  }
+}

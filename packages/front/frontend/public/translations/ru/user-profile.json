@@ -1,0 +1,100 @@
+{
+  "meta": {
+    "title": "Профиль",
+    "title_name": "Профиль «{name}»",
+    "create": "Создание пользователя"
+  },
+  "tab_user": {
+    "title": "Личные данные",
+    "common_block": {
+      "title": "Общая информация",
+      "name_field": {
+        "placeholder": "Имя"
+      },
+      "position_field": {
+        "placeholder": "Должность"
+      },
+      "role_field": {
+        "placeholder": "Роль"
+      },
+      "password_field": {
+        "placeholder": "Пароль"
+      },
+      "repeat_password_field": {
+        "placeholder": "Повторите пароль"
+      },
+      "unavailable_until_field": {
+        "placeholder": "Временно недоступен до"
+      }
+    },
+    "contact_block": {
+      "title": "Контактная информация",
+      "email_field": {
+        "placeholder": "E-mail"
+      },
+      "phone_field": {
+        "placeholder": "Телефон"
+      }
+    },
+    "avatar_block": {
+      "create_avatar_action": "Загрузить изображение",
+      "replace_avatar_action": "Изменить изображение",
+      "delete_avatar_action": "Удалить изображение",
+      "error_messages": {
+        "replace_unexpected": "Неожиданная ошибка при обновлении аватара. Пожалуйста, попробуйте позже",
+        "delete_unexpected": "Неожиданная ошибка при обновлении аватара. Пожалуйста, попробуйте позже"
+      }
+    },
+    "edit": {
+      "edit_action": "Редактировать",
+      "change_password_action": "Изменить пароль",
+      "cancel_edit": "Отменить",
+      "save_action": "Сохранить",
+      "success_message": "Данные успешно сохранены",
+      "error_messages": {
+        "unexpected": "Неожиданная ошибка при обновлении данных. Пожалуйста, попробуйте позже"
+      }
+    },
+    "create": {
+      "create_action": "Создать",
+      "success_message": "Пользователь успешно создан",
+      "error_messages": {
+        "unexpected": "Неожиданная ошибка при создании пользователя. Пожалуйста, попробуйте позже"
+      }
+    },
+    "delete_modal": {
+      "title": "Удалить пользователя?",
+      "description": "Пользователь будет помечен как не активный",
+      "delete_action": "Отключить",
+      "success_message": "Пользователь успешно отключен",
+      "error_messages": {
+        "unexpected": "Неожиданная ошибка при отключении пользователя. Пожалуйста, попробуйте позже"
+      }
+    },
+    "restore_modal": {
+      "title": "Восстановить пользователя?",
+      "restore_action": "Восстановить",
+      "success_message": "Пользователь успешно восстановлен",
+      "error_messages": {
+        "unexpected": "Неожиданная ошибка при восстановлении пользователя. Пожалуйста, попробуйте позже"
+      }
+    },
+    "change_password_modal": {
+      "title": "Изменить пароль",
+      "change_action": "Изменить",
+      "password_field": {
+        "placeholder": "Новый пароль"
+      },
+      "repeat_password_field": {
+        "placeholder": "Повторите пароль"
+      },
+      "success_message": "Пароль успешно изменен",
+      "error_messages": {
+        "unexpected": "Неожиданная ошибка при изменении пароля. Пожалуйста, попробуйте позже"
+      }
+    }
+  },
+  "tab_user_flow": {
+    "title": "Маршрут документа"
+  }
+}

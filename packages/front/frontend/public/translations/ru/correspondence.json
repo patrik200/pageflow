@@ -1,0 +1,61 @@
+{
+  "breadcrumbs": {
+    "root_correspondence": "Корреспонденция",
+    "root_project": "Проект"
+  },
+  "edit_group_modal": {
+    "title": {
+      "create": "Создать папку",
+      "edit": "Редактирование «{name}»"
+    },
+    "privacy_field": {
+      "placeholder": "Приватная папка"
+    },
+    "name_filed": {
+      "placeholder": "Название"
+    },
+    "description_filed": {
+      "placeholder": "Описание"
+    },
+    "actions": {
+      "create": "Создать",
+      "save": "Сохранить"
+    },
+    "error_messages": {
+      "unexpected_create": "Неожиданная ошибка при создании папки. Пожалуйста, попробуйте позже",
+      "unexpected_edit": "Неожиданная ошибка при обновлении папки. Пожалуйста, попробуйте позже"
+    }
+  },
+  "delete_group_modal": {
+    "title": "Удалить «{name}»?",
+    "actions": {
+      "delete": "Удалить"
+    },
+    "error_messages": {
+      "unexpected": "Неожиданная ошибка при удалении папки. Пожалуйста, попробуйте позже"
+    }
+  },
+  "delete_correspondence_modal": {
+    "title": "Удалить документ «{name}»",
+    "actions": {
+      "delete": "Удалить"
+    },
+    "error_messages": {
+      "unexpected": "Неожиданная ошибка при удалении документа. Пожалуйста, попробуйте позже"
+    }
+  },
+  "move_modal": {
+    "title": {
+      "group": "Перемещение папки «{name}»",
+      "correspondence": "Перемещение документа «{name}»"
+    },
+    "move_here_button": "Переместить в эту папку",
+    "error_messages": {
+      "unexpected_group": "Не удалось переместить папку «{name}». Пожалуйста, попробуйте позже",
+      "unexpected_correspondence": "Не удалось переместить документ «{name}». Пожалуйста, попробуйте позже"
+    }
+  },
+  "permissions_group_modal": {
+    "title": "Участники"
+  }
+}

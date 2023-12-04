@@ -1,0 +1,22 @@
+{
+  "meta": {
+    "create": "Создание цели"
+  },  
+  "main_tab": {
+    "name_field": {
+      "placeholder": "Название"
+    },
+    "description_field": {
+      "placeholder": "Описание"
+    }
+  },
+  "create_goal": {
+    "action": {
+      "create": "Создать"
+    },
+    "error_messages": {
+      "unexpected": "Неожиданная ошибка при создании цели. Пожалуйста, попробуйте позже"
+      }
+    }
+  }
+  

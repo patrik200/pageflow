@@ -1,0 +1,31 @@
+{
+  "view": {
+    "text_field": {
+      "placeholder": "Комментарий"
+    },
+    "modified_tag": "(Изменено)",
+    "actions": {
+      "edit": "Редактировать",
+      "delete": "Удалить"
+    },
+    "edit_actions": {
+      "save": "Сохранить",
+      "cancel": "Отмена"
+    },
+    "error_messages": {
+      "delete_unexpected": "Не удалось удалить комментарий. Пожуйста, попробуйте еще раз",
+      "edit_unexpected": "Не удалось изменить комментарий. Пожуйста, попробуйте еще раз"
+    }
+  },
+  "create": {
+    "text_field": {
+      "placeholder": "Комментарий"
+    },
+    "actions": {
+      "send": "Отправить"
+    },
+    "error_messages": {
+      "unexpected": "Не удалось добавить комментарий. Пожуйста, попробуйте еще раз"
+    }
+  }
+}

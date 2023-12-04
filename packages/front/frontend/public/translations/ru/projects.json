@@ -1,0 +1,48 @@
+{
+  "meta": {
+    "title": "Проекты"
+  },
+  "filters": {
+    "search": {
+      "placeholder": "Поиск"
+    },
+    "show_archived": {
+      "title": "Показывать архивные"
+    },
+    "responsible_user": {
+      "placeholder": "Ответственный сотрудник"
+    }
+  },
+  "table": {
+    "header": {
+      "name": "Название",
+      "dates": "Сроки",
+      "responsible": "Ответственный",
+      "status": "Статус",
+      "tickets": "Активные запросы"
+    },
+    "body": {
+      "completed_tag": "Завершен",
+      "name": {
+        "plan_remaining_warning": "Плановое окончание проекта: {days}"
+      },
+      "dates": {
+        "plan": "План",
+        "forecast": "Прогноз",
+        "fact": "Фактически",
+        "from": "с {date}",
+        "to": "по {date}"
+      },
+      "status": {
+        "in_progress": "В работе",
+        "completed": "Завершен",
+        "archive": "Архив"
+      }
+    }
+  },
+  "actions": {
+    "create_project": {
+      "button": "Создать проект"
+    }
+  }
+}

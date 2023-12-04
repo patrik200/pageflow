@@ -1,0 +1,135 @@
+{
+  "meta": {
+    "view": "Проект {name}",
+    "create": "Создание проекта"
+  },
+  "project_title": {
+    "plan_remaining_warning": "Плановое окончание проекта: {days}",
+    "completed_tag": "Завершен"
+  },
+  "tabs": {
+    "main": "Основная информация",
+    "documents": "Документы",
+    "correspondence": "Корреспонденция",
+    "tickets": "Запросы",
+    "user_work_flow": "Маршрут документа",
+    "goals" : "Цели"
+  },
+  "main_tab": {
+    "private_field": {
+      "placeholder": "Видимость",
+      "checkbox_placeholder": "Приватный проект",
+      "changes_feed": {
+        "private": "Приватный",
+        "public": "Публичный"
+      }
+    },
+    "name_field": {
+      "placeholder": "Название"
+    },
+    "author_field": {
+      "placeholder": "Автор"
+    },
+    "description_field": {
+      "placeholder": "Описание"
+    },
+    "update_count_field": {
+      "placeholder": "Количество изменений"
+    },
+    "preview_field": {
+      "placeholder": "Превью"
+    },
+    "dates": {
+      "title": "Сроки",
+      "plan": "План",
+      "forecast": "Прогноз",
+      "fact": "Фактически",
+      "from": "с {date}",
+      "to": "по {date}"
+    },
+    "date_plan_field": {
+      "placeholder": "Плановые даты работ",
+      "from_placeholder": "Дата начала",
+      "to_placeholder": "Дата окончания"
+    },
+    "date_forecast_field": {
+      "placeholder": "Прогназируемые даты работ",
+      "from_placeholder": "Дата начала",
+      "to_placeholder": "Дата окончания"
+    },
+    "date_fact_field": {
+      "placeholder": "Фактические даты работ",
+      "from_placeholder": "Дата начала",
+      "to_placeholder": "Дата окончания"
+    },
+    "contractor_field": {
+      "placeholder": "Подрядчик"
+    },
+    "responsible_field": {
+      "title": "Ответственный"
+    },
+    "notify_in_field": {
+      "placeholder": "Уведомить за",
+      "not_work_without_end_plan_date": "Не работает без указания плановой даты окончания"
+    },
+    "members_field": {
+      "title": "Участники",
+      "add_member": {
+        "search_placeholder": "Поиск",
+        "empty_list": "Пользователи не найдены"
+      }
+    },
+    "status_field": {
+      "title": "Статус",
+      "statuses": {
+        "in_progress": "В работе",
+        "completed": "Завершен",
+        "archive": "Архив"
+      }
+    }
+  },
+  "correspondence_tab": {},
+  "edit_project": {
+    "action": {
+      "move_to_completed": "Завершить проект",
+      "edit": "Редактировать",
+      "save": "Сохранить",
+      "cancel": "Отмена"
+    },
+    "success_messages": {
+      "move_to_completed_success": "Проект успешно завершен"
+    },
+    "error_messages": {
+      "unexpected": "Неожиданная ошибка при обновлении проекта. Пожалуйста, попробуйте позже"
+    }
+  },
+  "create_project": {
+    "action": {
+      "create": "Создать"
+    },
+    "error_messages": {
+      "unexpected": "Неожиданная ошибка при создании проекта. Пожалуйста, попробуйте позже"
+    }
+  },
+  "delete_project": {
+    "action": {
+      "delete": "Удалить"
+    }
+  },
+  "delete_project_modal": {
+    "title": "Удалить проект «{name}»",
+    "move_documents_to_another_project_checkbox": "Переместить документы в другой проект?",
+    "move_correspondence_to_client_checkbox": "Переместить корреспонденцию на уровень клиента?",
+    "actions": {
+      "delete": "Удалить"
+    },
+    "error_messages": {
+      "unexpected": "Неожиданная ошибка при удалении проекта. Пожалуйста, попробуйте позже"
+    }
+  },
+  "change_feed_events": {
+    "created": {
+      "title": "Проект создан"
+    }
+  }
+}

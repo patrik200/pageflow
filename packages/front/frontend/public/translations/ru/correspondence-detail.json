@@ -1,0 +1,112 @@
+{
+  "meta": {
+    "view": "{name}",
+    "create": "Создание корреспонденции"
+  },
+  "tabs": {
+    "main": "Основная информация",
+    "depends_on": "Зависим от",
+    "depends_to": "Зависимый для",
+    "tickets": "Запросы"
+  },
+  "main_tab": {
+    "private_field": {
+      "placeholder": "Видимость",
+      "checkbox_placeholder": "Приватная корреспонденция",
+      "changes_feed": {
+        "private": "Приватная",
+        "public": "Публичная"
+      }
+    },
+    "name_field": {
+      "placeholder": "Название"
+    },
+    "author_field": {
+      "placeholder": "Автор"
+    },
+    "description_field": {
+      "placeholder": "Описание"
+    },
+    "created_at_field": {
+      "placeholder": "Дата создания"
+    },
+    "updated_at_field": {
+      "placeholder": "Дата обновления"
+    },
+    "attributes_field": {
+      "placeholder": "Атрибуты"
+    },
+    "members_field": {
+      "title": "Участники"
+    },
+    "status_field": {
+      "title": "Статус",
+      "changes_feed": {
+        "active": "Активна",
+        "archived": "Архив"
+      }
+    }
+  },
+  "main_tab_revisions": {
+    "title": "Ревизии",
+    "actions": {
+      "create_revision": "Добавить ревизию",
+      "show_archived": "Показать архивные"
+    },
+    "table": {
+      "header": {
+        "number": "Номер",
+        "created_at": "Дата создания",
+        "status": "Статус",
+        "author": "Автор"
+      }
+    }
+  },
+  "edit_correspondence": {
+    "action": {
+      "edit": "Редактировать",
+      "save": "Сохранить",
+      "cancel": "Отмена",
+      "archive": "Архивировать",
+      "active": "Разархивировать"
+    },
+    "error_messages": {
+      "unexpected": "Неожиданная ошибка при обновлении корреспонденции. Пожалуйста, попробуйте позже"
+    }
+  },
+  "create_correspondence": {
+    "action": {
+      "create": "Создать"
+    },
+    "error_messages": {
+      "unexpected": "Неожиданная ошибка при создании корреспонденции. Пожалуйста, попробуйте позже"
+    }
+  },
+  "delete_correspondence": {
+    "action": {
+      "delete": "Удалить"
+    }
+  },
+  "move_correspondence": {
+    "action": {
+      "move": "Переместить"
+    }
+  },
+  "archive_correspondence": {
+    "success_message": "Корреспонденция успешно архивирована",
+    "error_messages": {
+      "unexpected": "Неожиданная ошибка при архивировании корреспонденции. Пожалуйста, попробуйте позже"
+    }
+  },
+  "active_correspondence": {
+    "success_message": "Корреспонденция успешно разархивирована",
+    "error_messages": {
+      "unexpected": "Неожиданная ошибка при разархивировании корреспонденции. Пожалуйста, попробуйте позже"
+    }
+  },
+  "change_feed_events": {
+    "created": {
+      "title": "Корреспонденция создана"
+    }
+  }
+}

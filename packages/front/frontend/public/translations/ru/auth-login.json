@@ -1,0 +1,22 @@
+{
+  "meta": {
+    "title": "Авторизация"
+  },
+  "content": {
+    "title": "Войдите в свой аккаунт",
+    "fields": {
+      "email": {
+        "title": "Электронная почта",
+        "placeholder": "example@yandex.ru"
+      },
+      "password": {
+        "title": "Пароль",
+        "placeholder": "Пароль"
+      }
+    },
+    "signInButton": "Войти"
+  },
+  "error_messages": {
+    "unexpected": "Произошла неожиданная ошибка. Пожалуйста, попробуйте позже"
+  }
+}

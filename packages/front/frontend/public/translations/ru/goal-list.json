@@ -1,0 +1,18 @@
+{
+    "actions": {
+    "create_goal": {
+      "button": "Создать цель"
+    }
+  },
+  "table": {
+    "header": {
+      "name": "Название",
+      "description": "Описание",
+      "implemented": "Достигнута"
+    }
+  },
+  "implemented": {
+    "true": "Достигнута",
+    "false": "Не достигнута"
+  }
+}

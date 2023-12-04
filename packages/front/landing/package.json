@@ -1,0 +1,21 @@
+{
+  "name": "@app/landing",
+  "version": "1.0.0",
+  "scripts": {
+    "build": "NODE_ENV=production next build",
+    "dev": "NODE_ENV=development node server",
+    "start:prod": "NODE_ENV=production node server"
+  },
+  "dependencies": {
+    "@app/front-kit": "1.0.0",
+    "@app/kit": "1.0.0",
+    "@app/nextjs": "1.0.0"
+  },
+  "types": "dist/main.d.ts",
+  "main": "dist/main.cjs",
+  "module": "dist/main.js",
+  "description": "",
+  "private": true,
+  "author": "",
+  "license": "ISC"
+}

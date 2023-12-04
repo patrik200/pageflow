@@ -1,0 +1,59 @@
+{
+  "filters": {
+    "search": {
+      "placeholder": "Поиск"
+    },
+    "search_in_attachments": {
+      "title": "Искать в содержании ревизий"
+    },
+    "show_archived": {
+      "title": "Показывать архивные"
+    },
+    "type": {
+      "placeholder": "Тип документа"
+    },
+    "last_revision_status": {
+      "placeholder": "Статус последней ревизии"
+    },
+    "attributes": {
+      "title": "Фильтр по атрибутам"
+    },
+    "author": {
+      "placeholder": "Автор"
+    },
+    "responsible": {
+      "placeholder": "Ответственный сотрудник"
+    }
+  },
+  "actions": {
+    "create_group": {
+      "button": "Создать папку"
+    },
+    "create_document": {
+      "button": "Создать документ"
+    }
+  },
+  "table": {
+    "header": {
+      "name": "Название",
+      "created_at": "Дата создания",
+      "updated_at": "Дата обновления",
+      "author": "Автор",
+      "last_revision_status": "Статус последней ревизии"
+    },
+    "body_group": {
+      "actions": {
+        "move": "Переместить",
+        "edit": "Редактировать",
+        "permissions": "Участники",
+        "delete": "Удалить"
+      }
+    },
+    "body_documents": {
+      "actions": {
+        "move": "Переместить",
+        "delete": "Удалить"
+      }
+    }
+  }
+}

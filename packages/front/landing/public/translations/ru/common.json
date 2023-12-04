@@ -1,0 +1,7 @@
+{
+  "validator": {
+    "should_not_be_empty": "Поле обязательно для заполнения",
+    "should_be_an_email": "Введите корректный email",
+    "should_be_privacy_confirmed": "Согласитесь с правилами пользования"
+  }
+}

@@ -1,0 +1,81 @@
+import { DictionaryTypes } from "@app/shared-enums";
+
+export const dictionariesFixture = new Map([
+  [DictionaryTypes.DOCUMENT_TYPE, { required: false }],
+  [DictionaryTypes.TICKET_STATUS, { required: true }],
+  [DictionaryTypes.DOCUMENT_REVISION_RETURN_CODE, { required: false }],
+  [DictionaryTypes.TICKET_TYPE, { required: false }],
+]);
+
+export const dictionaryValuesFixture = new Map([
+  [
+    DictionaryTypes.DOCUMENT_TYPE,
+    new Map([
+      ["acts", { value: { ru: "Акты" }, canDelete: true }],
+      ["analytics", { value: { ru: "Аналитика" }, canDelete: true }],
+      ["sequence_diagrams", { value: { ru: "Диаграммы последовательностей (Блок схемы)" }, canDelete: true }],
+      ["treaties", { value: { ru: "Договоры" }, canDelete: true }],
+      ["complaints", { value: { ru: "Жалобы" }, canDelete: true }],
+      ["notes", { value: { ru: "Записки" }, canDelete: true }],
+      ["requests", { value: { ru: "Заявки (Запросы)" }, canDelete: true }],
+      ["statements", { value: { ru: "Заявления" }, canDelete: true }],
+      ["instructions", { value: { ru: "Инструкции" }, canDelete: true }],
+      ["licenses", { value: { ru: "Лицензии" }, canDelete: true }],
+      ["overheads", { value: { ru: "Накладные" }, canDelete: true }],
+      ["appeals", { value: { ru: "Обращения" }, canDelete: true }],
+      ["reports", { value: { ru: "Отчеты" }, canDelete: true }],
+      ["letters", { value: { ru: "Письма" }, canDelete: true }],
+      ["regulations", { value: { ru: "Положения" }, canDelete: true }],
+      ["orders", { value: { ru: "Поручения" }, canDelete: true }],
+      ["rules", { value: { ru: "Правила" }, canDelete: true }],
+      ["protocols", { value: { ru: "Протоколы" }, canDelete: true }],
+      ["schedules", { value: { ru: "Расписания" }, canDelete: true }],
+      ["summaries", { value: { ru: "Резюме" }, canDelete: true }],
+      ["permissions", { value: { ru: "Разрешения" }, canDelete: true }],
+      ["certificates", { value: { ru: "Сертификаты" }, canDelete: true }],
+      ["office_notes", { value: { ru: "Служебные записки" }, canDelete: true }],
+      ["outlays", { value: { ru: "Сметы" }, canDelete: true }],
+      ["cover_letters", { value: { ru: "Сопроводительные письма" }, canDelete: true }],
+      ["specifications", { value: { ru: "Спецификации" }, canDelete: true }],
+      ["lists_directories_registers", { value: { ru: "Списки, каталоги, реестры" }, canDelete: true }],
+      ["policies_strategies", { value: { ru: "Стратегии и политики" }, canDelete: true }],
+      ["schemes", { value: { ru: "Схемы" }, canDelete: true }],
+      ["accounts", { value: { ru: "Счета" }, canDelete: true }],
+      ["technical_tasks", { value: { ru: "Технические задания" }, canDelete: true }],
+      ["charters", { value: { ru: "Уставы" }, canDelete: true }],
+      ["drawings", { value: { ru: "Чертежи" }, canDelete: true }],
+      ["sketches", { value: { ru: "Эскизы" }, canDelete: true }],
+    ]),
+  ],
+  [
+    DictionaryTypes.TICKET_STATUS,
+    new Map([
+      ["new", { value: { ru: "Новый запрос" }, canDelete: true }],
+      ["ready_to_work", { value: { ru: "Готов к работе" }, canDelete: true }],
+      ["in_progress", { value: { ru: "В работе" }, canDelete: true }],
+      ["wait_for_checking", { value: { ru: "Ожидает проверки" }, canDelete: true }],
+      ["finished", { value: { ru: "Завершено" }, canDelete: false }],
+      ["archived", { value: { ru: "Архив" }, canDelete: false }],
+    ]),
+  ],
+  [
+    DictionaryTypes.DOCUMENT_REVISION_RETURN_CODE,
+    new Map([
+      ["new_comment", { value: { ru: "Добавлен комментарий" }, canDelete: true }],
+      ["new_remark", { value: { ru: "Добавлено уточнение" }, canDelete: true }],
+      ["low_quality", { value: { ru: "Отклонено по причине низкого качества" }, canDelete: true }],
+      ["bad_files", { value: { ru: "Отклонено по причине отсутствия файла" }, canDelete: true }],
+      ["bad_metadata", { value: { ru: "Отклонено по причине неверных метаданных" }, canDelete: true }],
+      ["other", { value: { ru: "Отклонено по другим причинам" }, canDelete: true }],
+    ]),
+  ],
+  [
+    DictionaryTypes.TICKET_TYPE,
+    new Map([
+      ["task", { value: { ru: "Задача" }, canDelete: true }],
+      ["request", { value: { ru: "Запрос" }, canDelete: true }],
+      ["error", { value: { ru: "Ошибка" }, canDelete: true }],
+      ["research", { value: { ru: "Исследование" }, canDelete: true }],
+    ]),
+  ],
+]);

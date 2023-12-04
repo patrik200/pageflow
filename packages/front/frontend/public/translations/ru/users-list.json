@@ -1,0 +1,36 @@
+{
+  "meta": {
+    "title": "Сотрудники компании"
+  },
+  "filters": {
+    "search": {
+      "placeholder": "Поиск"
+    },
+    "search_in_deleted": {
+      "title": "Искать среди удаленных"
+    }
+  },
+  "table": {
+    "header": {
+      "name": "Имя",
+      "position": "Должность",
+      "email": "Email",
+      "phone": "Телефон",
+      "role": "Роль"
+    }
+  },
+  "actions": {
+    "create_user": {
+      "button": "Создать пользователя"
+    },
+    "share_invite": {
+      "button": "Создать приглашение"
+    }
+  },
+  "share_invite_modal": {
+    "title": "Отправить приглашение",
+    "error_messages": {
+      "unexpected": "Неожиданная ошибка при создании приглашения. Пожалуйста, попробуйте позже"
+    }
+  }
+}

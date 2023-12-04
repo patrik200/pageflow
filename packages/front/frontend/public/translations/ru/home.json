@@ -1,0 +1,32 @@
+{
+  "meta": {
+    "title": "Главная"
+  },
+  "need_to_add_to_favourites_card": {
+    "title": "Добавьте элементы в избранное и они отобразятся на главной странице"
+  },
+  "documents_card": {
+    "title": "Документы"
+  },
+  "document_groups_card": {
+    "title": "Группы документов"
+  },
+  "document_revisions_card": {
+    "title": "Ревизии документов"
+  },
+  "correspondences_card": {
+    "title": "Корреспонденции"
+  },
+  "correspondence_groups_card": {
+    "title": "Группы корреспонденции"
+  },
+  "correspondence_revisions_card": {
+    "title": "Ревизии корреспонденций"
+  },
+  "projects_card": {
+    "title": "Проекты"
+  },
+  "tickets_card": {
+    "title": "Запросы"
+  }
+}

@@ -1,0 +1,58 @@
+version: '3'
+services:
+  app:
+    build:
+      context: .
+      dockerfile: docker/node/Dockerfile
+    ports:
+      - 1000:1000
+    networks:
+      - external
+    depends_on:
+      - elastic
+      - postgres
+      - s3
+
+  postgres:
+    build:
+      context: .
+      dockerfile: docker/postgres/Dockerfile
+    volumes:
+      - ./pgdata/data:/var/lib/postgresql/data
+      - ./pgdata/init:/docker-entrypoint-initdb.d
+    ports:
+      - ${DB_PORT}:5432
+    environment:
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    networks:
+      - external
+
+  s3:
+    image: minio/minio:latest
+    volumes:
+      - ./storage:/data1
+    command: server /data1
+    environment:
+      - MINIO_ROOT_USER=${S3_ACCESS_KEY}
+      - MINIO_ROOT_PASSWORD=${S3_SECRET_KEY}
+    networks:
+      - external
+
+  elastic:
+    image: elasticsearch:8.8.0
+    volumes:
+      - ./elasticdata:/usr/share/elasticsearch/data:rw
+    environment:
+      - discovery.type=single-node
+      - bootstrap.memory_lock=false
+      - xpack.security.enabled=false
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    networks:
+      - external
+
+networks:
+  external:
+    driver: bridge
+

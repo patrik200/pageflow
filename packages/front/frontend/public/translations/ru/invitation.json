@@ -1,0 +1,57 @@
+{
+  "meta": {
+    "title": "Создание приглашения",
+    "submit": {
+      "title": "Принятие приглашения"
+    }
+  },
+  "create_invitation_modal": {
+    "title": "Личные данные",
+    "common_block": {
+      "title": "Общая информация",
+      "name_field": {
+        "placeholder": "Имя"
+      },
+      "position_field": {
+        "placeholder": "Должность"
+      },
+      "role_field": {
+        "placeholder": "Роль"
+      },
+      "password_field": {
+        "placeholder": "Пароль"
+      },
+      "repeat_password_field": {
+        "placeholder": "Повторите пароль"
+      }
+    },
+    "contact_block": {
+      "title": "Контактная информация",
+      "email_field": {
+        "placeholder": "E-mail"
+      },
+      "phone_field": {
+        "placeholder": "Телефон"
+      }
+    }
+  },
+  "actions": {
+    "send": {
+      "title": "Создать приглашение"
+    },
+    "create": {
+      "title": "Зарегистрироваться"
+    }
+  },
+  "messages": {
+    "success": "Приглашение создано!",
+    "verification": {
+      "success": "Приглашение валидно!",
+      "unexpected_error": "Приглашание истекло, или создано с ошибкой"
+    },
+    "submit": {
+      "success": "Регистрация прошла успешно! Вы будете перенаправлены на страницу входа",
+      "unexpected_error": "Что-то пошло не так"
+    }
+  }
+}

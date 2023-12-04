@@ -1,0 +1,127 @@
+{
+  "meta": {
+    "title": "Настройки"
+  },
+  "tab_client": {
+    "title": "Настройки компании",
+    "name_field": {
+      "title": "Название компании"
+    },
+    "storage_field": {
+      "title": "Место в хранилище"
+    },
+    "logo": {
+      "create_action": "Загрузить логотип",
+      "replace_action": "Изменить логотип",
+      "delete_action": "Удалить логотип",
+      "error_messages": {
+        "replace_unexpected": "Неожиданная ошибка при обновлении логотипа. Пожалуйста, попробуйте позже",
+        "delete_unexpected": "Неожиданная ошибка при обновлении логотипа. Пожалуйста, попробуйте позже"
+      }
+    },
+    "edit": {
+      "actions": {
+        "edit": "Редактировать",
+        "save": "Сохранить",
+        "recreate_elastic": "Пересоздать индексы ElasticSearch",
+        "cancel": "Отмена"
+      },
+      "elastic_success_message": "Индексы ElasticSearch обновлены",
+      "success_message": "Компания успешно обновлена",
+      "error_messages": {
+        "elastic_update": "Не удалось обновить индексы ElasticSearch",
+        "unexpected": "Неожиданная ошибка при обновлении компании. Пожалуйста, попробуйте позже"
+      }
+    }
+  },
+  "tab_dictionaries": {
+    "title": "Справочники",
+    "add_value_action": "Добавить",
+    "value_row": {
+      "actions": {
+        "delete": "Удалить",
+        "edit": "Изменить"
+      }
+    },
+    "update_value_modal": {
+      "title": {
+        "create": "Создание значения",
+        "edit": "Редактирование значение"
+      },
+      "key_field": {
+        "placeholder": "Ключ"
+      },
+      "value_field": {
+        "placeholder": "Значение"
+      },
+      "actions": {
+        "save": "Сохранить"
+      },
+      "error_messages": {
+        "unexpected": "Неожиданная ошибка при сохранении значения. Пожалуйста, попробуйте позже"
+      }
+    },
+    "delete_value_modal": {
+      "title": "Удалить значение «{value}»?",
+      "actions": {
+        "delete": "Удалить"
+      },
+      "replace_with_field": {
+        "placeholder": "Заменить на",
+        "search_placeholder": "Найти",
+        "empty_list": "Не найдено"
+      },
+      "error_messages": {
+        "unexpected": "Неожиданная ошибка при удалении значения. Пожалуйста, попробуйте позже"
+      }
+    },
+    "reorder": {
+      "error_messages": {
+        "unexpected": "Неожиданная ошибка при обновлении порядка. Пожалуйста, попробуйте позже"
+      }
+    }
+  },
+  "tab_payments": {
+    "title": "Платежи",
+    "subscription": {
+      "payment_statuses": {
+        "waiting_for_payment": "Ожидание подтверждения оплаты от ПС",
+        "waiting_for_accept": "Ожидание подтверждения от ПС",
+        "completed": "Успех",
+        "canceled": "Отмена оплаты"
+      },
+      "payment_modes": {
+        "automatic": "Автоматическое продление",
+        "manual": "Ручная оплата"
+      },
+      "title": {
+        "active": "Подписка активна",
+        "inactive": "Подписка неактивна"
+      },
+      "next_payment_date": {
+        "next_payment": "Следующее списание {date}",
+        "until": "До {date}"
+      },
+      "cancel": {
+        "button": "Отменить",
+        "success_message": "Подписка отменена. Автоматические списания больше происходить не будут.",
+        "unexpected_error_message": "Неожиданная ошибка при отмене подписки. Пожалуйста, попробуйте позже или напишите нам на почту"
+      },
+      "buy": {
+        "button": "Оформить подписку {price} ₽/мес.",
+        "unexpected_error_message": "Неожиданная ошибка при оформлении подписки. Пожалуйста, попробуйте позже"
+      }
+    },
+    "payments": {
+      "header": {
+        "created_at": "Дата",
+        "mode": "Режим оплаты",
+        "status": "Статус",
+        "amount": "Сумма"
+      },
+      "body": {
+        "continue_payment": "Продолжить оплату"
+      }
+    }
+  }
+}

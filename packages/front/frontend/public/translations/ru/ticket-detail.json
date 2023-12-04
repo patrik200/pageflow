@@ -1,0 +1,86 @@
+{
+  "meta": {
+    "view": "{name}",
+    "create": "Создание запроса"
+  },
+  "main_tab": {
+    "name_field": {
+      "title": "Название"
+    },
+    "author_field": {
+      "title": "Автор"
+    },
+    "description_field": {
+      "title": "Описание"
+    },
+    "customer_field": {
+      "title": "Заказчик"
+    },
+    "type_field": {
+      "title": "Тип"
+    },
+    "responsible_field": {
+      "title": "Отвественный"
+    },
+    "deadline_field": {
+      "title": "Дедлайн"
+    },
+    "create_date_field": {
+      "title": "Дата создания"
+    },
+    "update_date_field": {
+      "title": "Дата обновления"
+    },
+    "priority_field": {
+      "title": "Приоритет"
+    },
+    "status_field": {
+      "title": "Статус"
+    },
+    "files_field": {
+      "title": "Список вложений"
+    },
+    "comments_field": {
+      "title": "Комментарии"
+    },
+    "answer_field": {
+      "title": "Ответ"
+    }
+  },
+  "create_ticket": {
+    "actions": {
+      "create": "Создать"
+    },
+    "error_messages": {
+      "unexpected": "Неожиданная ошибка при создании запроса. Пожалуйста, попробуйте позже"
+    }
+  },
+  "ticket_modal": {
+    "actions": {
+      "cancel_editing": "Отмена",
+      "save": "Сохранить",
+      "delete": "Удалить",
+      "edit": "Редактировать"
+    },
+    "update": {
+      "error_messages": {
+        "unexpected": "Неожиданная ошибка при обновлении запроса. Пожалуйста, попробуйте позже"
+      }
+    }
+  },
+  "delete_ticket_modal": {
+    "title": "Удалить запрос «{name}»?",
+    "actions": {
+      "delete": "Удалить"
+    },
+    "success_message": "Запрос успешно удален",
+    "error_messages": {
+      "unexpected": "Неожиданная ошибка при удалении запроса. Пожалуйста, попробуйте позже"
+    }
+  },
+  "change_feed_events": {
+    "created": {
+      "title": "Запрос создан"
+    }
+  }
+}

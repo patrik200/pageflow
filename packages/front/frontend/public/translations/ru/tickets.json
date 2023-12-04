@@ -1,0 +1,62 @@
+{
+  "meta": {
+    "title": "Запросы"
+  },
+  "actions": {
+    "create_board": {
+      "button": "Создать доску"
+    },
+    "edit_board": {
+      "button": "Редактировать доску"
+    },
+    "edit_members": {
+      "button": "Участники"
+    },
+    "delete_board": {
+      "button": "Удалить доску"
+    },
+    "create_ticket": {
+      "button": "Создать запрос"
+    }
+  },
+  "edit_board_modal": {
+    "title": {
+      "create": "Создать доску запросов",
+      "edit": "Редактирование доски запросов"
+    },
+    "name_field": {
+      "placeholder": "Название"
+    },
+    "private_field": {
+      "placeholder": "Приватная доска"
+    },
+    "error_messages": {
+      "unexpected": {
+        "create": "Непредвиденная ошибка при создании доски. Пожалуйста, попробуйте позже",
+        "edit": "Непредвиденная ошибка при обновлении доски. Пожалуйста, попробуйте позже"
+      }
+    },
+    "actions": {
+      "create": "Создать",
+      "delete": "Удалить",
+      "save": "Сохранить"
+    }
+  },
+  "delete_board_modal": {
+    "title": "Удалить доску?",
+    "actions": {
+      "delete": "Удалить"
+    },
+    "success_message": "Доска успешно удалена",
+    "error_messages": {
+      "unexpected": "Произошла непредвиденная ошибка при удалении доски. Пожалуйста, попробуйте позже"
+    }
+  },
+  "board_members_modal": {
+    "title": "Участники",
+    "success_message": "Участник добавлен",
+    "error_messages": {
+      "unexpected": "Неожиданная ошибка при добавлении участника. Пожалуйста, попробуйте позже"
+    }
+  }
+}

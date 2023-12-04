@@ -1,0 +1,63 @@
+{
+  "actions": {
+    "create_dependency": {
+      "title": "Создать зависимость",
+      "from_list": "Добавить"
+    },
+    "delete_dependency": {
+      "title": "Отвязать"
+    },
+    "delete_back_dependency": {
+      "title": "Отвязать"
+    }
+  },
+  "depends_on_tab": {
+    "title": "Зависимости",
+    "table": {
+      "header": {
+        "number": "Номер",
+        "created_at": "Дата создания",
+        "updated_at": "Дата обновления",
+        "author": "Автор"
+      }
+    }
+  },
+  "depends_to_tab": {
+    "title": "Обратные зависимости",
+    "table": {
+      "header": {
+        "number": "Номер",
+        "created_at": "Дата создания",
+        "updated_at": "Дата обновления",
+        "author": "Автор"
+      }
+    }
+  },
+  "modals": {
+    "create_dependency": {
+      "title": "Выберите зависимости для документа"
+    },
+    "table": {
+      "header": {
+        "number": "Номер",
+        "created_at": "Дата создания",
+        "updated_at": "Дата обновления",
+        "author": "Автор"
+      }
+    }
+  },
+  "messages": {
+    "create_dependency": {
+      "success": "Документ связан с коресспоненцией",
+      "unexpected_error": "Что-то пошло не так"
+    },
+    "delete_dependency": {
+      "success": "Корреспоненция успешно отвязана",
+      "unexpected_error": "Что-то пошло не так"
+    },
+    "delete_back_dependency": {
+      "success": "Документ успешно отвязан",
+      "unexpected_error": "Что-то пошло не так"
+    }
+  }
+}

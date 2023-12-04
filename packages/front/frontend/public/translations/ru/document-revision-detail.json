@@ -1,0 +1,239 @@
+{
+  "meta": {
+    "view": "{number}",
+    "view_not_loaded": "Ревизия",
+    "edit": "Редактирование ревизии «{number}»",
+    "edit_not_loaded": "Редактирование ревизии",
+    "create": "Создание ревизии"
+  },
+  "revision_title": {
+    "approving_deadline_remaining_warning": "Крайняя дата утверждения: {days}"
+  },
+  "tabs": {
+    "main": "Основная информация",
+    "depends_on": "Зависимые от",
+    "depends_to": "Зависимый для",
+    "tickets": "Запросы"
+  },
+  "main_tab": {
+    "number_field": {
+      "placeholder": "Номер"
+    },
+    "status_field": {
+      "placeholder": "Статус"
+    },
+    "review_count_field": {
+      "placeholder": "Кол-во циклов утверждения"
+    },
+    "status_author_field": {
+      "placeholder": "Инициатор смены статуса"
+    },
+    "status_time_field": {
+      "placeholder": "Дней в текущем статусе"
+    },
+    "return_code_field": {
+      "placeholder": "Причины возврата"
+    },
+    "return_message_field": {
+      "placeholder": "Сообщение о возврате"
+    },
+    "author_field": {
+      "placeholder": "Автор"
+    },
+    "created_at_field": {
+      "placeholder": "Дата создания"
+    },
+    "updated_at_field": {
+      "placeholder": "Дата обновления"
+    },
+    "attachments_field": {
+      "placeholder": "Список вложений",
+      "disabled_tooltip_text": "Добавление вложений сейчас не доступно"
+    },
+    "responsible_user_field": {
+      "placeholder": "Ответственный сотрудник",
+      "change_feed": {
+        "approved_true": "Принято",
+        "approved_false": "Не принято",
+        "comment": "Замечание ответственного: {comment}"
+      }
+    },
+    "approve_comments_field": {
+      "placeholder": "Замечания"
+    },
+    "responsible_user_flow_field": {
+      "placeholder": "Маршрут документа",
+      "not_exists_user_flow": "{name} (копия для ревизии)",
+      "change_feed": {
+        "rows_approved_true": "Шаги утверждены",
+        "rows_approved_false": "Шаги не утверждены",
+        "reviewer_approved_true": "Подписант утвердил",
+        "reviewer_approved_false": "Подписант не утвердил",
+        "reviewer_comment": "Замечание подписанта: {comment}"
+      }
+    },
+    "approving_deadline_field": {
+      "placeholder": "Крайняя дата утверждения"
+    },
+    "can_prolong_approving_deadline_field": {
+      "placeholder": "Возможность продления даты утверждения",
+      "values": {
+        "yes": "Да",
+        "no": "Нет"
+      },
+      "edit_value": "Разрешить продление даты утверждения"
+    },
+    "comments": {
+      "title": "Комментарии",
+      "actions": {
+        "show_unresolved": "Показывать только не утвержденные комментарии",
+        "send": "Отправить"
+      },
+      "comment_actions": {
+        "status_title": "Статус",
+        "statuses": {
+          "resolved": "Принят",
+          "not_resolved": "Не принят"
+        },
+        "resolve_action": {
+          "button": "Принять",
+          "error_messages": {
+            "unexpected": "Неожиданная ошибка при принятии комментария. Пожалуйста, попробуйте позже"
+          }
+        }
+      }
+    }
+  },
+  "view_revision": {
+    "actions": {
+      "edit": "Редактировать",
+      "delete": "Удалить",
+      "archive": "Архивировать",
+      "active": "Разархивировать",
+      "prolong_approving_date": "Продлить крайнюю дату утверждения"
+    },
+    "action_statuses": {
+      "move_to_review": { "button": "Отправить на утверждение" },
+      "move_to_initial_for_cancel_review": { "button": "Отменить утверждение" },
+      "move_to_initial_for_restore_from_revoked": { "button": "Восстановить" },
+      "move_to_approved_by_responsible_user": {
+        "button": "Утвердить ответственным сотрудником",
+        "has_unresolved_comments_tooltip": "Утверждение невозможно так как не все комментарии решены"
+      },
+      "move_to_approved_by_responsible_user_flow": {
+        "has_unresolved_comments_tooltip": "Утверждение невозможно так как не все комментарии решены",
+        "not_approved_tooltip": "Полное утверждение документа невозможно так как не все шаги маршрута документа утверждены"
+      },
+      "move_to_return": { "button": "Вернуть на доработку" },
+      "move_to_revoked": { "button": "Отозвать" }
+    },
+    "change_status_errors": {
+      "unexpected": "Неожиданная ошибка при изменении статуса ревизии. Пожалуйста, попробуйте позже"
+    },
+    "move_to_return_modal": {
+      "title": "Вернуть ревизию на доработку",
+      "return_code_field": {
+        "placeholder": "Код возврата"
+      },
+      "return_message_field": {
+        "placeholder": "Сообщение о возврате"
+      },
+      "action": "Вернуть"
+    },
+    "move_to_approved_modal": {
+      "title": "Утверждение ревизии",
+      "remark_checkbox": {
+        "placeholder": "Утвердить с замечаниями"
+      },
+      "remark_field": {
+        "placeholder": "Текст замечания"
+      },
+      "action": "Утвердить"
+    },
+    "move_to_reviewer_approved_modal": {
+      "title": "Утверждение ревизии",
+      "remark_checkbox": {
+        "placeholder": "Утвердить с замечаниями"
+      },
+      "remark_field": {
+        "placeholder": "Текст замечания"
+      },
+      "action": "Утвердить"
+    }
+  },
+  "create_revision": {
+    "error_messages": {
+      "unexpected": "Неожиданная ошибка при создании ревизии. Пожалуйста, попробуйте позже"
+    },
+    "actions": {
+      "create": "Создать",
+      "cancel": "Отмена"
+    }
+  },
+  "edit_revision": {
+    "error_messages": {
+      "unexpected": "Неожиданная ошибка при обновлении ревизии. Пожалуйста, попробуйте позже"
+    },
+    "actions": {
+      "cancel": "Отмена",
+      "save": "Сохранить"
+    }
+  },
+  "delete_revision_modal": {
+    "title": "Удалении ревизии «{number}»",
+    "actions": {
+      "delete": "Удалить"
+    },
+    "success_message": "Ревизия успешно удалена",
+    "error_messages": {
+      "unexpected": "Неожиданная ошибка при удалении ревизии. Пожалуйста, попробуйте позже"
+    }
+  },
+  "archive_revision": {
+    "success_message": "Ревизия успешно архивирована",
+    "error_messages": {
+      "unexpected": "Неожиданная ошибка при архивировании ревизии. Пожалуйста, попробуйте позже"
+    }
+  },
+  "active_revision": {
+    "success_message": "Ревизия успешно разархивирована",
+    "error_messages": {
+      "unexpected": "Неожиданная ошибка при разархивировании ревизии. Пожалуйста, попробуйте позже"
+    }
+  },
+  "user_flow": {
+    "row_user_actions": {
+      "approve": "Утвердить"
+    },
+    "row_user_approve_modal": {
+      "title": "Утвердить шаг?",
+      "result_field": "Результат работы",
+      "attachments_field": "Вложения",
+      "action": "Утвердить",
+      "unexpected_error": "Неожиданная ошибка при принятии маршрута документа. Пожалуйста, попробуйте позже"
+    },
+    "reviewer": {
+      "placeholder": "Подписант",
+      "action": "Подписать",
+      "unexpected_error": "Неожиданная ошибка при подписании документа. Пожалуйста, попробуйте позже"
+    }
+  },
+  "prolong_approving_date_modal": {
+    "title": "Продлить крайнюю дату утверждения",
+    "date_field": {
+      "placeholder": "Крайняя дата утверждения"
+    },
+    "actions": {
+      "submit": "Продлить"
+    },
+    "success_message": "Крайняя дата утверждения успешно продлена",
+    "error_messages": {
+      "unexpected": "Неожиданная ошибка при продлении даты утверждения. Пожалуйста, попробуйте позже"
+    }
+  },
+  "change_feed_events": {
+    "created": {
+      "title": "Ревизия создана"
+    }
+  }
+}

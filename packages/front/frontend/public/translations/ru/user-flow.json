@@ -1,0 +1,78 @@
+{
+  "meta": {
+    "title": "Маршруты документов"
+  },
+  "actions": {
+    "add_user_flow": {
+      "button": "Добавить маршрут"
+    }
+  },
+  "user_flow_card": {
+    "reviewer": {
+      "placeholder": "Подписант"
+    },
+    "actions": {
+      "edit": "Редактировать",
+      "delete": "Удалить"
+    },
+    "deadline_days_display": {
+      "include_weekends": "Выходные учитваются",
+      "exclude_weekends": "Выходные не учитваются",
+      "deadline_text": "Срок"
+    },
+    "result_field": "Результат работы",
+    "attachments_field": "Вложения"
+  },
+  "edit_user_flow_modal": {
+    "title": {
+      "create": "Добавить маршрут",
+      "edit": "Редактирование маршрута «{name}»"
+    },
+    "name_field": {
+      "placeholder": "Название маршрута"
+    },
+    "deadline_days_field": {
+      "placeholder": "Дней на утверждение"
+    },
+    "include_weekend_field": {
+      "placeholder": "Учитывать выходные при вычеслении крайней даты утверждения"
+    },
+    "user_reviewer_field": {
+      "placeholder": "Подписант"
+    },
+    "row": {
+      "name_field": {
+        "placeholder": "Название шага"
+      },
+      "actions": {
+        "add_mode_or": "Добавить «ИЛИ»",
+        "add_mode_and": "Добавить «И»",
+        "forbid_next_row_approving": "Запретить утверждение следующих стадий пока текущая не будет принята"
+      },
+      "user_user_field": {
+        "placeholder": "Сотрудник"
+      },
+      "user_description_field": {
+        "placeholder": "Описание работ"
+      }
+    },
+    "row_list_actions": {
+      "add_row": "Добавить шаг"
+    },
+    "actions": {
+      "save": "Сохранить"
+    },
+    "error_messages": {
+      "unexpected": "Произошла непредвиденная ошибка при сохранении маршрута. Попробуйте еще раз"
+    }
+  },
+  "delete_user_flow_modal": {
+    "title": "Удалить маршрут «{name}»?",
+    "actions": {
+      "delete": "Удалить"
+    },
+    "error_messages": {
+      "unexpected": "Произошла непредвиденная ошибка при удалении маршрута. Попробуйте еще раз"
+    }
+  }
+}

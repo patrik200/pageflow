@@ -1,0 +1,52 @@
+{
+  "meta": {
+    "title": "Корреспонденция"
+  },
+  "filters": {
+    "search": {
+      "placeholder": "Поиск"
+    },
+    "search_in_attachments": {
+      "title": "Искать в содержании ревизий"
+    },
+    "author": {
+      "placeholder": "Автор"
+    },
+    "show_archived": {
+      "title": "Показывать архивные"
+    },
+    "attributes": {
+      "title": "Фильтр по атрибутам"
+    }
+  },
+  "actions": {
+    "create_group": {
+      "button": "Создать папку"
+    },
+    "create_correspondence": {
+      "button": "Создать документ"
+    }
+  },
+  "table": {
+    "header": {
+      "name": "Название",
+      "created_at": "Дата создания",
+      "updated_at": "Дата обновления",
+      "author": "Автор"
+    },
+    "body_group": {
+      "actions": {
+        "move": "Переместить",
+        "permissions": "Участники",
+        "edit": "Редактировать",
+        "delete": "Удалить"
+      }
+    },
+    "body_correspondence": {
+      "actions": {
+        "move": "Переместить",
+        "delete": "Удалить"
+      }
+    }
+  }
+}

@@ -1,0 +1,12 @@
+.git
+.idea
+/elasticdata
+/pgdata
+/storage
+/temp_multiparty
+/certbot
+/node_modules
+/packages/**/*/node_modules
+/packages/**/*/dist
+/packages/**/*/build
+/packages/**/*/.next

@@ -1,0 +1,60 @@
+version: '3'
+services:
+  postgres:
+    build:
+      context: .
+      dockerfile: docker/postgres/Dockerfile
+    ports:
+      - ${DB_PORT}:5432
+    volumes:
+      - ./pgdata/data:/var/lib/postgresql/data
+      - ./pgdata/init:/docker-entrypoint-initdb.d
+    environment:
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    networks:
+      - external
+
+  s3:
+    image: minio/minio:latest
+    ports:
+      - ${S3_PORT}:9000
+      - 9001:9001
+    volumes:
+      - ./storage:/data1
+    command: server /data1 --console-address ":9001"
+    environment:
+      - MINIO_ROOT_USER=${S3_ACCESS_KEY}
+      - MINIO_ROOT_PASSWORD=${S3_SECRET_KEY}
+    networks:
+      - external
+
+  elastic:
+    image: elasticsearch:8.8.0
+    volumes:
+      - ./elasticdata:/usr/share/elasticsearch/data
+    ports:
+      - ${ELASTIC_PORT}:9200
+      - 9300:9300
+    environment:
+      - discovery.type=single-node
+      - http.cors.enabled=true
+      - http.cors.allow-origin=http://localhost:9201
+      - bootstrap.memory_lock=false
+      - xpack.security.enabled=false
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    networks:
+      - external
+
+  elastic-ui:
+    image: cars10/elasticvue:0.44.0
+    ports:
+      - 9201:8080
+    networks:
+      - external
+
+networks:
+  external:
+    driver: bridge
+
