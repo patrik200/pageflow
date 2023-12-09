@@ -2,7 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 
-import { GoalFavouriteEntity } from "entities/Goal/Goal/Favourire";
+import { GoalFavouriteEntity } from "entities/Goal/Favourire";
 
 import { getCurrentUser } from "modules/auth";
 

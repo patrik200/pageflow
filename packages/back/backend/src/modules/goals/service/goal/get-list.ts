@@ -2,7 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { Repository } from "typeorm";
 import { InjectRepository } from "@nestjs/typeorm";
 
-import { GoalEntity } from "entities/Goal/Goal";
+import { GoalEntity } from "entities/Goal";
 
 import { FindOptionsWhere } from "typeorm/find-options/FindOptionsWhere";
 import { GoalSelectOptions } from "./get";
@@ -27,7 +27,6 @@ export class GetGoalsListService {
         where: findOptions,
         ...options
       });
-    console.log(goals)
     return goals;
   }
 }
