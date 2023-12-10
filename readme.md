@@ -9,12 +9,6 @@
 2. Create client `npm run send:dev create-client -- -n testname -d localhost`
 3. Create admin `npm run send:dev create-admin -- -c 1 -e admin@pageflow.ru`
 
-### Generate crypto iv
-
-```js
-crypto.randomBytes(16).toString("base64url")
-```
-
 ### Generate crypto key
 
 ```js
