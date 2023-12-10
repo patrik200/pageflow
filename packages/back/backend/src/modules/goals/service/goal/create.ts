@@ -4,7 +4,7 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { Transactional } from "typeorm-transactional";
 
-import { GoalEntity } from "entities/Goal/Goal";
+import { GoalEntity } from "entities/Goal/";
 
 import { getCurrentUser } from "modules/auth";
 

@@ -11,7 +11,7 @@ import { DocumentRootGroupEntity } from "entities/Document/Group/rootGroup";
 import { PermissionEntity } from "entities/Permission";
 
 import { ProjectFavouriteEntity } from "./Favourite";
-import { GoalEntity } from "entities/Goal/Goal";
+import { GoalEntity } from "entities/Goal";
 
 @Entity({ name: "projects" })
 export class ProjectEntity extends BaseGeneratedIDEntity {

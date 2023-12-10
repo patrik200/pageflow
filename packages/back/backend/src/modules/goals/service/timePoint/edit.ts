@@ -5,27 +5,25 @@ import { Repository } from "typeorm";
 import { Transactional } from "typeorm-transactional";
 import { TypeormUpdateEntity } from "@app/back-kit"
 import { GoalEntity } from "entities/Goal";
+import { TimePointEntity } from "entities/TimePoint";
 
-import { getCurrentUser } from "modules/auth";
 
-import { GoalCreated } from "../../event/GoalCreated";
-
-interface EditGoalInterface {
+interface EditTimePointInterface {
     name?: string
     description?: string
     implemented?: boolean
 }
 
 @Injectable()
-export class GoalEditService {
+export class TimePointEditService {
     constructor(
-        @InjectRepository(GoalEntity) private goalsRepository: Repository<GoalEntity>,
+        @InjectRepository(TimePointEntity) private timePointsRepository: Repository<TimePointEntity>,
       ) {}
 
     @Transactional()
-    async editGoalOrFail(id: string, data: EditGoalInterface ) {
-        const originalGoal = await this.goalsRepository.findOne({ where: { id } });
+    async editTimePointOrFail(id: string, data: EditTimePointInterface ) {
+        const originalGoal = await this.timePointsRepository.findOne({ where: { id } });
         const updateData: TypeormUpdateEntity<GoalEntity> = {...data}
-        await this.goalsRepository.update(originalGoal!.id, updateData);
+        await this.timePointsRepository.update(originalGoal!.id, updateData);
     }
 }

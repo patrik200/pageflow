@@ -1,4 +1,4 @@
-import { GoalEntity } from "entities/Goal/Goal";
+import { GoalEntity } from "entities/Goal";
 
 import { getCurrentUser } from "modules/auth";
 
