@@ -2,31 +2,27 @@ import React from "react";
 import { observer } from "mobx-react-lite";
 import { useViewContext } from "@app/front-kit";
 
-import Card from "components/Card";
-import CardTablePreset from "components/Card/pressets/CardTable";
-
 import GoalsTable from "views/ProjectGoals/List/Table";
+
 import { ProjectDetailEntity } from "core/entities/project/projectDetail";
-import { useGoalRouter } from "./hooks/useRouter";
-import { GoalFilterEntity } from "core/storages/goal/entities/GoalFilter";
-import Actions from "views/ProjectGoals/List/Actions";
+
 import { GoalStorage } from "core/storages/goal";
+
+import { useGoalRouter } from "./hooks/useRouter";
 
 interface ProjectGoalsTabInterface {
     project: ProjectDetailEntity;
 }
 
 function ProjectGoalsTab({ project }: ProjectGoalsTabInterface) {
-    const goalStorage = useViewContext().containerInstance.get(GoalStorage)
+    const goalStorage = useViewContext().containerInstance.get(GoalStorage);
 
-    React.useMemo(() => goalStorage.initGoalFilter(project.id), [goalStorage, project.id])
+    React.useMemo(() => goalStorage.initGoalFilter(project.id), [goalStorage, project.id]);
 
-    useGoalRouter(goalStorage.filter!)
+    useGoalRouter(goalStorage.filter!);
     return (
         <>
-            <CardTablePreset actions={<Actions />}>
-                <GoalsTable goals={project.goals}/>
-            </CardTablePreset>
+            <GoalsTable goals={project.goals} />
         </>
     );
 }
