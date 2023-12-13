@@ -19,7 +19,7 @@ function GoalsDetail({ goal }: GoalsDetailInterface) {
       <div className={lineStyles}>
         <div className={pointStyles} />
         {goal.timepoints.map((timepoint, index) => (
-          <div>
+          <div> 
             <div key={index} className={pointStyles} />
             <div>{index + 1}</div>
           </div>
