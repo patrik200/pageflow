@@ -1,3 +1,4 @@
+import { useTranslation } from "@app/front-kit";
 import {
   Button,
   Table,
@@ -16,15 +17,16 @@ interface TimePointsTableInterface {
 }
 
 function TimePointsTable({ goal }: TimePointsTableInterface) {
+  const { t }  = useTranslation("goal-detail");
   return (
     <Table>
       <TableHead>
         <TableRow>
-          <TableHeadCell>Номер</TableHeadCell>
-          <TableHeadCell>Название</TableHeadCell>
-          <TableHeadCell>Описание</TableHeadCell>
-          <TableHeadCell>Дата начала план</TableHeadCell>
-          <TableHeadCell>Дата факт</TableHeadCell>
+          <TableHeadCell>{t({ scope: "time_point_tab", name: "number_field", parameter: "placeholder" })}</TableHeadCell>
+          <TableHeadCell>{t({ scope: "time_point_tab", name: "name_field", parameter: "placeholder" })}</TableHeadCell>
+          <TableHeadCell>{t({ scope: "time_point_tab", name: "description_field", parameter: "placeholder" })}</TableHeadCell>
+          <TableHeadCell>{t({ scope: "time_point_tab", name: "data_plan_field", parameter: "placeholder" })}</TableHeadCell>
+          <TableHeadCell>{t({ scope: "time_point_tab", name: "data_fact_field", parameter: "placeholder" })}</TableHeadCell>
         </TableRow>
       </TableHead>
       <TableBody>
