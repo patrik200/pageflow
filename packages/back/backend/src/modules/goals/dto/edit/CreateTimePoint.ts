@@ -23,10 +23,5 @@ export class RequestCreateTimePointDTO {
   @Expose()
   @IsOptional()
   @IsDate()
-  startDatePlan?: Date;
-
-  @Expose()
-  @IsOptional()
-  @IsDate()
-  startDateFact?: Date;
+  datePlan?: Date;
 }

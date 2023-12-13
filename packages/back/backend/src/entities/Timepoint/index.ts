@@ -14,8 +14,5 @@ export class TimepointEntity extends BaseGeneratedIDEntity {
     description!: string | null;
 
     @Column({ type: "timestamptz", nullable: false })
-    startDatePlan!: Date;
-
-    @Column({ type: "timestamptz", nullable: true })
-    startDateFact!: Date | null;
+    datePlan!: Date;
 }

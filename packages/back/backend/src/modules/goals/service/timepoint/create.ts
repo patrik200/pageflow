@@ -10,8 +10,7 @@ interface CreateTimepointInterface {
     name: string;
     description?: string;
     goalId: string;
-    startDatePlan: Date;
-    startDateFact: Date;
+    datePlan: Date;
 }
 
 @Injectable()
@@ -27,8 +26,7 @@ export class TimepointCreateService {
             name: data.name,
             description: data.description,
             goal: { id: data.goalId },
-            startDatePlan: data.startDatePlan,
-            startDateFact: data.startDateFact,
+            datePlan: data.datePlan,
         });
 
         this.eventEmitter.emit(TimepointCreated.eventName, new TimepointCreated(savedTimePoint));

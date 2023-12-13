@@ -18,10 +18,5 @@ export class RequestEditTimePointDTO {
   @Expose()
   @IsOptional()
   @IsDate()
-  startDatePlan?: Date;
-
-  @Expose()
-  @IsOptional()
-  @IsDate()
-  startDateFact?: Date;
+  datePlan?: Date;
 }

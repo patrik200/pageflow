@@ -23,6 +23,5 @@ export class ResponseTimepointDTO {
   @IsString({ message: dtoMessageIsValidValue })
   description?: string;
 
-  @Expose() @IsOptional() @IsDate() startDateFact?: Date;
-  @Expose() @IsOptional() @IsDate() startDatePlan?: Date;
+  @Expose() @IsOptional() @IsDate() datePlan?: Date;
 }

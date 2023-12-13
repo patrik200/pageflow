@@ -62,8 +62,7 @@ export class GoalController {
       name: body.name,
       description: body.description,
       goalId: body.goalId!,
-      startDatePlan: body.startDatePlan!,
-      startDateFact: body.startDateFact!,
+      datePlan: body.datePlan!,
     });
     return new ControllerResponse(ResponseIdDTO, { id });
   }
