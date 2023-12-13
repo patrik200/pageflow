@@ -5,7 +5,7 @@ import Card from "components/Card";
 
 import Table from "./Table";
 
-import { lineStyles, pointStyles, wrapperStyles } from "./style.css";
+import { lineStyles, pointStyles, wrapperStyles, nameStyles, descriptionStyles } from "./style.css";
 
 interface GoalsDetailInterface {
   goal: any;
@@ -14,8 +14,8 @@ interface GoalsDetailInterface {
 function GoalsDetail({ goal }: GoalsDetailInterface) {
   return (
     <Card className={wrapperStyles}>
-      <div>{goal.name}</div>
-      <div>{goal.description}</div>
+      <div className={nameStyles}>{goal.name}</div>
+      <div className={descriptionStyles}>{goal.description}</div>
       <div className={lineStyles}>
         <div className={pointStyles} />
         {goal.timepoints.map((timepoint, index) => (
