@@ -11,6 +11,7 @@ import { IdEntity } from "core/entities/id";
 import { IntlDateStorage } from "core/storages/intl-date";
 import { EditGoalEntity } from "./entities/EditGoal";
 import { GoalFilterEntity } from "./entities/GoalFilter";
+import { EditTimePointEntity } from "./entities/EditTimePoint";
 
 // import { DocumentFilterEntity } from "./entities/document/DocumentFilter";
 // import { EditDocumentEntity } from "./entities/document/EditDocument";
@@ -33,7 +34,7 @@ export class GoalStorage extends Storage {
 
   @action initGoalFilter = (projectId: string) => {
     this.filter = GoalFilterEntity.buildForProject(projectId)
-  }                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
+  }
 
   @action loadGoal = async (goalId: string) => {
     try {
@@ -65,6 +66,21 @@ export class GoalStorage extends Storage {
     }
   };
 
+  @action createTimePoint = async (entity: EditTimePointEntity) => {
+    try {
+      const { id } = await this.requestManager.createRequest({
+        url: "/goals/timepoint",
+        method: METHODS.POST,
+        serverDataEntityDecoder: IdEntity,
+      })({ body: entity.apiReady });
+
+      return { success: true, id } as const;
+    } catch (error) {
+      return { success: false, error: parseServerError(error) } as const;
+      }
+    }
+  
+
   @action updateGoal = async (id: string, entity: EditGoalEntity) => {
     try {
       await this.requestManager.createRequest({
@@ -74,9 +90,43 @@ export class GoalStorage extends Storage {
       
       return { success: true } as const;
     } catch (error) {
-      console.log(error)
       return { success: false, error: parseServerError(error) } as const;
     }
   }
 
+  @action updateTimePoint = async (id: string, entity: EditTimePointEntity) => {
+    try {
+      await this.requestManager.createRequest({
+        url: "/timepoints/{id}/edit",
+        method: METHODS.PATCH,
+      })({ body: entity.apiReady, urlParams: {id} });
+      
+      return { success: true } as const;
+    } catch (error) {
+      return { success: false, error: parseServerError(error) } as const;
+    }
+  }
+
+@action deleteGoal = async (goalId: string) => {
+    try {
+      await this.requestManager.createRequest({
+        url: "/goals/{goalId}/delete",
+        method: METHODS.DELETE,
+      })({ urlParams: { goalId } });
+      return { success: true } as const;
+    } catch (error) {
+      return { success: false, error: parseServerError(error) } as const;
+    }
+  }
+@action deleteTimePoint = async (timePointId: string) => {
+    try {
+      await this.requestManager.createRequest({
+        url: "/timepoints/{timePointId}/delete",
+        method: METHODS.DELETE,
+      })({ urlParams: { timePointId } });
+      return { success: true } as const;
+    } catch (error) {
+      return { success: false, error: parseServerError(error) } as const;
+    }
+  }
 }
