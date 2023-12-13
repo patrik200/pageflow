@@ -18,21 +18,15 @@ export class TimepointEntity extends BaseEntity {
     this.intlDate = intlDate;
   }
 
-  @computed get viewStartDatePlan() {
-    return this.intlDate.formatDate(DateTime.fromJSDate(this.startDatePlan), DateMode.DATE_WITH_STRING_MONTH);
-  }
-
-  @computed get viewStartDateFact() {
-    return this.startDateFact ? this.intlDate.formatDate(DateTime.fromJSDate(this.startDateFact), DateMode.DATE_WITH_STRING_MONTH) : null;
+  @computed get viewDatePlan() {
+    return this.intlDate.formatDate(DateTime.fromJSDate(this.datePlan), DateMode.DATE_WITH_STRING_MONTH);
   }
 
   @Expose() @IsDefined() @IsString() id!: string;
 
   @Expose() @IsDefined() @IsString() name!: string;
 
-  @Expose() @IsDefined() @IsString() description!: string;
-
-  @Expose()  @IsOptional() @IsDate() startDateFact!: Date | null;
+  @Expose() @IsOptional() @IsString() description!: string;
   
-  @Expose() @IsDate() @IsDefined() startDatePlan!: Date;
+  @Expose() @IsDate() @IsDefined() datePlan!: Date;
 }

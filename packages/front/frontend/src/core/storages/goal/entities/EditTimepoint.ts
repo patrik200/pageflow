@@ -17,8 +17,7 @@ export class EditTimepointEntity extends BaseEntity {
       () => ({
         name: timePoint.name,
         description: timePoint.description,
-        startDateFact: timePoint.startDateFact,
-        startDatePlan: timePoint.startDatePlan
+        datePlan: timePoint.datePlan
       }),
     );
   }
@@ -33,21 +32,15 @@ export class EditTimepointEntity extends BaseEntity {
 
   @observable description = "";
   setDescription = this.createSetter("description");
-
-
-  @observable startDateFact: Date | null = null;
-  setStartDateFact = this.createSetter("startDateFact");
-
   
-  @observable startDatePlan!: Date;
-  setStartDatePlan = this.createSetter("startDatePlan");
+  @observable datePlan!: Date;
+  setDatePlan = this.createSetter("datePlan");
 
   @computed get apiReady() {
     return {
       name: this.name,
       description: this.description || undefined,
-      startDateFact: this.startDateFact || undefined,
-      startDatePlan: this.startDatePlan,
+      datePlan: this.datePlan,
       goalId: this.options._goalId,
     };
   }

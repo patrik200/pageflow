@@ -1,10 +1,10 @@
 import React from "react";
 import { useRouter, useTranslation, useViewContext } from "@app/front-kit";
-import { ModalActions, ModalTitle, TextField } from "@app/ui-kit";
+import { ModalActions, ModalTitle } from "@app/ui-kit";
 import { GoalEntity } from "core/entities/goal/goal";
 import { EditGoalEntity } from "core/storages/goal/entities/EditGoal";
 import GroupedContent from "components/FormField/GroupedContent";
-import Text from "components/FormField/Text";
+import TextField from "components/FormField/Text";
 import { GoalStorage } from "core/storages/goal";
 import { emitRequestError } from "core/emitRequest";
 import { useAsyncFn } from "@worksolutions/react-utils";
@@ -45,15 +45,15 @@ function ModalContent({ goal, close, onSuccess }: ModalContentInterface) {
   );
 
   return (
-    <><div className={wrapperStyles}>
+    <div className={wrapperStyles}>
       <ModalTitle>{t({scope: "modals", place: "goals", name: "title", parameter: goal ? "edit": "create"},{name: goal?.name})}</ModalTitle>
       <GroupedContent>
-        <TextField placeholder={t({ scope: "main_tab", name: "name_field", parameter: "placeholder" })} value={entity.name} onChange={entity.setName} />
-        <TextField placeholder={t({ scope: "main_tab", name: "description_field", parameter: "placeholder" })} value={entity.description} onChange={entity.setDescription} />
+        <TextField edit placeholder={t({ scope: "main_tab", name: "name_field", parameter: "placeholder" })} value={entity.name} onChange={entity.setName} />
+        <TextField edit placeholder={t({ scope: "main_tab", name: "description_field", parameter: "placeholder" })} value={entity.description} onChange={entity.setDescription} />
       </GroupedContent>
       <ModalActions primaryActionText={t({scope: "modals", place: "goals", name: "actions", parameter: "save"})} primaryActionLoading={loading} onPrimaryActionClick={handleSaveClick} />
     </div>
-    </>
+    
   );
 }
 

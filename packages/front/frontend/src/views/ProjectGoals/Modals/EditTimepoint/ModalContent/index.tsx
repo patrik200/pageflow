@@ -1,6 +1,7 @@
 import React from "react";
 import { useRouter, useTranslation, useViewContext } from "@app/front-kit";
-import { ModalActions, ModalTitle, TextField} from "@app/ui-kit";
+import { ModalActions, ModalTitle} from "@app/ui-kit";
+import TextField from "components/FormField/Text";
 import { TimepointEntity } from "core/entities/goal/timepoint";
 import { EditGoalEntity } from "core/storages/goal/entities/EditGoal";
 import GroupedContent from "components/FormField/GroupedContent";
@@ -51,10 +52,9 @@ function ModalContent({ timepoint, goalId, close, onSuccess }: ModalContentInter
     <div className={wrapperStyles}>
       <ModalTitle>{t({scope: "modals", place: "timepoints", name: "title", parameter: timepoint ? "edit": "create"},{name: timepoint?.name})}</ModalTitle>
       <GroupedContent>
-        <TextField placeholder={t({ scope: "time_point_tab", name: "name_field", parameter: "placeholder" })} value={entity.name} onChange={entity.setName} />
-        <TextField placeholder={t({ scope: "time_point_tab", name: "description_field", parameter: "placeholder" })} value={entity.description} onChange={entity.setDescription} />
-        <Date edit value={entity.startDateFact} onChange={entity.setStartDateFact} />
-        <Date edit value={entity.startDatePlan} onChange={entity.setStartDatePlan} />
+        <TextField edit placeholder={t({ scope: "time_point_tab", name: "name_field", parameter: "placeholder" })} value={entity.name} onChange={entity.setName} />
+        <TextField edit placeholder={t({ scope: "time_point_tab", name: "description_field", parameter: "placeholder" })} value={entity.description} onChange={entity.setDescription} />
+        <Date edit value={entity.datePlan} onChange={entity.setDatePlan} />
       </GroupedContent>
       <ModalActions primaryActionText={t({scope: "modals", place: "timepoints", name: "actions", parameter: "save"})} primaryActionLoading={loading} onPrimaryActionClick={handleSaveClick} />
     </div>

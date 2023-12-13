@@ -69,7 +69,7 @@ function TimePointsTable({ goal, opened }: TimePointsTableInterface) {
               </TableCell>
               <TableCell>
                 <TableCellDefaultText className={typographyOptionalStyleVariants.noWrap}>
-                  {timepoint.viewStartDatePlan}
+                  {timepoint.viewDatePlan}
                 </TableCellDefaultText>
               </TableCell>
               <TableCell>
