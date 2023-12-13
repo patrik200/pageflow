@@ -1,7 +1,4 @@
-{
-  "meta": {
-    "create": "Создание цели"
-  },
+{ 
   "main_tab": {
     "name_field": {
       "placeholder": "Название"
@@ -35,7 +32,27 @@
       "placeholder": "Дата начала плана"
     },
     "date_fact_field": {
-      "placeholder": "Дата начала факт"
+      "placeholder":"Дата начала факт" 
+    }
+  },
+  "modals" : {
+    "timepoints": {
+      "title": {
+        "create": "Добавить точку",
+        "edit": "Редактирование «{name}»"
+      },
+      "actions": {
+        "save": "Сохранить"
+      }
+    },
+    "goals": {
+      "title": {
+        "create": "Создание цели",
+        "edit": "Редактирование «{name}»"
+      },
+      "actions": {
+        "save": "Сохранить"
+      }
     }
   }
 }
