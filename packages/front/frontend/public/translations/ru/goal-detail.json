@@ -1,7 +1,7 @@
 {
   "meta": {
     "create": "Создание цели"
-  },  
+  },
   "main_tab": {
     "name_field": {
       "placeholder": "Название"
@@ -16,13 +16,13 @@
     },
     "error_messages": {
       "unexpected": "Неожиданная ошибка при создании цели. Пожалуйста, попробуйте позже"
-      }
+    }
+  },
+  "time_point_tab": {
+    "name_field": {
+      "placeholder": "Название"
     },
-    "time_point_tab": {
-      "name_field": {
-        "placeholder": "Название"
-    },
-    "actions":{
+    "actions": {
       "create": "Добавить точку"
     },
     "number_field": {
@@ -35,8 +35,7 @@
       "placeholder": "Дата начала плана"
     },
     "date_fact_field": {
-      "placeholder":"Дата начала факт" 
+      "placeholder": "Дата начала факт"
     }
   }
 }
-  

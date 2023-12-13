@@ -2,7 +2,7 @@ import React from "react";
 import { observer } from "mobx-react-lite";
 import { useViewContext } from "@app/front-kit";
 
-import GoalsTable from "views/ProjectGoals/List/Table";
+import GoalsList from "views/ProjectGoals/List";
 
 import { ProjectDetailEntity } from "core/entities/project/projectDetail";
 
@@ -22,7 +22,7 @@ function ProjectGoalsTab({ project }: ProjectGoalsTabInterface) {
     useGoalRouter(goalStorage.filter!);
     return (
         <>
-            <GoalsTable goals={project.goals} />
+            <GoalsList goals={project.goals} />
         </>
     );
 }
