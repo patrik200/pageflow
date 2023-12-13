@@ -1,32 +1,23 @@
 import React from "react";
 import { observer } from "mobx-react-lite";
-import { useRouter, useTranslation, useViewContext } from "@app/front-kit";
 import { Button } from "@app/ui-kit";
-import { useAsyncFn } from "@worksolutions/react-utils";
+import { useBoolean } from "@worksolutions/react-utils";
+import { useTranslation } from "@app/front-kit";
 
-import { DocumentStorage } from "core/storages/document";
-import { GoalStorage } from "core/storages/goal";
+import EditGoalModal from "views/ProjectGoals/Modals/EditGoal";
+import { buttonStyles } from "./style.css";
 
 function CreateGoalAction() {
-  const { t } = useTranslation("goal-list");
-  const { filter } = useViewContext().containerInstance.get(GoalStorage);
-
-  const push = useRouter().push.current;
-  const [{ loading }, asyncPush] = useAsyncFn(push, [push]);
-
-  const handleClick = React.useCallback(
-    () =>
-      void asyncPush({
-        pathname: "/goals/create",
-        query: { project: filter!._projectId },
-      }),
-    [asyncPush, filter!._projectId],
-  );
+  const [opened, onOpen, onClose] = useBoolean(false);
+  const { t } = useTranslation("goal-detail");
 
   return (
-    <Button loading={loading} size="SMALL" type="OUTLINE" onClick={handleClick}>
-      {t({ scope: "actions", place: "create_goal", name: "button" })}
-    </Button>
+    <>
+      <Button size="SMALL" type="PRIMARY" onClick={onOpen} className={buttonStyles}>
+        {t({ scope: "create_goal", place: "actions", name: "create" })}
+      </Button>
+      <EditGoalModal opened={opened} close={onClose} />
+    </>
   );
 }
 
