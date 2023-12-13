@@ -13,6 +13,7 @@ export const lineStyles = style({
   display: "flex",
   flexDirection: "row",
   justifyContent: "space-between",
+  marginBottom: 30,
 });
 
 export const pointStyles = style({
@@ -23,16 +24,4 @@ export const pointStyles = style({
   borderRadius: "50%",
   border: "3px solid blue",
   backgroundColor: "white",
-});
-
-export const pointNamesWrapperStyles = style({
-  display: "flex",
-  flexDirection: "row",
-  justifyContent: "space-between",
-  width: 600,
-  paddingTop: 10,
-});
-
-export const pointNameStyles = style({
-  flex: 1,
 });
