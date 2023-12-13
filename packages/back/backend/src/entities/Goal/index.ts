@@ -1,16 +1,15 @@
 import { BaseGeneratedIDEntity } from "@app/back-kit";
 import { Column, Entity, OneToMany, ManyToOne } from "typeorm";
 
-import { TimePointEntity } from "../TimePoint";
+import { TimepointEntity } from "../Timepoint";
 import { ProjectEntity } from "entities/Project";
 
 @Entity({ name: "goals" })
 export class GoalEntity extends BaseGeneratedIDEntity {
+  @OneToMany(() => TimepointEntity, (timepoint) => timepoint.goal, { nullable: false })
+  timepoints!: TimepointEntity[];
 
-  @OneToMany(() => TimePointEntity, (timePoint) => timePoint.goal, { nullable: false })
-  timePoint!: TimePointEntity[];
-
-  @ManyToOne(() => ProjectEntity, {onDelete: "CASCADE", nullable: false})
+  @ManyToOne(() => ProjectEntity, { onDelete: "CASCADE", nullable: false })
   project!: ProjectEntity;
 
   @Column()

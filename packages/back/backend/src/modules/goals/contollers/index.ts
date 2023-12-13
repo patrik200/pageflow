@@ -11,74 +11,78 @@ import { GetGoalsListService } from "../service/goal/get-list";
 import { withUserAuthorized } from "modules/auth";
 import { UserRole } from "@app/shared-enums";
 import { GoalEditService } from "../service/goal/edit";
-import { TimePointCreateService } from "../service/timePoint/create";
-import { TimePointEditService } from "../service/timePoint/edit";
+import { TimepointCreateService } from "../service/timepoint/create";
+import { TimepointEditService } from "../service/timepoint/edit";
 import { RequestEditTimePointDTO } from "../dto/edit/EditTimePoint";
-import { GetTimePointsListService } from "../service/timePoint/get-list";
+import { GetTimepointsListService } from "../service/timepoint/get-list";
 import { DeleteGoalService } from "../service/goal/delete";
-import { DeleteTimePointService } from "../service/timePoint/delete";
+import { DeleteTimepointService } from "../service/timepoint/delete";
 
 @Controller("goals")
 export class GoalController {
-    constructor(
-        private getGoalService: GetGoalService,
-        private createGoalsService: CreateGoalsService,
-        private getGoalsListService: GetGoalsListService,
-        private editGoalService: GoalEditService,
-        private createTimePointsService: TimePointCreateService,
-        private editTimePointService: TimePointEditService,
-        private getTimePointsListService: GetTimePointsListService,
-        private deleteGoalService: DeleteGoalService,
-        private deleteTimePointService: DeleteTimePointService
-    ){}
-    
+  constructor(
+    private getGoalService: GetGoalService,
+    private createGoalsService: CreateGoalsService,
+    private getGoalsListService: GetGoalsListService,
+    private editGoalService: GoalEditService,
+    private createTimePointsService: TimepointCreateService,
+    private editTimepointService: TimepointEditService,
+    private getTimePointsListService: GetTimepointsListService,
+    private deleteGoalService: DeleteGoalService,
+    private deleteTimepointService: DeleteTimepointService,
+  ) { }
 
-    @Get(":id")
-    async getGoal(@Param("id") id: string) {
-        const goal = await this.getGoalService.getGoalOrFail(id)
-        return new ControllerResponse(ResponseGoalDTO, goal)
-    }
+  @Get(":id")
+  async getGoal(@Param("id") id: string) {
+    const goal = await this.getGoalService.getGoalOrFail(id);
+    return new ControllerResponse(ResponseGoalDTO, goal);
+  }
 
-    @Post("goal")
-    @withUserAuthorized([UserRole.USER])
-    async createGoal(@Body() body: RequestCreateGoalDTO) {
-        const id = await this.createGoalsService.createGoalOrFail({
-            name: body.name,
-            description: body.description,
-            projectId: body.projectId!
-        })
-        return new ControllerResponse(ResponseIdDTO, { id });
-    }
-    @Patch(":id")
-    @withUserAuthorized([UserRole.USER])
-    async updateGoal(@Param("id") id: string, @Body() body: RequestEditGoalDTO) {
-        await this.editGoalService.editGoalOrFail(id, body)
-    }
-    @Post("timepoint")
-    @withUserAuthorized([UserRole.USER])
-    async createTimePoint(@Body() body: RequestCreateTimePointDTO) {
-        const id = await this.createTimePointsService.createTimePointOrFail({
-            name: body.name,
-            description: body.description,
-            goalId: body.goalId!,
-            startDatePlan: body.startDatePlan!,
-            startDateFact: body.startDateFact!,
-        })
-        return new ControllerResponse(ResponseIdDTO, { id });
-    }
-    @Patch("timepoints/:id/edit/")
-    @withUserAuthorized([UserRole.USER])
-    async updateTimePoint(@Param("id") id: string, @Body() body: RequestEditTimePointDTO) {
-        await this.editTimePointService.editTimePointOrFail(id, body)
-    }
-    @Delete(":id/delete/")
-    @withUserAuthorized([UserRole.USER])
-    async deleteGoal(@Param("goalId") goalId: string) {
+  @Post("goal")
+  @withUserAuthorized([UserRole.USER])
+  async createGoal(@Body() body: RequestCreateGoalDTO) {
+    const id = await this.createGoalsService.createGoalOrFail({
+      name: body.name,
+      description: body.description,
+      projectId: body.projectId!,
+    });
+    return new ControllerResponse(ResponseIdDTO, { id });
+  }
+
+  @Patch(":id")
+  @withUserAuthorized([UserRole.USER])
+  async updateGoal(@Param("id") id: string, @Body() body: RequestEditGoalDTO) {
+    await this.editGoalService.editGoalOrFail(id, body);
+  }
+
+  @Post("timepoint")
+  @withUserAuthorized([UserRole.USER])
+  async createTimePoint(@Body() body: RequestCreateTimePointDTO) {
+    const id = await this.createTimePointsService.createTimepointOrFail({
+      name: body.name,
+      description: body.description,
+      goalId: body.goalId!,
+      startDatePlan: body.startDatePlan!,
+      startDateFact: body.startDateFact!,
+    });
+    return new ControllerResponse(ResponseIdDTO, { id });
+  }
+
+  @Patch("timepoints/:id/edit/")
+  @withUserAuthorized([UserRole.USER])
+  async updateTimePoint(@Param("id") id: string, @Body() body: RequestEditTimePointDTO) {
+    await this.editTimepointService.editTimepointOrFail(id, body);
+  }
+
+  @Delete(":id/delete/")
+  @withUserAuthorized([UserRole.USER])
+  async deleteGoal(@Param("goalId") goalId: string) {
     await this.deleteGoalService.deleteGoalOrFail(goalId);
   }
+
   @Delete("timepoints/:id/delete")
   @withUserAuthorized([UserRole.USER])
   async deleteTimePoint(@Param("timePointId") timePointId: string) {
-  await this.deleteTimePointService.deleteTimePointOrFail(timePointId);
-}
+    await this.deleteTimepointService.deleteTimepointOrFail(timePointId);
+  }
 }

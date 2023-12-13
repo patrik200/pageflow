@@ -6,7 +6,7 @@ import { ResponseMinimalProjectDTO } from "modules/projects/dto/get/Project";
 import { ResponseMinimalGoalDTO } from "./Goal";
 import { IsDate } from "@app/kit";
 
-export class ResponseMinimalTimePointDTO {
+export class ResponseMinimalTimepointDTO {
   @Expose()
   @IsDefined({ message: dtoMessageIsDefined })
   @IsString({ message: dtoMessageIsValidValue })
@@ -23,8 +23,7 @@ export class ResponseMinimalTimePointDTO {
   description?: string;
 }
 
-export class ResponseTimePointDTO extends ResponseMinimalTimePointDTO {
-
+export class ResponseTimePointDTO extends ResponseMinimalTimepointDTO {
   goal!: ResponseMinimalGoalDTO;
 
   @Expose()

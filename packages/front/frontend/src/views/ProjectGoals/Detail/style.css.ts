@@ -14,7 +14,7 @@ export const lineStyles = style({
   flexDirection: "row",
   justifyContent: "space-between",
   marginBottom: 30,
-  backgroundColor: globalThemeColorVars.primary
+  backgroundColor: globalThemeColorVars.primary,
 });
 
 export const pointStyles = style({
@@ -27,14 +27,9 @@ export const pointStyles = style({
   backgroundColor: "white",
 });
 
-export const nameStyles = style(
-  [h3mediumStyles,
-  { color: globalThemeColorVars.textPrimary }]
-);
+export const nameStyles = style([h3mediumStyles, { color: globalThemeColorVars.textPrimary }]);
 
-export const descriptionStyles = style(
-  [body1regularStyles,
-  { color: globalThemeColorVars.textSecondary,
-    marginBottom: 16,
-    marginTop: 10,}]
-);
+export const descriptionStyles = style([
+  body1regularStyles,
+  { color: globalThemeColorVars.textSecondary, marginBottom: 16, marginTop: 10 },
+]);

@@ -3,8 +3,7 @@ import { Column, Entity, ManyToOne } from "typeorm";
 import { GoalEntity } from "../Goal";
 
 @Entity({ name: "goals_time_point" })
-export class TimePointEntity extends BaseGeneratedIDEntity {
-
+export class TimepointEntity extends BaseGeneratedIDEntity {
     @ManyToOne(() => GoalEntity, { nullable: false })
     goal!: GoalEntity;
 

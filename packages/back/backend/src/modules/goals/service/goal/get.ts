@@ -5,26 +5,20 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { GoalEntity } from "entities/Goal";
 
 export interface GoalSelectOptions {
-  loadTimePoints?: boolean;
+  loadTimepoints?: boolean;
   loadProject?: boolean;
   loadFavourites?: boolean;
 }
 
 @Injectable()
 export class GetGoalService {
-  constructor(
-    @InjectRepository(GoalEntity) private goalRepository: Repository<GoalEntity>,
-  ) {}
+  constructor(@InjectRepository(GoalEntity) private goalRepository: Repository<GoalEntity>) { }
 
-  async getGoalOrFail(
-    goalId: string,
-    { loadFavourites, ...options }: GoalSelectOptions = {},
-  ) {
-    const goal: GoalEntity & { favourite?: boolean; } =
-      await this.goalRepository.findOneOrFail({
-        where: { id: goalId },
-        ...options,
-      });
+  async getGoalOrFail(goalId: string, { loadFavourites, ...options }: GoalSelectOptions = {}) {
+    const goal: GoalEntity & { favourite?: boolean } = await this.goalRepository.findOneOrFail({
+      where: { id: goalId },
+      ...options,
+    });
 
     return goal;
   }
