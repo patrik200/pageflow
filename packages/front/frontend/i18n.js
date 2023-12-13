@@ -32,7 +32,8 @@ module.exports = {
       "ticket-detail",
       "comments-common",
       "attributes",
-      "goal-list"
+      "goal-list",
+      "goal-detail",
     ],
     "/projects/[id]/tickets/create": ["project-detail", "ticket-detail", "comments-common"],
     "/projects/[id]/tickets/[ticketId]": ["project-detail", "ticket-detail", "comments-common"],

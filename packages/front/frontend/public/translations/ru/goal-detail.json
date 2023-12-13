@@ -17,6 +17,23 @@
     "error_messages": {
       "unexpected": "Неожиданная ошибка при создании цели. Пожалуйста, попробуйте позже"
       }
+    },
+    "time_point_tab": {
+      "name_field": {
+        "placeholder": "Название"
+    },
+    "number_field": {
+      "placeholder": "Номер"
+    },
+    "description_field": {
+      "placeholder": "Описание"
+    },
+    "data_plan_field": {
+      "placeholder": "Дата начала плана"
+    },
+    "data_fact_field": {
+      "placeholder":"Дата фактическая" 
     }
+  }
   }
   

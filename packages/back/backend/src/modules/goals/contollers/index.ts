@@ -15,6 +15,8 @@ import { TimePointCreateService } from "../service/timePoint/create";
 import { TimePointEditService } from "../service/timePoint/edit";
 import { RequestEditTimePointDTO } from "../dto/edit/EditTimePoint";
 import { GetTimePointsListService } from "../service/timePoint/get-list";
+import { DeleteGoalService } from "../service/goal/delete";
+import { DeleteTimePointService } from "../service/timePoint/delete";
 
 @Controller("goals")
 export class GoalController {
@@ -26,6 +28,8 @@ export class GoalController {
         private createTimePointsService: TimePointCreateService,
         private editTimePointService: TimePointEditService,
         private getTimePointsListService: GetTimePointsListService,
+        private deleteGoalService: DeleteGoalService,
+        private deleteTimePointService: DeleteTimePointService
     ){}
     
 
@@ -62,9 +66,19 @@ export class GoalController {
         })
         return new ControllerResponse(ResponseIdDTO, { id });
     }
-    @Patch("timepoints/edit/:id")
+    @Patch("timepoints/:id/edit/")
     @withUserAuthorized([UserRole.USER])
     async updateTimePoint(@Param("id") id: string, @Body() body: RequestEditTimePointDTO) {
         await this.editTimePointService.editTimePointOrFail(id, body)
     }
+    @Delete(":id/delete/")
+    @withUserAuthorized([UserRole.USER])
+    async deleteGoal(@Param("goalId") goalId: string) {
+    await this.deleteGoalService.deleteGoalOrFail(goalId);
+  }
+  @Delete("timepoints/:id/delete")
+  @withUserAuthorized([UserRole.USER])
+  async deleteTimePoint(@Param("timePointId") timePointId: string) {
+  await this.deleteTimePointService.deleteTimePointOrFail(timePointId);
+}
 }

@@ -13,6 +13,8 @@ import { TimePointEntity } from "entities/TimePoint";
 import { TimePointCreateService } from "./service/timePoint/create";
 import { TimePointEditService } from "./service/timePoint/edit";
 import { GetTimePointsListService } from "./service/timePoint/get-list";
+import { DeleteGoalService } from "./service/goal/delete";
+import { DeleteTimePointService } from "./service/timePoint/delete";
 
 @Global()
 @Module({
@@ -29,6 +31,8 @@ import { GetTimePointsListService } from "./service/timePoint/get-list";
         TimePointCreateService,
         TimePointEditService,
         GetTimePointsListService,
+        DeleteGoalService,
+        DeleteTimePointService,
     ],
     exports: [
         CreateGoalsService,
@@ -38,6 +42,8 @@ import { GetTimePointsListService } from "./service/timePoint/get-list";
         TimePointCreateService,
         TimePointEditService,
         GetTimePointsListService,
+        DeleteGoalService,
+        DeleteTimePointService,
     ]
 })
 export class GoalModule implements NestModule{}
@@ -49,5 +55,5 @@ export * from "./service/goal/edit"
 export * from "./service/timePoint/create"
 export * from "./service/timePoint/edit"
 export * from "./service/timePoint/get-list"
-
-
+export * from "./service/goal/delete"
+export * from "./service/timePoint/delete"
