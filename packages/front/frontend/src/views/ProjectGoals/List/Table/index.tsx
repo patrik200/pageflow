@@ -15,14 +15,14 @@ interface GoalsTableInterface {
 
 function GoalsTable({ goals }: GoalsTableInterface) {
     const [opened, onOpen, onClose] = useBoolean(false);
-
+    const { t }  = useTranslation("goal-detail");
     return (
         <div>
             {goals.map((goal, index) => (
                 <Detail key={index} goal={goal} />
             ))}
-            <Button size="SMALL" iconLeft="plusLine" type="OUTLINE" onClick={onOpen}>
-                Добавить цель
+            <Button size="SMALL" iconLeft="plusLine" type="PRIMARY" onClick={onOpen}>
+                {t({ scope: "create_goal", place: "actions", name: "create" })}
             </Button>
             <EditGoal opened={opened} close={onClose} />
         </div>

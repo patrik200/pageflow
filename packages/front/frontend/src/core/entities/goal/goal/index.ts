@@ -3,7 +3,7 @@ import { Expose, Type } from "class-transformer";
 import { IsBoolean, IsDefined, IsOptional, IsString, ValidateNested } from "class-validator";
 import { observable } from "mobx";
 
-import { TimePoint } from "../timepoint";
+import { TimepointEntity } from "../timepoint";
 
 export class GoalEntity extends BaseEntity {
   constructor() {
@@ -17,7 +17,7 @@ export class GoalEntity extends BaseEntity {
 
   @Expose() @IsOptional() @IsString() @withDefaultValue("") description!: string;
 
-  @Expose() @IsDefined() @Type(() => TimePoint) @ValidateNested({ each: true }) timepoints!: TimePoint[];
+  @Expose() @IsDefined() @Type(() => TimepointEntity) @ValidateNested({ each: true }) timepoints!: TimepointEntity[];
 
   @observable @Expose() @IsDefined() @IsBoolean() @withDefaultValue(false) implemented!: boolean;
   setImplemented = this.createSetter("implemented");

@@ -4,16 +4,16 @@ import { MinLength } from "class-validator";
 
 import { NOT_EMPTY_VALIDATION } from "core/commonValidationErrors";
 
-import { TimePointEntity } from "core/entities/goal/timepoint";
+import { TimepointEntity } from "core/entities/goal/timepoint";
 
-export class EditTimePointEntity extends BaseEntity {
+export class EditTimepointEntity extends BaseEntity {
   static buildEmpty(goalId: string) {
-    return makeFnTransformableObject(() => new EditTimePointEntity({ _goalId: goalId }));
+    return makeFnTransformableObject(() => new EditTimepointEntity({ _goalId: goalId }));
   }
 
-  static buildFromTimePoint(timePoint: TimePointEntity) {
+  static buildFromTimepoint(timePoint: TimepointEntity) {
     return makeFnTransformableObject(
-      () => new EditTimePointEntity({id: timePoint.id}),
+      () => new EditTimepointEntity({id: timePoint.id}),
       () => ({
         name: timePoint.name,
         description: timePoint.description,

@@ -11,7 +11,7 @@ import { IdEntity } from "core/entities/id";
 import { IntlDateStorage } from "core/storages/intl-date";
 import { EditGoalEntity } from "./entities/EditGoal";
 import { GoalFilterEntity } from "./entities/GoalFilter";
-import { EditTimePointEntity } from "./entities/EditTimePoint";
+import { EditTimepointEntity } from "./entities/EditTimepoint";
 
 // import { DocumentFilterEntity } from "./entities/document/DocumentFilter";
 // import { EditDocumentEntity } from "./entities/document/EditDocument";
@@ -66,7 +66,7 @@ export class GoalStorage extends Storage {
     }
   };
 
-  @action createTimePoint = async (entity: EditTimePointEntity) => {
+  @action createTimepoint = async (entity: EditTimepointEntity) => {
     try {
       const { id } = await this.requestManager.createRequest({
         url: "/goals/timepoint",
@@ -94,7 +94,7 @@ export class GoalStorage extends Storage {
     }
   }
 
-  @action updateTimePoint = async (id: string, entity: EditTimePointEntity) => {
+  @action updateTimepoint = async (id: string, entity: EditTimepointEntity) => {
     try {
       await this.requestManager.createRequest({
         url: "/timepoints/{id}/edit",
@@ -118,7 +118,7 @@ export class GoalStorage extends Storage {
       return { success: false, error: parseServerError(error) } as const;
     }
   }
-@action deleteTimePoint = async (timePointId: string) => {
+@action deleteTimepoint = async (timePointId: string) => {
     try {
       await this.requestManager.createRequest({
         url: "/timepoints/{timePointId}/delete",

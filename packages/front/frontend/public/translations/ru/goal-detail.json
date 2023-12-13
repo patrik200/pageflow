@@ -11,8 +11,8 @@
     }
   },
   "create_goal": {
-    "action": {
-      "create": "Создать"
+    "actions": {
+      "create": "Добавить цель"
     },
     "error_messages": {
       "unexpected": "Неожиданная ошибка при создании цели. Пожалуйста, попробуйте позже"
@@ -22,18 +22,21 @@
       "name_field": {
         "placeholder": "Название"
     },
+    "actions":{
+      "create": "Добавить точку"
+    },
     "number_field": {
       "placeholder": "Номер"
     },
     "description_field": {
       "placeholder": "Описание"
     },
-    "data_plan_field": {
+    "date_plan_field": {
       "placeholder": "Дата начала плана"
     },
-    "data_fact_field": {
-      "placeholder":"Дата фактическая" 
+    "date_fact_field": {
+      "placeholder":"Дата начала факт" 
     }
   }
-  }
+}
   
