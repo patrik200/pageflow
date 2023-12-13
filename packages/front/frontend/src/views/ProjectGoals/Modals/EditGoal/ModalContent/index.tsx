@@ -1,6 +1,6 @@
 import React from "react";
-import { useRouter, useViewContext } from "@app/front-kit";
-import { ModalActions, ModalTitle } from "@app/ui-kit";
+import { useRouter, useTranslation, useViewContext } from "@app/front-kit";
+import { ModalActions, ModalTitle, TextField } from "@app/ui-kit";
 import { GoalEntity } from "core/entities/goal/goal";
 import { EditGoalEntity } from "core/storages/goal/entities/EditGoal";
 import GroupedContent from "components/FormField/GroupedContent";
@@ -9,7 +9,7 @@ import { GoalStorage } from "core/storages/goal";
 import { emitRequestError } from "core/emitRequest";
 import { useAsyncFn } from "@worksolutions/react-utils";
 import { observer } from "mobx-react-lite";
-
+import { wrapperStyles } from "./style.css"
 interface ModalContentInterface {
   goal?: GoalEntity;
   close: () => void;
@@ -19,7 +19,7 @@ interface ModalContentInterface {
 function ModalContent({ goal, close, onSuccess }: ModalContentInterface) {
   const { query } = useRouter();
   const { createGoal, updateGoal } = useViewContext().containerInstance.get(GoalStorage);
-
+  const { t } = useTranslation("goal-detail");
   const entity = React.useMemo(
     () => (goal ? EditGoalEntity.buildFromGoal(goal) : EditGoalEntity.buildEmpty(query.id as string)),
     [goal, query],
@@ -45,13 +45,14 @@ function ModalContent({ goal, close, onSuccess }: ModalContentInterface) {
   );
 
   return (
-    <>
-      <ModalTitle>Create</ModalTitle>
+    <><div className={wrapperStyles}>
+      <ModalTitle>{t({scope: "modals", place: "goals", name: "title", parameter: goal ? "edit": "create"},{name: goal?.name})}</ModalTitle>
       <GroupedContent>
-        <Text edit value={entity.name} onChange={entity.setName} />
-        <Text edit value={entity.description} onChange={entity.setDescription} />
+        <TextField placeholder={t({ scope: "main_tab", name: "name_field", parameter: "placeholder" })} value={entity.name} onChange={entity.setName} />
+        <TextField placeholder={t({ scope: "main_tab", name: "description_field", parameter: "placeholder" })} value={entity.description} onChange={entity.setDescription} />
       </GroupedContent>
-      <ModalActions primaryActionText="Save" primaryActionLoading={loading} onPrimaryActionClick={handleSaveClick} />
+      <ModalActions primaryActionText={t({scope: "modals", place: "goals", name: "actions", parameter: "save"})} primaryActionLoading={loading} onPrimaryActionClick={handleSaveClick} />
+    </div>
     </>
   );
 }
