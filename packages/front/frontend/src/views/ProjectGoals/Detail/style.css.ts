@@ -34,5 +34,5 @@ export const pointNamesWrapperStyles = style({
 });
 
 export const pointNameStyles = style({
-  width: "max-content",
+  flex: 1,
 });

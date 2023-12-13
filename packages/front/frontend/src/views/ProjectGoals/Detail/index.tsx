@@ -4,6 +4,7 @@ import { observer } from "mobx-react-lite";
 import Card from "components/Card";
 
 import { lineStyles, pointNameStyles, pointNamesWrapperStyles, pointStyles, wrapperStyles } from "./style.css";
+import Table from "./Table";
 
 interface GoalsDetailInterface {
   goal: any;
@@ -22,14 +23,15 @@ function GoalsDetail({ goal }: GoalsDetailInterface) {
         <div className={pointStyles} />
       </div>
       <div className={pointNamesWrapperStyles}>
-        <div />
+        <div className={pointNameStyles} />
         {goal.timepoints.map((timepoint, index) => (
           <div key={index} className={pointNameStyles}>
             {timepoint.name}
           </div>
         ))}
-        <div />
+        <div className={pointNameStyles} />
       </div>
+      <Table goal={goal} />
     </Card>
   );
 }
