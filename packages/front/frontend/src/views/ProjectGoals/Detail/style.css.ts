@@ -9,6 +9,13 @@ export const wrapperStyles = style({
   padding: 10,
 });
 
+export const lineWrapperStyles = style({
+  display: "flex",
+  flexDirection: "row",
+  justifyContent: "space-between",
+  alignItems: "flex-end",
+});
+
 export const lineStyles = style({
   width: 600,
   height: 2,
@@ -33,5 +40,10 @@ export const nameStyles = style([h3mediumStyles, { color: globalThemeColorVars.t
 
 export const descriptionStyles = style([
   body1regularStyles,
-  { color: globalThemeColorVars.textSecondary, marginBottom: 16, marginTop: 10 },
+  { color: globalThemeColorVars.textSecondary, marginTop: 10 },
 ]);
+
+export const buttonStyles = style({
+  color: "black",
+  marginBottom: 16,
+});
