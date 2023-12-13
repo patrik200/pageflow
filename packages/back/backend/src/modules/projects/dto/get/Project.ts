@@ -5,7 +5,7 @@ import { IsDate, withDefaultValue } from "@app/kit";
 import { ProjectsStatus } from "@app/shared-enums";
 
 import { ResponseProfileDTO } from "modules/users";
-import { ResponseMinimalGoalDTO } from "modules/goals/dto/get/Goal";
+import { ResponseGoalDTO } from "modules/goals/dto/get/Goal";
 
 export class ResponseMinimalProjectDTO {
   @Expose() @IsDefined() @IsString() id!: string;
@@ -54,10 +54,10 @@ export class ResponseProjectDTO extends ResponseMinimalProjectDTO {
 
   @Expose()
   @IsDefined()
-  @Type(() => ResponseMinimalGoalDTO)
+  @Type(() => ResponseGoalDTO)
   @ValidateNested({ each: true })
   @withDefaultValue([])
-  goals!: ResponseMinimalGoalDTO[];
+  goals!: ResponseGoalDTO[];
 }
 
 export class ResponseProjectsListDTO {

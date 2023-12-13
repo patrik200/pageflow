@@ -2,11 +2,12 @@ import { IsDefined, IsOptional, IsString, IsBoolean } from "class-validator";
 import { Expose } from "class-transformer";
 
 import { dtoMessageIsDefined, dtoMessageIsValidValue } from "constants/dtoErrorMessage";
-import { ResponseMinimalProjectDTO } from "modules/projects/dto/get/Project";
-import { ResponseMinimalGoalDTO } from "./Goal";
 import { IsDate } from "@app/kit";
+import { ResponseGoalDTO } from "./Goal";
 
-export class ResponseMinimalTimepointDTO {
+
+export class ResponseTimepointDTO {
+
   @Expose()
   @IsDefined({ message: dtoMessageIsDefined })
   @IsString({ message: dtoMessageIsValidValue })
@@ -21,15 +22,6 @@ export class ResponseMinimalTimepointDTO {
   @IsOptional()
   @IsString({ message: dtoMessageIsValidValue })
   description?: string;
-}
-
-export class ResponseTimePointDTO extends ResponseMinimalTimepointDTO {
-  goal!: ResponseMinimalGoalDTO;
-
-  @Expose()
-  @IsDefined({ message: dtoMessageIsDefined })
-  @IsBoolean({ message: dtoMessageIsValidValue })
-  implemented!: boolean;
 
   @Expose() @IsOptional() @IsDate() startDateFact?: Date;
   @Expose() @IsOptional() @IsDate() startDatePlan?: Date;

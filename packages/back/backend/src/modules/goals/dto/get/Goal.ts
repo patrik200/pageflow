@@ -2,10 +2,15 @@ import { IsDefined, IsOptional, IsString, IsBoolean, ValidateNested } from "clas
 import { Expose, Type } from "class-transformer";
 
 import { dtoMessageIsDefined, dtoMessageIsValidValue } from "constants/dtoErrorMessage";
-import { ResponseMinimalProjectDTO } from "modules/projects/dto/get/Project";
-import { ResponseMinimalTimepointDTO } from "./Timepoint";
+import { ResponseTimepointDTO } from "./Timepoint";
 
-export class ResponseMinimalGoalDTO {
+
+export class ResponseGoalDTO  {
+  @Expose()
+  @IsDefined({ message: dtoMessageIsDefined })
+  @IsBoolean({ message: dtoMessageIsValidValue })
+  implemented!: boolean;
+
   @Expose()
   @IsDefined({ message: dtoMessageIsDefined })
   @IsString({ message: dtoMessageIsValidValue })
@@ -23,21 +28,7 @@ export class ResponseMinimalGoalDTO {
 
   @Expose()
   @IsDefined({ message: dtoMessageIsDefined })
-  @Type(() => ResponseMinimalTimepointDTO)
+  @Type(() => ResponseTimepointDTO)
   @ValidateNested({ each: true })
-  timepoints!: ResponseMinimalTimepointDTO[];
-}
-
-export class ResponseGoalDTO extends ResponseMinimalGoalDTO {
-  @Expose()
-  @IsOptional()
-  @IsString({ message: dtoMessageIsValidValue })
-  timePoint?: string;
-
-  project!: ResponseMinimalProjectDTO;
-
-  @Expose()
-  @IsDefined({ message: dtoMessageIsDefined })
-  @IsBoolean({ message: dtoMessageIsValidValue })
-  implemented!: boolean;
+  timepoints!: ResponseTimepointDTO[];
 }
