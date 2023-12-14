@@ -7,6 +7,7 @@ export const hidenWrapperStyles = style({
 });
 
 export const wrapperStyles = style({
+  transition: "height 0.2s, margin-top 0.2s, opacity 0.2s",
   opacity: 1,
   overflow: "visible",
 });

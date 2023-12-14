@@ -1,4 +1,4 @@
-{ 
+{
   "main_tab": {
     "name_field": {
       "placeholder": "Название"
@@ -28,14 +28,11 @@
     "description_field": {
       "placeholder": "Описание"
     },
-    "date_plan_field": {
-      "placeholder": "Дата начала плана"
-    },
-    "date_fact_field": {
-      "placeholder":"Дата начала факт" 
+    "plan_date": {
+      "placeholder": "Плановая дата"
     }
   },
-  "modals" : {
+  "modals": {
     "timepoints": {
       "title": {
         "create": "Добавить точку",

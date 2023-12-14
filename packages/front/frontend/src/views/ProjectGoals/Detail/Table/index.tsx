@@ -15,6 +15,7 @@ import { observer } from "mobx-react-lite";
 import { useBoolean } from "@worksolutions/react-utils";
 import EditTimepointModal from "views/ProjectGoals/Modals/EditTimepoint";
 import { hidenWrapperStyles, wrapperStyles } from "./style.css";
+import DaysRemaining from "components/DaysRemaining";
 
 interface TimePointsTableInterface {
   goal: any;
@@ -41,12 +42,8 @@ function TimePointsTable({ goal, opened }: TimePointsTableInterface) {
             <TableHeadCell>
               {t({ scope: "time_point_tab", name: "description_field", parameter: "placeholder" })}
             </TableHeadCell>
-            <TableHeadCell>
-              {t({ scope: "time_point_tab", name: "date_plan_field", parameter: "placeholder" })}
-            </TableHeadCell>
-            <TableHeadCell>
-              {t({ scope: "time_point_tab", name: "date_fact_field", parameter: "placeholder" })}
-            </TableHeadCell>
+            <TableHeadCell>{t({ scope: "time_point_tab", name: "plan_date", parameter: "placeholder" })}</TableHeadCell>
+            <TableHeadCell>{null}</TableHeadCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -74,7 +71,7 @@ function TimePointsTable({ goal, opened }: TimePointsTableInterface) {
               </TableCell>
               <TableCell>
                 <TableCellDefaultText className={typographyOptionalStyleVariants.noWrap}>
-                  {timepoint.viewStartDateFact}
+                  <DaysRemaining days={Math.round(timepoint.remainingDays)} />
                 </TableCellDefaultText>
               </TableCell>
             </TableRow>

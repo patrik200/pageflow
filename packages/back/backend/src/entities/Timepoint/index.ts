@@ -15,4 +15,6 @@ export class TimepointEntity extends BaseGeneratedIDEntity {
 
     @Column({ type: "timestamptz" })
     datePlan!: Date;
+
+    remainingDays!: number;
 }

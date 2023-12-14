@@ -22,13 +22,19 @@ export class GetTimepointsListService {
 
     if (query.goalId) findOptions.goal = { id: query.goalId };
 
-    const timePoint: TimepointEntity[] & { favourite?: boolean } = await this.timepointRepository.find({
+    const timepoints: TimepointEntity[] & { favourite?: boolean } = await this.timepointRepository.find({
       where: findOptions,
       ...options,
     });
 
-    // const days = timePoint[0] ? DateTime.fromJSDate(timePoint[2].datePlan).diffNow("days").days : "";
+    this.calculateRemainingDays(timepoints);
 
-    return timePoint;
+    return timepoints;
+  }
+
+  private calculateRemainingDays(timepoints: TimepointEntity[]) {
+    timepoints.forEach((timepoint) => {
+      timepoint.remainingDays = DateTime.fromJSDate(timepoint.datePlan).diffNow("days").days;
+    });
   }
 }

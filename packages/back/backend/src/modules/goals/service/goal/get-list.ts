@@ -36,7 +36,6 @@ export class GetGoalsListService {
       ),
     );
 
-    console.log(goals);
     return goals;
   }
 }
