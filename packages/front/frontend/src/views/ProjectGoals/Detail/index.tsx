@@ -16,9 +16,10 @@ import {
   buttonStyles,
 } from "./style.css";
 import { Button } from "@app/ui-kit";
+import { GoalEntity } from "core/entities/goal/goal";
 
 interface GoalsDetailInterface {
-  goal: any;
+  goal: GoalEntity;
 }
 
 function GoalsDetail({ goal }: GoalsDetailInterface) {
@@ -46,7 +47,7 @@ function GoalsDetail({ goal }: GoalsDetailInterface) {
           onClick={toggle}
           className={buttonStyles}
         >
-          Подробгеео
+          Подробнее поменяй
         </Button>
       </div>
       <Table goal={goal} opened={opened} />

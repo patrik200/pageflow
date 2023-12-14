@@ -4,9 +4,9 @@ import { Expose } from "class-transformer";
 import { dtoMessageIsDefined, dtoMessageIsValidValue } from "constants/dtoErrorMessage";
 import { IsDate } from "@app/kit";
 
-export class RequestEditTimePointDTO {
+export class RequestEditTimepointDTO {
   @Expose()
-  @IsDefined({ message: dtoMessageIsDefined })
+  @IsOptional()
   @IsString({ message: dtoMessageIsValidValue })
   name?: string;
 

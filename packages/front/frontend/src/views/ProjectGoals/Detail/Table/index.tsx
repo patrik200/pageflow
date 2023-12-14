@@ -15,9 +15,10 @@ import { observer } from "mobx-react-lite";
 import { useBoolean } from "@worksolutions/react-utils";
 import EditTimepointModal from "views/ProjectGoals/Modals/EditTimepoint";
 import { hidenWrapperStyles, wrapperStyles } from "./style.css";
-
+import TimepointActions from "./Actions";
+import { GoalEntity } from "core/entities/goal/goal";
 interface TimePointsTableInterface {
-  goal: any;
+  goal: GoalEntity;
   opened: boolean;
 }
 
@@ -47,6 +48,7 @@ function TimePointsTable({ goal, opened }: TimePointsTableInterface) {
             <TableHeadCell>
               {t({ scope: "time_point_tab", name: "date_fact_field", parameter: "placeholder" })}
             </TableHeadCell>
+            <TableHeadCell>{null}</TableHeadCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -74,9 +76,10 @@ function TimePointsTable({ goal, opened }: TimePointsTableInterface) {
               </TableCell>
               <TableCell>
                 <TableCellDefaultText className={typographyOptionalStyleVariants.noWrap}>
-                  {timepoint.viewStartDateFact}
+                  
                 </TableCellDefaultText>
               </TableCell>
+              <TimepointActions entity={timepoint} />
             </TableRow>
           ))}
           <TableRow>

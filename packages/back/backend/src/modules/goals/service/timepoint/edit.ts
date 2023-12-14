@@ -10,7 +10,7 @@ import { TimepointEntity } from "entities/Timepoint";
 interface EditTimepointInterface {
     name?: string;
     description?: string;
-    implemented?: boolean;
+    datePlan?: Date;
 }
 
 @Injectable()
@@ -20,7 +20,10 @@ export class TimepointEditService {
     @Transactional()
     async editTimepointOrFail(id: string, data: EditTimepointInterface) {
         const originalGoal = await this.timepointsRepository.findOne({ where: { id } });
-        const updateData: TypeormUpdateEntity<GoalEntity> = { ...data };
+        const updateData: TypeormUpdateEntity<TimepointEntity> = {};
+        if (data.datePlan) updateData.datePlan = data.datePlan;
+        if (data.name) updateData.name = data.name;
+        if (data.description) updateData.description = data.description;
         await this.timepointsRepository.update(originalGoal!.id, updateData);
     }
 }

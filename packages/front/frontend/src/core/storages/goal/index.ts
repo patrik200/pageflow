@@ -97,7 +97,7 @@ export class GoalStorage extends Storage {
   @action updateTimepoint = async (id: string, entity: EditTimepointEntity) => {
     try {
       await this.requestManager.createRequest({
-        url: "/timepoints/{id}/edit",
+        url: "/goals/timepoints/{id}/edit",
         method: METHODS.PATCH,
       })({ body: entity.apiReady, urlParams: {id} });
       
@@ -121,7 +121,7 @@ export class GoalStorage extends Storage {
 @action deleteTimepoint = async (timePointId: string) => {
     try {
       await this.requestManager.createRequest({
-        url: "/timepoints/{timePointId}/delete",
+        url: "/goals/timepoints/{timePointId}/delete",
         method: METHODS.DELETE,
       })({ urlParams: { timePointId } });
       return { success: true } as const;

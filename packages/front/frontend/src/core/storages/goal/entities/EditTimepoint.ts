@@ -16,7 +16,7 @@ export class EditTimepointEntity extends BaseEntity {
       () => new EditTimepointEntity({id: timePoint.id}),
       () => ({
         name: timePoint.name,
-        description: timePoint.description,
+        description: timePoint.description ?? "",
         datePlan: timePoint.datePlan
       }),
     );

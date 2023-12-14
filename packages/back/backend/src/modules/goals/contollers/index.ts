@@ -13,7 +13,7 @@ import { UserRole } from "@app/shared-enums";
 import { GoalEditService } from "../service/goal/edit";
 import { TimepointCreateService } from "../service/timepoint/create";
 import { TimepointEditService } from "../service/timepoint/edit";
-import { RequestEditTimePointDTO } from "../dto/edit/EditTimePoint";
+import { RequestEditTimepointDTO } from "../dto/edit/EditTimepoint";
 import { GetTimepointsListService } from "../service/timepoint/get-list";
 import { DeleteGoalService } from "../service/goal/delete";
 import { DeleteTimepointService } from "../service/timepoint/delete";
@@ -69,7 +69,7 @@ export class GoalController {
 
   @Patch("timepoints/:id/edit/")
   @withUserAuthorized([UserRole.USER])
-  async updateTimePoint(@Param("id") id: string, @Body() body: RequestEditTimePointDTO) {
+  async updateTimePoint(@Param("id") id: string, @Body() body: RequestEditTimepointDTO) {
     await this.editTimepointService.editTimepointOrFail(id, body);
   }
 
