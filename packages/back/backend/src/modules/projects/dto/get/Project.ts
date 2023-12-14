@@ -51,13 +51,6 @@ export class ResponseProjectDTO extends ResponseMinimalProjectDTO {
   @Expose() @IsDefined() @IsBoolean() isPrivate!: boolean;
 
   @Expose() @IsOptional() @IsNumber() @withDefaultValue(0) activeTicketsCount!: number;
-
-  @Expose()
-  @IsDefined()
-  @Type(() => ResponseGoalDTO)
-  @ValidateNested({ each: true })
-  @withDefaultValue([])
-  goals!: ResponseGoalDTO[];
 }
 
 export class ResponseProjectsListDTO {

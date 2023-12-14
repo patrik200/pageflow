@@ -4,8 +4,7 @@ import { Expose, Type } from "class-transformer";
 import { dtoMessageIsDefined, dtoMessageIsValidValue } from "constants/dtoErrorMessage";
 import { ResponseTimepointDTO } from "./Timepoint";
 
-
-export class ResponseGoalDTO  {
+export class ResponseGoalDTO {
   @Expose()
   @IsDefined({ message: dtoMessageIsDefined })
   @IsBoolean({ message: dtoMessageIsValidValue })
@@ -31,4 +30,8 @@ export class ResponseGoalDTO  {
   @Type(() => ResponseTimepointDTO)
   @ValidateNested({ each: true })
   timepoints!: ResponseTimepointDTO[];
+}
+
+export class ResponseGoalsListDTO {
+  @Expose() @IsDefined() @Type(() => ResponseGoalDTO) @ValidateNested({ each: true }) list!: ResponseGoalDTO[];
 }

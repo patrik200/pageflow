@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, Inject, forwardRef } from "@nestjs/common";
 import { Repository } from "typeorm";
 import { InjectRepository } from "@nestjs/typeorm";
 
@@ -7,6 +7,7 @@ import { GoalEntity } from "entities/Goal";
 import { FindOptionsWhere } from "typeorm/find-options/FindOptionsWhere";
 import { GoalSelectOptions } from "./get";
 import { GetTimepointsListService } from "../timepoint/get-list";
+import { GetProjectService } from "modules/projects";
 
 interface GetGoalsListQueryInterface {
   projectId?: string;
@@ -17,12 +18,16 @@ export class GetGoalsListService {
   constructor(
     @InjectRepository(GoalEntity) private goalRepository: Repository<GoalEntity>,
     private getTimepointsListService: GetTimepointsListService,
+    @Inject(forwardRef(() => GetProjectService)) private getProjectService: GetProjectService,
   ) { }
 
   async getGoalsListOrFail(query: GetGoalsListQueryInterface, options?: GoalSelectOptions) {
     const findOptions: FindOptionsWhere<GoalEntity> = {};
 
-    if (query.projectId) findOptions.project = { id: query.projectId };
+    if (query.projectId) {
+      const project = await this.getProjectService.getProjectOrFail(query.projectId, { checkPermissions: true });
+      findOptions.project = { id: project.id };
+    }
 
     const goals: GoalEntity[] & { favourite?: boolean } = await this.goalRepository.find({
       where: findOptions,

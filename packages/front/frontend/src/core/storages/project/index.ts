@@ -83,7 +83,6 @@ export class ProjectStorage extends Storage {
       projectDetail.changeFeedEvents = changeFeedEvents;
       projectDetail.permissions = permissions;
       projectDetail.configure(this.intlDateStorage.getIntlDate(), this.profileStorage.user);
-      projectDetail.goals.forEach((goal) => goal.timepoints.forEach((timepoint) => timepoint.configure(this.intlDateStorage.getIntlDate())));
       this.projectDetail = projectDetail;
 
       return { success: true } as const;

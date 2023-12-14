@@ -23,4 +23,4 @@ export class GoalEntity extends BaseEntity {
   setImplemented = this.createSetter("implemented");
 }
 
-export const arrayOfGoalDecoder = arrayOfEntitiesDecoder(GoalEntity);
+export const arrayOfGoalsDecoder = arrayOfEntitiesDecoder(GoalEntity);
