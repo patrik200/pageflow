@@ -1,12 +1,11 @@
 import { BaseEntity, IsDate } from "@app/kit";
 import { Expose } from "class-transformer";
-import { IsDefined, IsString, IsOptional } from "class-validator";
+import { IsDefined, IsString, IsOptional, IsNumber } from "class-validator";
 import { computed, observable } from "mobx";
 import { DateMode, IntlDate } from "@worksolutions/utils";
 import { DateTime } from "luxon";
 
 export class TimepointEntity extends BaseEntity {
-
   constructor() {
     super();
     this.initEntity();
@@ -27,6 +26,8 @@ export class TimepointEntity extends BaseEntity {
   @Expose() @IsDefined() @IsString() name!: string;
 
   @Expose() @IsOptional() @IsString() description!: string;
-  
+
   @Expose() @IsDate() @IsDefined() datePlan!: Date;
+
+  @Expose() @IsDefined() @IsNumber() remainingDays!: number;
 }

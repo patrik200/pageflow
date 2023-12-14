@@ -1,6 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { Repository } from "typeorm";
 import { InjectRepository } from "@nestjs/typeorm";
+import { DateTime } from "luxon";
 
 import { FindOptionsWhere } from "typeorm/find-options/FindOptionsWhere";
 import { TimepointEntity } from "entities/Timepoint";
@@ -21,10 +22,19 @@ export class GetTimepointsListService {
 
     if (query.goalId) findOptions.goal = { id: query.goalId };
 
-    const timePoint: TimepointEntity[] & { favourite?: boolean } = await this.timepointRepository.find({
+    const timepoints: TimepointEntity[] & { favourite?: boolean } = await this.timepointRepository.find({
       where: findOptions,
       ...options,
     });
-    return timePoint;
+
+    this.calculateRemainingDays(timepoints);
+
+    return timepoints;
+  }
+
+  private calculateRemainingDays(timepoints: TimepointEntity[]) {
+    timepoints.forEach((timepoint) => {
+      timepoint.remainingDays = DateTime.fromJSDate(timepoint.datePlan).diffNow("days").days;
+    });
   }
 }

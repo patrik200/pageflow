@@ -1,13 +1,10 @@
-import { IsDefined, IsOptional, IsString, IsBoolean } from "class-validator";
+import { IsDefined, IsOptional, IsString, IsNumber } from "class-validator";
 import { Expose } from "class-transformer";
 
 import { dtoMessageIsDefined, dtoMessageIsValidValue } from "constants/dtoErrorMessage";
 import { IsDate } from "@app/kit";
-import { ResponseGoalDTO } from "./Goal";
-
 
 export class ResponseTimepointDTO {
-
   @Expose()
   @IsDefined({ message: dtoMessageIsDefined })
   @IsString({ message: dtoMessageIsValidValue })
@@ -23,5 +20,7 @@ export class ResponseTimepointDTO {
   @IsString({ message: dtoMessageIsValidValue })
   description?: string;
 
-  @Expose() @IsOptional() @IsDate() datePlan?: Date;
+  @Expose() @IsDefined() @IsDate() datePlan!: Date;
+
+  @Expose() @IsDefined() @IsNumber() remainingDays!: number;
 }
