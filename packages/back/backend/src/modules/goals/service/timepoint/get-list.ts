@@ -1,6 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { Repository } from "typeorm";
 import { InjectRepository } from "@nestjs/typeorm";
+import { DateTime } from "luxon";
 
 import { FindOptionsWhere } from "typeorm/find-options/FindOptionsWhere";
 import { TimepointEntity } from "entities/Timepoint";
@@ -25,6 +26,9 @@ export class GetTimepointsListService {
       where: findOptions,
       ...options,
     });
+
+    // const days = timePoint[0] ? DateTime.fromJSDate(timePoint[2].datePlan).diffNow("days").days : "";
+
     return timePoint;
   }
 }

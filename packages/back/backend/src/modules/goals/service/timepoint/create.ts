@@ -28,9 +28,8 @@ export class TimepointCreateService {
             goal: { id: data.goalId },
             datePlan: data.datePlan,
         });
-
         this.eventEmitter.emit(TimepointCreated.eventName, new TimepointCreated(savedTimePoint));
-
+        console.log(savedTimePoint);
         return savedTimePoint.id;
     }
 }
