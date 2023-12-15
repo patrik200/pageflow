@@ -1,11 +1,16 @@
 import React from "react";
 import { observer } from "mobx-react-lite";
 import { useToggle } from "@worksolutions/react-utils";
+import { Button } from "@app/ui-kit";
+import { useTranslation } from "@app/front-kit";
 
 import Card from "components/Card";
 
+import { GoalEntity } from "core/entities/goal/goal";
+
 import Table from "./Table";
 import GoalActions from "../List/Actions";
+
 import {
   lineStyles,
   pointStyles,
@@ -16,9 +21,6 @@ import {
   buttonStyles,
   titleWrapperStyles,
 } from "./style.css";
-import { Button } from "@app/ui-kit";
-import { GoalEntity } from "core/entities/goal/goal";
-import { useTranslation } from "@app/front-kit";
 
 interface GoalsDetailInterface {
   goal: GoalEntity;
@@ -30,7 +32,8 @@ function GoalsDetail({ goal }: GoalsDetailInterface) {
 
   return (
     <Card className={wrapperStyles}>
-      <div className={titleWrapperStyles}><div className={nameStyles}>{goal.name}</div>
+      <div className={titleWrapperStyles}>
+        <div className={nameStyles}>{goal.name}</div>
         <GoalActions goal={goal} />
       </div>
       <div className={descriptionStyles}>{goal.description}</div>

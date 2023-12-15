@@ -1,5 +1,5 @@
 import { computed, observable } from "mobx";
-import { BaseEntity, makeFnTransformableObject, makeTransformableObject } from "@app/kit";
+import { BaseEntity, makeFnTransformableObject } from "@app/kit";
 import { MinLength } from "class-validator";
 
 import { NOT_EMPTY_VALIDATION } from "core/commonValidationErrors";
@@ -13,15 +13,15 @@ export class EditGoalEntity extends BaseEntity {
 
   static buildFromGoal(goal: GoalEntity) {
     return makeFnTransformableObject(
-      () => new EditGoalEntity({id: goal.id}),
+      () => new EditGoalEntity({ id: goal.id }),
       () => ({
         name: goal.name,
-        description: goal.description
+        description: goal.description,
       }),
     );
   }
 
-  constructor(public options: { id?: string, _projectId?: string }) {
+  constructor(public options: { id?: string; _projectId?: string }) {
     super();
     this.initEntity();
   }

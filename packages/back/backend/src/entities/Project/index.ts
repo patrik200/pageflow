@@ -9,9 +9,9 @@ import { TicketBoardEntity } from "entities/TicketBoard";
 import { CorrespondenceRootGroupEntity } from "entities/Correspondence/Group/rootGroup";
 import { DocumentRootGroupEntity } from "entities/Document/Group/rootGroup";
 import { PermissionEntity } from "entities/Permission";
+import { GoalEntity } from "entities/Goal";
 
 import { ProjectFavouriteEntity } from "./Favourite";
-import { GoalEntity } from "entities/Goal";
 
 @Entity({ name: "projects" })
 export class ProjectEntity extends BaseGeneratedIDEntity {

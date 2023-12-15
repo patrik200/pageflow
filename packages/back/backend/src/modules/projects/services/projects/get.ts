@@ -8,9 +8,9 @@ import { ProjectEntity } from "entities/Project";
 import { getCurrentUser } from "modules/auth";
 import { GetActiveTicketsCountService } from "modules/tickets";
 import { PermissionAccessService } from "modules/permissions";
+import { GetGoalsListService } from "modules/goals";
 
 import { GetProjectIsFavouritesService } from "../favorite/get-is-favorite";
-import { GetGoalsListService } from "modules/goals";
 
 @Injectable()
 export class GetProjectService {
@@ -21,7 +21,7 @@ export class GetProjectService {
     private getProjectIsFavouritesService: GetProjectIsFavouritesService,
     private getGoalsListService: GetGoalsListService,
     @Inject(forwardRef(() => PermissionAccessService)) private permissionAccessService: PermissionAccessService,
-  ) { }
+  ) {}
 
   async getProjectOrFail(
     projectId: string,
@@ -77,8 +77,8 @@ export class GetProjectService {
         preview: options.loadPreview,
         contractor: options.loadContractor
           ? {
-            logo: options.loadContractorLogo,
-          }
+              logo: options.loadContractorLogo,
+            }
           : false,
       },
     });
@@ -88,15 +88,15 @@ export class GetProjectService {
     await Promise.all([
       loadFavourites && this.getProjectIsFavouritesService.loadProjectIsFavourite(project),
       loadActiveTicketsCount &&
-      this.getActiveTicketsCountService
-        .unsafeGetActiveTicketsCountForProject(project.id)
-        .then((activeTicketsCount) => (project.activeTicketsCount = activeTicketsCount)),
+        this.getActiveTicketsCountService
+          .unsafeGetActiveTicketsCountForProject(project.id)
+          .then((activeTicketsCount) => (project.activeTicketsCount = activeTicketsCount)),
       loadPermissions &&
-      this.permissionAccessService.loadPermissions(
-        { entityId: project.id, entityType: PermissionEntityType.PROJECT },
-        project,
-        { loadUser: true, unsafeIgnoreClient },
-      ),
+        this.permissionAccessService.loadPermissions(
+          { entityId: project.id, entityType: PermissionEntityType.PROJECT },
+          project,
+          { loadUser: true, unsafeIgnoreClient },
+        ),
     ]);
 
     return project;

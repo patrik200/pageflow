@@ -5,9 +5,10 @@ import { useBoolean } from "@worksolutions/react-utils";
 import { useTranslation } from "@app/front-kit";
 
 import EditGoalModal from "views/ProjectGoals/Modals/EditGoal";
-import { buttonStyles } from "./style.css";
-import Card from "components/Card";
+
 import { GoalEntity } from "core/entities/goal/goal";
+
+import { buttonStyles } from "./style.css";
 
 interface EditGoalInterface {
   entity: GoalEntity;

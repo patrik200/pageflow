@@ -13,12 +13,17 @@ import {
 } from "@app/ui-kit";
 import { observer } from "mobx-react-lite";
 import { useBoolean } from "@worksolutions/react-utils";
-import EditTimepointModal from "views/ProjectGoals/Modals/EditTimepoint";
-import { createButtonStyles, hidenWrapperStyles, wrapperStyles } from "./style.css";
+
 import DaysRemaining from "components/DaysRemaining";
 
-import TimepointActions from "./Actions";
+import EditTimepointModal from "views/ProjectGoals/Modals/EditTimepoint";
+
 import { GoalEntity } from "core/entities/goal/goal";
+
+import TimepointActions from "./Actions";
+
+import { createButtonStyles, hidenWrapperStyles, wrapperStyles } from "./style.css";
+
 interface TimePointsTableInterface {
   goal: GoalEntity;
   opened: boolean;
@@ -88,6 +93,6 @@ function TimePointsTable({ goal, opened }: TimePointsTableInterface) {
       <EditTimepointModal goalId={goal.id} opened={modalOpened} close={onClose} />
     </div>
   );
-        }
+}
 
 export default observer(TimePointsTable);

@@ -4,9 +4,11 @@ import { Button } from "@app/ui-kit";
 import { useBoolean } from "@worksolutions/react-utils";
 import { useTranslation } from "@app/front-kit";
 
-import EditGoalModal from "views/ProjectGoals/Modals/EditGoal";
-import { buttonStyles } from "./style.css";
 import Card from "components/Card";
+
+import EditGoalModal from "views/ProjectGoals/Modals/EditGoal";
+
+import { buttonStyles } from "./style.css";
 
 function CreateGoalAction() {
   const [opened, onOpen, onClose] = useBoolean(false);

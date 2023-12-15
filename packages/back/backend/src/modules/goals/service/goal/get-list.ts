@@ -1,13 +1,14 @@
 import { Injectable, Inject, forwardRef } from "@nestjs/common";
 import { Repository } from "typeorm";
 import { InjectRepository } from "@nestjs/typeorm";
+import { FindOptionsWhere } from "typeorm/find-options/FindOptionsWhere";
 
 import { GoalEntity } from "entities/Goal";
 
-import { FindOptionsWhere } from "typeorm/find-options/FindOptionsWhere";
+import { GetProjectService } from "modules/projects";
+
 import { GoalSelectOptions } from "./get";
 import { GetTimepointsListService } from "../timepoint/get-list";
-import { GetProjectService } from "modules/projects";
 
 interface GetGoalsListQueryInterface {
   projectId?: string;
@@ -19,7 +20,7 @@ export class GetGoalsListService {
     @InjectRepository(GoalEntity) private goalRepository: Repository<GoalEntity>,
     private getTimepointsListService: GetTimepointsListService,
     @Inject(forwardRef(() => GetProjectService)) private getProjectService: GetProjectService,
-  ) { }
+  ) {}
 
   async getGoalsListOrFail(query: GetGoalsListQueryInterface, options?: GoalSelectOptions) {
     const findOptions: FindOptionsWhere<GoalEntity> = {};

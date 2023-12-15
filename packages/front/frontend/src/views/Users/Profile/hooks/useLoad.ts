@@ -10,12 +10,12 @@ export function useLoadUser() {
   const { user: detailUser, loadUser: userStorageLoadUser } = containerInstance.get(UserDetailStorage);
   const { user: profileUser } = containerInstance.get(ProfileStorage);
 
-  const { id: userId } = useRouter().query as { id?: string; };
+  const { id: userId } = useRouter().query as { id?: string };
   const [, asyncUserStorageLoadUser] = useAsyncFn(userStorageLoadUser, [userStorageLoadUser]);
 
   React.useEffect(
     () => void asyncUserStorageLoadUser(userId ?? profileUser.id),
-    [asyncUserStorageLoadUser, profileUser.id, userId]
+    [asyncUserStorageLoadUser, profileUser.id, userId],
   );
 
   return detailUser;

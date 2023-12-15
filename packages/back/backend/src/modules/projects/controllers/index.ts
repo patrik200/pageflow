@@ -41,7 +41,7 @@ export class ProjectsController {
     private deleteProjectService: DeleteProjectService,
     private editProjectPreviewService: EditProjectPreviewService,
     private deleteProjectPreviewService: DeleteProjectPreviewService,
-  ) { }
+  ) {}
 
   @Get()
   @withUserAuthorized([UserRole.USER])

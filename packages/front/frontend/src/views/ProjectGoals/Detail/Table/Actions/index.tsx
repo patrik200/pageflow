@@ -3,8 +3,8 @@ import { observer } from "mobx-react-lite";
 
 import ActionsTableCell from "components/ActionsTableCell";
 
-
 import { TimepointEntity } from "core/entities/goal/timepoint";
+
 import DeleteButton from "./DeleteTimepoint";
 import EditTimepoint from "./EditTimepoint";
 
@@ -13,12 +13,10 @@ interface TimepointActionsInterface {
 }
 
 function TimepointActions({ entity }: TimepointActionsInterface) {
-  const [deleteOpened, setDeleteOpened] = React.useState(false);
-
   return (
     <ActionsTableCell size="160">
-        <DeleteButton entity={entity} onOpenedChange={setDeleteOpened} />
-        <EditTimepoint entity={entity} />
+      <DeleteButton entity={entity} />
+      <EditTimepoint entity={entity} />
     </ActionsTableCell>
   );
 }

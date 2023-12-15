@@ -35,7 +35,7 @@ function ProjectDetailView() {
       { code: "documents", title: t({ scope: "tabs", name: "documents" }) },
       { code: "correspondence", title: t({ scope: "tabs", name: "correspondence" }) },
       { code: "tickets", title: t({ scope: "tabs", name: "tickets" }) },
-      { code: "goals", title: t({scope:"tabs", name:"goals"})},
+      { code: "goals", title: t({ scope: "tabs", name: "goals" }) },
     ],
     [t],
   );

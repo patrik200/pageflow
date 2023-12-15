@@ -1,15 +1,21 @@
 import React from "react";
 import { useRouter, useTranslation, useViewContext } from "@app/front-kit";
 import { ModalActions, ModalTitle } from "@app/ui-kit";
-import { GoalEntity } from "core/entities/goal/goal";
-import { EditGoalEntity } from "core/storages/goal/entities/EditGoal";
-import GroupedContent from "components/FormField/GroupedContent";
-import TextField from "components/FormField/Text";
-import { GoalStorage } from "core/storages/goal";
-import { emitRequestError } from "core/emitRequest";
 import { useAsyncFn } from "@worksolutions/react-utils";
 import { observer } from "mobx-react-lite";
+
+import GroupedContent from "components/FormField/GroupedContent";
+import TextField from "components/FormField/Text";
+
+import { emitRequestError } from "core/emitRequest";
+
+import { GoalEntity } from "core/entities/goal/goal";
+import { EditGoalEntity } from "core/storages/goal/entities/EditGoal";
+
+import { GoalStorage } from "core/storages/goal";
+
 import { wrapperStyles } from "./style.css";
+
 interface ModalContentInterface {
   goal?: GoalEntity;
   close: () => void;
@@ -35,8 +41,8 @@ function ModalContent({ goal, close, onSuccess }: ModalContentInterface) {
       return;
     }
 
-    emitRequestError(undefined, result.error, "Unexpected error");
-  }, [close, createGoal, entity, goal, loadGoals, onSuccess, query.id, updateGoal]);
+    emitRequestError(undefined, result.error, t({ scope: "modals", place: "goals", name: "unexpected_error" }));
+  }, [t, close, createGoal, entity, goal, loadGoals, onSuccess, query.id, updateGoal]);
 
   const [{ loading }, asyncHandleUpdateGoal] = useAsyncFn(handleSaveGoal, [handleSaveGoal]);
 

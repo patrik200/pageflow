@@ -1,22 +1,26 @@
-import { Body, Controller, Get, Param, Patch, Post, Query, Delete } from "@nestjs/common";
-import { ControllerResponse, ServiceError } from "@app/back-kit";
+import { Body, Controller, Get, Param, Patch, Post, Delete } from "@nestjs/common";
+import { ControllerResponse } from "@app/back-kit";
+import { UserRole } from "@app/shared-enums";
+
+import { ResponseIdDTO } from "constants/ResponseId";
+
+import { withUserAuthorized } from "modules/auth";
+
 import { GetGoalService } from "../service/goal/get";
 import { CreateGoalsService } from "../service/goal/create";
-import { ResponseGoalDTO, ResponseGoalsListDTO } from "../dto/get/Goal";
-import { RequestCreateGoalDTO } from "../dto/edit/CreateGoal";
-import { RequestCreateTimePointDTO } from "../dto/edit/CreateTimePoint";
-import { RequestEditGoalDTO } from "../dto/edit/EditGoal";
-import { ResponseIdDTO } from "constants/ResponseId";
 import { GetGoalsListService } from "../service/goal/get-list";
-import { withUserAuthorized } from "modules/auth";
-import { UserRole } from "@app/shared-enums";
 import { GoalEditService } from "../service/goal/edit";
 import { TimepointCreateService } from "../service/timepoint/create";
 import { TimepointEditService } from "../service/timepoint/edit";
-import { RequestEditTimepointDTO } from "../dto/edit/EditTimepoint";
 import { GetTimepointsListService } from "../service/timepoint/get-list";
 import { DeleteGoalService } from "../service/goal/delete";
 import { DeleteTimepointService } from "../service/timepoint/delete";
+
+import { RequestEditTimepointDTO } from "../dto/edit/EditTimepoint";
+import { RequestEditGoalDTO } from "../dto/edit/EditGoal";
+import { RequestCreateTimePointDTO } from "../dto/edit/CreateTimePoint";
+import { RequestCreateGoalDTO } from "../dto/edit/CreateGoal";
+import { ResponseGoalDTO, ResponseGoalsListDTO } from "../dto/get/Goal";
 
 @Controller("goals")
 export class GoalController {
@@ -30,7 +34,7 @@ export class GoalController {
     private getTimePointsListService: GetTimepointsListService,
     private deleteGoalService: DeleteGoalService,
     private deleteTimepointService: DeleteTimepointService,
-  ) { }
+  ) {}
 
   @Get("projects/:id")
   async getGoalsList(@Param("id") id: string) {

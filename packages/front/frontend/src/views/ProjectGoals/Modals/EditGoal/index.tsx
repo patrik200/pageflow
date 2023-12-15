@@ -1,7 +1,9 @@
 import { Modal } from "@app/ui-kit";
-import AsyncModalContent from "components/AsyncModalContent";
-import { GoalEntity } from "core/entities/goal/goal";
 import { observer } from "mobx-react-lite";
+
+import AsyncModalContent from "components/AsyncModalContent";
+
+import { GoalEntity } from "core/entities/goal/goal";
 
 interface EditGoalModalInterface {
   opened: boolean;

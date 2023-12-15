@@ -1,4 +1,4 @@
-import { IsDefined, IsOptional, IsString, IsBoolean } from "class-validator";
+import { IsDefined, IsOptional, IsString } from "class-validator";
 import { Expose } from "class-transformer";
 
 import { dtoMessageIsDefined, dtoMessageIsValidValue } from "constants/dtoErrorMessage";

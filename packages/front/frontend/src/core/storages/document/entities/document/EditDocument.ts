@@ -28,7 +28,7 @@ export class EditDocumentEntity extends BaseEntity {
         permissions: [...document.permissions],
       }),
     );
-  } 
+  }
 
   constructor(public options: { parentGroupId?: string; id?: string; projectId?: string }) {
     super();

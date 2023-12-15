@@ -1,15 +1,20 @@
 import React from "react";
 import { useRouter, useTranslation, useViewContext } from "@app/front-kit";
 import { ModalActions, ModalTitle } from "@app/ui-kit";
-import TextField from "components/FormField/Text";
-import { TimepointEntity } from "core/entities/goal/timepoint";
-import GroupedContent from "components/FormField/GroupedContent";
-import { GoalStorage } from "core/storages/goal";
-import { emitRequestError } from "core/emitRequest";
 import { useAsyncFn } from "@worksolutions/react-utils";
 import { observer } from "mobx-react-lite";
-import { EditTimepointEntity } from "core/storages/goal/entities/EditTimepoint";
+
+import TextField from "components/FormField/Text";
+import GroupedContent from "components/FormField/GroupedContent";
 import Date from "components/FormField/Date";
+
+import { emitRequestError } from "core/emitRequest";
+
+import { TimepointEntity } from "core/entities/goal/timepoint";
+import { EditTimepointEntity } from "core/storages/goal/entities/EditTimepoint";
+
+import { GoalStorage } from "core/storages/goal";
+
 import { wrapperStyles } from "./style.css";
 
 interface ModalContentInterface {
@@ -38,8 +43,8 @@ function ModalContent({ timepoint, goalId, close, onSuccess }: ModalContentInter
       return;
     }
 
-    emitRequestError(undefined, result.error, "Unexpected error");
-  }, [timepoint, updateTimepoint, entity, createTimepoint, loadGoals, query, close, onSuccess]);
+    emitRequestError(undefined, result.error, t({ scope: "modals", place: "timepoints", name: "unexpected_error" }));
+  }, [t, timepoint, updateTimepoint, entity, createTimepoint, loadGoals, query, close, onSuccess]);
 
   const [{ loading }, asyncHandleUpdateTimepoint] = useAsyncFn(handleSaveTimepoint, [handleSaveTimepoint]);
 

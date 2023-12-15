@@ -1,15 +1,15 @@
 import { Global, Module } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
+import { NestModule } from "@app/back-kit";
 
 import { GoalEntity } from "entities/Goal/";
+import { TimepointEntity } from "entities/Timepoint";
 
 import { GoalController } from "./contollers";
 import { CreateGoalsService } from "./service/goal/create";
 import { GetGoalService } from "./service/goal/get";
 import { GetGoalsListService } from "./service/goal/get-list";
-import { NestModule } from "@app/back-kit";
 import { GoalEditService } from "./service/goal/edit";
-import { TimepointEntity } from "entities/Timepoint";
 import { TimepointCreateService } from "./service/timepoint/create";
 import { TimepointEditService } from "./service/timepoint/edit";
 import { GetTimepointsListService } from "./service/timepoint/get-list";
@@ -18,32 +18,32 @@ import { DeleteTimepointService } from "./service/timepoint/delete";
 
 @Global()
 @Module({
-    imports: [TypeOrmModule.forFeature([GoalEntity, TimepointEntity])],
-    controllers: [GoalController],
-    providers: [
-        CreateGoalsService,
-        GetGoalService,
-        GetGoalsListService,
-        GoalEditService,
-        TimepointCreateService,
-        TimepointEditService,
-        GetTimepointsListService,
-        DeleteGoalService,
-        DeleteTimepointService,
-    ],
-    exports: [
-        CreateGoalsService,
-        GetGoalService,
-        GoalEditService,
-        GetGoalsListService,
-        TimepointCreateService,
-        TimepointEditService,
-        GetTimepointsListService,
-        DeleteGoalService,
-        DeleteTimepointService,
-    ],
+  imports: [TypeOrmModule.forFeature([GoalEntity, TimepointEntity])],
+  controllers: [GoalController],
+  providers: [
+    CreateGoalsService,
+    GetGoalService,
+    GetGoalsListService,
+    GoalEditService,
+    TimepointCreateService,
+    TimepointEditService,
+    GetTimepointsListService,
+    DeleteGoalService,
+    DeleteTimepointService,
+  ],
+  exports: [
+    CreateGoalsService,
+    GetGoalService,
+    GoalEditService,
+    GetGoalsListService,
+    TimepointCreateService,
+    TimepointEditService,
+    GetTimepointsListService,
+    DeleteGoalService,
+    DeleteTimepointService,
+  ],
 })
-export class GoalModule implements NestModule { }
+export class GoalModule implements NestModule {}
 
 export * from "./service/goal/create";
 export * from "./service/goal/get";

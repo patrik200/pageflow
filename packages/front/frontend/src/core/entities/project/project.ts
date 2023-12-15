@@ -8,7 +8,6 @@ import { ProjectsStatus } from "@app/shared-enums";
 
 import { UserEntity } from "core/entities/user";
 import { FileEntity } from "core/entities/file";
-import { GoalEntity } from "../goal/goal";
 
 export class MinimalProjectEntity extends BaseEntity {
   constructor() {

@@ -1,6 +1,6 @@
 import { arrayOfEntitiesDecoder, BaseEntity, withDefaultValue } from "@app/kit";
 import { Expose, Type } from "class-transformer";
-import { IsBoolean, IsDefined, IsOptional, IsString, ValidateNested } from "class-validator";
+import { IsDefined, IsOptional, IsString, ValidateNested } from "class-validator";
 
 import { TimepointEntity } from "./timepoint";
 
@@ -17,8 +17,6 @@ export class GoalEntity extends BaseEntity {
   @Expose() @IsOptional() @IsString() @withDefaultValue("") description!: string;
 
   @Expose() @IsDefined() @Type(() => TimepointEntity) @ValidateNested({ each: true }) timepoints!: TimepointEntity[];
-
-  @Expose() @IsDefined() @IsBoolean() @withDefaultValue(false) implemented!: boolean;
 }
 
 export const arrayOfGoalsDecoder = arrayOfEntitiesDecoder(GoalEntity);

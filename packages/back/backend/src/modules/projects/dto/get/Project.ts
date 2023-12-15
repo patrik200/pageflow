@@ -5,7 +5,6 @@ import { IsDate, withDefaultValue } from "@app/kit";
 import { ProjectsStatus } from "@app/shared-enums";
 
 import { ResponseProfileDTO } from "modules/users";
-import { ResponseGoalDTO } from "modules/goals/dto/get/Goal";
 
 export class ResponseMinimalProjectDTO {
   @Expose() @IsDefined() @IsString() id!: string;

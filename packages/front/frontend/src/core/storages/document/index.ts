@@ -90,7 +90,7 @@ export class DocumentStorage extends Storage {
     try {
       const { id } = await this.requestManager.createRequest({
         url: "/documents/document-group",
-        method: METHODS.POST, 
+        method: METHODS.POST,
         serverDataEntityDecoder: IdEntity,
       })({ body: entity.apiCreateReady });
       return { success: true, id } as const;

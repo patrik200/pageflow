@@ -6,8 +6,6 @@ import { Transactional } from "typeorm-transactional";
 
 import { GoalEntity } from "entities/Goal/";
 
-import { getCurrentUser } from "modules/auth";
-
 import { GoalCreated } from "../../event/GoalCreated";
 
 interface CreateGoalInterface {
@@ -25,11 +23,10 @@ export class CreateGoalsService {
 
   @Transactional()
   async createGoalOrFail(data: CreateGoalInterface) {
-
     const savedGoal = await this.goalsRepository.save({
       name: data.name,
       description: data.description,
-      project: { id: data.projectId }
+      project: { id: data.projectId },
     });
 
     this.eventEmitter.emit(GoalCreated.eventName, new GoalCreated(savedGoal));

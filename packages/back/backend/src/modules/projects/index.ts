@@ -4,6 +4,8 @@ import { TypeOrmModule } from "@nestjs/typeorm";
 import { ProjectEntity } from "entities/Project";
 import { ProjectFavouriteEntity } from "entities/Project/Favourite";
 
+import { GoalModule } from "modules/goals";
+
 import { ProjectsController } from "./controllers";
 import { ProjectFavouritesController } from "./controllers/favourites";
 import { ProjectsMembersController } from "./controllers/members";
@@ -29,7 +31,6 @@ import { CreateProjectPermissionsService } from "./services/permissions/create";
 import { DeleteProjectPermissionsService } from "./services/permissions/delete";
 import { EditProjectPermissionsService } from "./services/permissions/edit";
 import { GetProjectPermissionsService } from "./services/permissions/get";
-import { GoalModule } from "modules/goals";
 
 @Global()
 @Module({

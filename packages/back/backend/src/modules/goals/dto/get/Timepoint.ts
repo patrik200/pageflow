@@ -1,8 +1,8 @@
 import { IsDefined, IsOptional, IsString, IsNumber } from "class-validator";
 import { Expose } from "class-transformer";
+import { IsDate } from "@app/kit";
 
 import { dtoMessageIsDefined, dtoMessageIsValidValue } from "constants/dtoErrorMessage";
-import { IsDate } from "@app/kit";
 
 export class ResponseTimepointDTO {
   @Expose()

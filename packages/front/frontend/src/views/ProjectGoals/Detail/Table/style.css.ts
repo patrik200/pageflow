@@ -13,5 +13,5 @@ export const wrapperStyles = style({
 });
 
 export const createButtonStyles = style({
-  width: "max-content"
-})
+  width: "max-content",
+});

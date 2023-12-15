@@ -1,8 +1,9 @@
 import { BaseGeneratedIDEntity } from "@app/back-kit";
 import { Column, Entity, OneToMany, ManyToOne } from "typeorm";
 
-import { TimepointEntity } from "../Timepoint";
 import { ProjectEntity } from "entities/Project";
+
+import { TimepointEntity } from "../Timepoint";
 
 @Entity({ name: "goals" })
 export class GoalEntity extends BaseGeneratedIDEntity {

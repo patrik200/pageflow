@@ -44,20 +44,6 @@ export class GoalStorage extends Storage {
     }
   };
 
-  @action loadGoal = async (goalId: string) => {
-    try {
-      const goal = await this.requestManager.createRequest({
-        url: "/goals/{goalId}",
-        method: METHODS.GET,
-        serverDataEntityDecoder: GoalEntity,
-      })({ urlParams: { goalId } });
-
-      return { success: true } as const;
-    } catch (error) {
-      return { success: false, error: parseServerError(error) } as const;
-    }
-  };
-
   @action createGoal = async (entity: EditGoalEntity) => {
     try {
       const { id } = await this.requestManager.createRequest({
@@ -120,10 +106,10 @@ export class GoalStorage extends Storage {
       })({ urlParams: { goalId } });
       return { success: true } as const;
     } catch (error) {
-      console.log(goalId)
       return { success: false, error: parseServerError(error) } as const;
     }
   };
+
   @action deleteTimepoint = async (timePointId: string) => {
     try {
       await this.requestManager.createRequest({
