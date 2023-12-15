@@ -10,17 +10,17 @@ import Card from "components/Card";
 import { GoalEntity } from "core/entities/goal/goal";
 
 interface EditGoalInterface {
-  entity: GoalEntity
+  entity: GoalEntity;
 }
 
-function EditGoalAction({ entity } : EditGoalInterface) {
+function EditGoalAction({ entity }: EditGoalInterface) {
   const [opened, onOpen, onClose] = useBoolean(false);
   const { t } = useTranslation("goal-detail");
 
   return (
     <>
       <Button size="SMALL" type="PRIMARY" onClick={onOpen} className={buttonStyles}>
-        {/* {t({ scope: "edit_goal", place: "actions", name: "create" })} */}Редактировать
+        {t({ scope: "main_tab", place: "actions", name: "edit" })}
       </Button>
       <EditGoalModal goal={entity} opened={opened} close={onClose} />
     </>

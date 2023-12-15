@@ -16,12 +16,12 @@ export class RequestCreateTimePointDTO {
   description?: string;
 
   @Expose()
-  @IsOptional()
+  @IsDefined({ message: dtoMessageIsDefined })
   @IsString({ message: dtoMessageIsValidValue })
-  goalId?: string;
+  goalId!: string;
 
   @Expose()
-  @IsOptional()
+  @IsDefined({ message: dtoMessageIsDefined })
   @IsDate()
-  datePlan?: Date;
+  datePlan!: Date;
 }

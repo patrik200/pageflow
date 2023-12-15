@@ -1,7 +1,7 @@
 import { BaseEntity, IsDate } from "@app/kit";
 import { Expose } from "class-transformer";
 import { IsDefined, IsString, IsOptional, IsNumber } from "class-validator";
-import { computed, observable } from "mobx";
+import { computed } from "mobx";
 import { DateMode, IntlDate } from "@worksolutions/utils";
 import { DateTime } from "luxon";
 

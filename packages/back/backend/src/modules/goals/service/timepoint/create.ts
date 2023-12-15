@@ -29,7 +29,7 @@ export class TimepointCreateService {
             datePlan: data.datePlan,
         });
         this.eventEmitter.emit(TimepointCreated.eventName, new TimepointCreated(savedTimePoint));
-        console.log(savedTimePoint);
+
         return savedTimePoint.id;
     }
 }

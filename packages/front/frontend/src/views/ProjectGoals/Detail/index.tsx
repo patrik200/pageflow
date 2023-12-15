@@ -18,18 +18,20 @@ import {
 } from "./style.css";
 import { Button } from "@app/ui-kit";
 import { GoalEntity } from "core/entities/goal/goal";
+import { useTranslation } from "@app/front-kit";
 
 interface GoalsDetailInterface {
   goal: GoalEntity;
 }
 
 function GoalsDetail({ goal }: GoalsDetailInterface) {
+  const { t } = useTranslation("goal-detail");
   const [opened, toggle] = useToggle(false);
 
   return (
     <Card className={wrapperStyles}>
       <div className={titleWrapperStyles}><div className={nameStyles}>{goal.name}</div>
-      <GoalActions goal={goal}/>
+        <GoalActions goal={goal} />
       </div>
       <div className={descriptionStyles}>{goal.description}</div>
       <div className={lineWrapperStyles}>
@@ -50,7 +52,7 @@ function GoalsDetail({ goal }: GoalsDetailInterface) {
           onClick={toggle}
           className={buttonStyles}
         >
-          Подробнее поменяй
+          {t({ scope: "main_tab", place: "actions", name: "more" })}
         </Button>
       </div>
       <Table goal={goal} opened={opened} />

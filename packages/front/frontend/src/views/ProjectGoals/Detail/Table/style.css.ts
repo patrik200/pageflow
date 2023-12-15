@@ -11,3 +11,7 @@ export const wrapperStyles = style({
   opacity: 1,
   overflow: "visible",
 });
+
+export const createButtonStyles = style({
+  width: "max-content"
+})

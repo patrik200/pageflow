@@ -2,6 +2,7 @@ import { IsDefined, IsOptional, IsString, IsBoolean, ValidateNested } from "clas
 import { Expose, Type } from "class-transformer";
 
 import { dtoMessageIsDefined, dtoMessageIsValidValue } from "constants/dtoErrorMessage";
+
 import { ResponseTimepointDTO } from "./Timepoint";
 
 export class ResponseGoalDTO {

@@ -9,7 +9,7 @@ import { GoalStorage } from "core/storages/goal";
 import { emitRequestError } from "core/emitRequest";
 import { useAsyncFn } from "@worksolutions/react-utils";
 import { observer } from "mobx-react-lite";
-import { wrapperStyles } from "./style.css"
+import { wrapperStyles } from "./style.css";
 interface ModalContentInterface {
   goal?: GoalEntity;
   close: () => void;
@@ -29,14 +29,14 @@ function ModalContent({ goal, close, onSuccess }: ModalContentInterface) {
     const result = goal ? await updateGoal(entity.options.id!, entity) : await createGoal(entity);
 
     if (result.success) {
-      loadGoals(query.id as string)
+      loadGoals(query.id as string);
       close();
       onSuccess?.();
       return;
     }
 
     emitRequestError(undefined, result.error, "Unexpected error");
-  }, [close, createGoal, entity, goal, onSuccess, updateGoal]);
+  }, [close, createGoal, entity, goal, loadGoals, onSuccess, query.id, updateGoal]);
 
   const [{ loading }, asyncHandleUpdateGoal] = useAsyncFn(handleSaveGoal, [handleSaveGoal]);
 
@@ -47,14 +47,33 @@ function ModalContent({ goal, close, onSuccess }: ModalContentInterface) {
 
   return (
     <div className={wrapperStyles}>
-      <ModalTitle>{t({scope: "modals", place: "goals", name: "title", parameter: goal ? "edit": "create"},{name: goal?.name})}</ModalTitle>
+      <ModalTitle>
+        {t(
+          { scope: "modals", place: "goals", name: "title", parameter: goal ? "edit" : "create" },
+          { name: goal?.name },
+        )}
+      </ModalTitle>
       <GroupedContent>
-        <TextField edit placeholder={t({ scope: "main_tab", name: "name_field", parameter: "placeholder" })} value={entity.name} onChange={entity.setName} />
-        <TextField edit placeholder={t({ scope: "main_tab", name: "description_field", parameter: "placeholder" })} value={entity.description} onChange={entity.setDescription} />
+        <TextField
+          edit
+          errorMessage={entity.viewErrors.name}
+          placeholder={t({ scope: "main_tab", name: "name_field", parameter: "placeholder" })}
+          value={entity.name}
+          onChange={entity.setName}
+        />
+        <TextField
+          edit
+          placeholder={t({ scope: "main_tab", name: "description_field", parameter: "placeholder" })}
+          value={entity.description}
+          onChange={entity.setDescription}
+        />
       </GroupedContent>
-      <ModalActions primaryActionText={t({scope: "modals", place: "goals", name: "actions", parameter: "save"})} primaryActionLoading={loading} onPrimaryActionClick={handleSaveClick} />
+      <ModalActions
+        primaryActionText={t({ scope: "modals", place: "goals", name: "actions", parameter: "save" })}
+        primaryActionLoading={loading}
+        onPrimaryActionClick={handleSaveClick}
+      />
     </div>
-    
   );
 }
 

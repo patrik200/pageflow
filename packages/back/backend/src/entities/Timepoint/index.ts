@@ -4,7 +4,7 @@ import { GoalEntity } from "../Goal";
 
 @Entity({ name: "goal_time_points" })
 export class TimepointEntity extends BaseGeneratedIDEntity {
-    @ManyToOne(() => GoalEntity,  { onDelete: "CASCADE" })
+    @ManyToOne(() => GoalEntity, { onDelete: "CASCADE" })
     goal!: GoalEntity;
 
     @Column()

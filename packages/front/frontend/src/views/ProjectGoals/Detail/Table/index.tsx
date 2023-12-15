@@ -14,7 +14,7 @@ import {
 import { observer } from "mobx-react-lite";
 import { useBoolean } from "@worksolutions/react-utils";
 import EditTimepointModal from "views/ProjectGoals/Modals/EditTimepoint";
-import { hidenWrapperStyles, wrapperStyles } from "./style.css";
+import { createButtonStyles, hidenWrapperStyles, wrapperStyles } from "./style.css";
 import DaysRemaining from "components/DaysRemaining";
 
 import TimepointActions from "./Actions";
@@ -63,9 +63,7 @@ function TimePointsTable({ goal, opened }: TimePointsTableInterface) {
                 </TableCellDefaultText>
               </TableCell>
               <TableCell>
-                <TableCellDefaultText className={typographyOptionalStyleVariants.noWrap}>
-                  {timepoint.description}
-                </TableCellDefaultText>
+                <TableCellDefaultText>{timepoint.description}</TableCellDefaultText>
               </TableCell>
               <TableCell>
                 <TableCellDefaultText className={typographyOptionalStyleVariants.noWrap}>
@@ -81,7 +79,7 @@ function TimePointsTable({ goal, opened }: TimePointsTableInterface) {
             </TableRow>
           ))}
           <TableRow>
-            <Button type="WITHOUT_BORDER" iconLeft="plusLine" onClick={onOpen}>
+            <Button type="WITHOUT_BORDER" iconLeft="plusLine" onClick={onOpen} className={createButtonStyles}>
               {t({ scope: "time_point_tab", place: "actions", name: "create" })}
             </Button>
           </TableRow>
@@ -90,6 +88,6 @@ function TimePointsTable({ goal, opened }: TimePointsTableInterface) {
       <EditTimepointModal goalId={goal.id} opened={modalOpened} close={onClose} />
     </div>
   );
-}
+        }
 
 export default observer(TimePointsTable);
