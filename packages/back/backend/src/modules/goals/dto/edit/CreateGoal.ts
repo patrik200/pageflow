@@ -15,12 +15,7 @@ export class RequestCreateGoalDTO {
   description?: string;
 
   @Expose()
-  @IsOptional()
+  @IsDefined({ message: dtoMessageIsDefined })
   @IsString({ message: dtoMessageIsValidValue })
   projectId?: string;
-
-  @Expose()
-  @IsOptional()
-  @IsBoolean({ message: dtoMessageIsValidValue })
-  impelement!: boolean;
 }

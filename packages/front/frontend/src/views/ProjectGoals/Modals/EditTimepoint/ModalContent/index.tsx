@@ -1,9 +1,8 @@
 import React from "react";
 import { useRouter, useTranslation, useViewContext } from "@app/front-kit";
-import { ModalActions, ModalTitle} from "@app/ui-kit";
+import { ModalActions, ModalTitle } from "@app/ui-kit";
 import TextField from "components/FormField/Text";
 import { TimepointEntity } from "core/entities/goal/timepoint";
-import { EditGoalEntity } from "core/storages/goal/entities/EditGoal";
 import GroupedContent from "components/FormField/GroupedContent";
 import { GoalStorage } from "core/storages/goal";
 import { emitRequestError } from "core/emitRequest";
@@ -14,14 +13,14 @@ import Date from "components/FormField/Date";
 import { wrapperStyles } from "./style.css";
 
 interface ModalContentInterface {
-  goalId?: string; 
+  goalId?: string;
   timepoint?: TimepointEntity;
   close: () => void;
   onSuccess?: () => void;
 }
 
 function ModalContent({ timepoint, goalId, close, onSuccess }: ModalContentInterface) {
-  const { createTimepoint, updateTimepoint,  loadGoals } = useViewContext().containerInstance.get(GoalStorage);
+  const { createTimepoint, updateTimepoint, loadGoals } = useViewContext().containerInstance.get(GoalStorage);
   const { query } = useRouter();
   const { t } = useTranslation("goal-detail");
   const entity = React.useMemo(
@@ -33,14 +32,14 @@ function ModalContent({ timepoint, goalId, close, onSuccess }: ModalContentInter
     const result = timepoint ? await updateTimepoint(entity.options.id!, entity) : await createTimepoint(entity);
 
     if (result.success) {
-      loadGoals(query.id as string)
+      loadGoals(query.id as string);
       close();
       onSuccess?.();
       return;
     }
 
     emitRequestError(undefined, result.error, "Unexpected error");
-  }, [close, createTimepoint, entity, timepoint, onSuccess, updateTimepoint]);
+  }, [timepoint, updateTimepoint, entity, createTimepoint, loadGoals, query, close, onSuccess]);
 
   const [{ loading }, asyncHandleUpdateTimepoint] = useAsyncFn(handleSaveTimepoint, [handleSaveTimepoint]);
 
@@ -51,15 +50,35 @@ function ModalContent({ timepoint, goalId, close, onSuccess }: ModalContentInter
 
   return (
     <>
-    <div className={wrapperStyles}>
-      <ModalTitle>{t({scope: "modals", place: "timepoints", name: "title", parameter: timepoint ? "edit": "create"},{name: timepoint?.name})}</ModalTitle>
-      <GroupedContent>
-        <TextField edit placeholder={t({ scope: "time_point_tab", name: "name_field", parameter: "placeholder" })} value={entity.name} onChange={entity.setName} />
-        <TextField edit placeholder={t({ scope: "time_point_tab", name: "description_field", parameter: "placeholder" })} value={entity.description} onChange={entity.setDescription} />
-        <Date edit value={entity.datePlan} onChange={entity.setDatePlan} />
-      </GroupedContent>
-      <ModalActions primaryActionText={t({scope: "modals", place: "timepoints", name: "actions", parameter: "save"})} primaryActionLoading={loading} onPrimaryActionClick={handleSaveClick} />
-    </div>
+      <div className={wrapperStyles}>
+        <ModalTitle>
+          {t(
+            { scope: "modals", place: "timepoints", name: "title", parameter: timepoint ? "edit" : "create" },
+            { name: timepoint?.name },
+          )}
+        </ModalTitle>
+        <GroupedContent>
+          <TextField
+            edit
+            errorMessage={entity.viewErrors.name}
+            placeholder={t({ scope: "time_point_tab", name: "name_field", parameter: "placeholder" })}
+            value={entity.name}
+            onChange={entity.setName}
+          />
+          <TextField
+            edit
+            placeholder={t({ scope: "time_point_tab", name: "description_field", parameter: "placeholder" })}
+            value={entity.description}
+            onChange={entity.setDescription}
+          />
+          <Date edit errorMessage={entity.viewErrors.datePlan} value={entity.datePlan} onChange={entity.setDatePlan} />
+        </GroupedContent>
+        <ModalActions
+          primaryActionText={t({ scope: "modals", place: "timepoints", name: "actions", parameter: "save" })}
+          primaryActionLoading={loading}
+          onPrimaryActionClick={handleSaveClick}
+        />
+      </div>
     </>
   );
 }

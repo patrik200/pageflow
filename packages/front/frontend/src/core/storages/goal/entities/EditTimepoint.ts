@@ -1,6 +1,6 @@
 import { computed, observable } from "mobx";
-import { BaseEntity, makeFnTransformableObject, makeTransformableObject } from "@app/kit";
-import { MinLength } from "class-validator";
+import { BaseEntity, makeFnTransformableObject } from "@app/kit";
+import { MinLength, IsDefined } from "class-validator";
 
 import { NOT_EMPTY_VALIDATION } from "core/commonValidationErrors";
 
@@ -13,16 +13,16 @@ export class EditTimepointEntity extends BaseEntity {
 
   static buildFromTimepoint(timePoint: TimepointEntity) {
     return makeFnTransformableObject(
-      () => new EditTimepointEntity({id: timePoint.id}),
+      () => new EditTimepointEntity({ id: timePoint.id }),
       () => ({
         name: timePoint.name,
         description: timePoint.description ?? "",
-        datePlan: timePoint.datePlan
+        datePlan: timePoint.datePlan,
       }),
     );
   }
 
-  constructor(public options: { id?: string, _goalId?: string }) {
+  constructor(public options: { id?: string; _goalId?: string }) {
     super();
     this.initEntity();
   }
@@ -32,8 +32,8 @@ export class EditTimepointEntity extends BaseEntity {
 
   @observable description = "";
   setDescription = this.createSetter("description");
-  
-  @observable datePlan!: Date;
+
+  @observable @IsDefined({ message: NOT_EMPTY_VALIDATION }) datePlan!: Date;
   setDatePlan = this.createSetter("datePlan");
 
   @computed get apiReady() {

@@ -1,4 +1,4 @@
-import { useRouter, useViewContext } from "@app/front-kit";
+import { useRouter, useTranslation, useViewContext } from "@app/front-kit";
 import { GoalStorage } from "core/storages/goal";
 import React from "react";
 import { useAsyncFn } from "@worksolutions/react-utils";
@@ -9,15 +9,16 @@ import { GoalEntity } from "core/entities/goal/goal";
 import { buttonStyles } from "./style.css";
 import { useReorder } from "views/Settings/DictionariesView/DictionaryCard/hooks";
 interface DeleteGoalActionInterface {
-    entity: GoalEntity;
-  }
-  
+  entity: GoalEntity;
+}
+
 
 function DeleteButton({ entity }: DeleteGoalActionInterface) {
+  const { t } = useTranslation("goal-detail")
   const { deleteGoal, loadGoals } = useViewContext().containerInstance.get(GoalStorage);
   const { query } = useRouter()
-  const [{loading}, asyncDeleteGoal] = useAsyncFn(deleteGoal, [deleteGoal])
-  
+  const [{ loading }, asyncDeleteGoal] = useAsyncFn(deleteGoal, [deleteGoal])
+
   const handleDelete = React.useCallback(async () => {
     const result = await asyncDeleteGoal(entity.id)
     if (result.success) {
@@ -29,7 +30,7 @@ function DeleteButton({ entity }: DeleteGoalActionInterface) {
   }, []);
 
   return (
-    <Button className={buttonStyles} size="SMALL" type="PRIMARY" loading={loading} onClick={handleDelete} > Удал </Button>
+    <Button className={buttonStyles} size="SMALL" type="PRIMARY" loading={loading} onClick={handleDelete} >{t({ scope: "main_tab", place: "actions", name: "delete" })}</Button>
   );
 };
 

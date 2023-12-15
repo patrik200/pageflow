@@ -1,8 +1,8 @@
-import { IsDefined, IsOptional, IsString, IsBoolean } from "class-validator";
+import { IsOptional, IsString } from "class-validator";
 import { Expose } from "class-transformer";
-
-import { dtoMessageIsDefined, dtoMessageIsValidValue } from "constants/dtoErrorMessage";
 import { IsDate } from "@app/kit";
+
+import { dtoMessageIsValidValue } from "constants/dtoErrorMessage";
 
 export class RequestEditTimepointDTO {
   @Expose()

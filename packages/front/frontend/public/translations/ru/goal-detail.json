@@ -5,6 +5,11 @@
     },
     "description_field": {
       "placeholder": "Описание"
+    },
+    "actions": {
+      "edit": "Редактировать",
+      "delete": "Удалить",
+      "more": "Подробнее"
     }
   },
   "create_goal": {

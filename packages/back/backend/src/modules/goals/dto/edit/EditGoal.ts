@@ -1,11 +1,11 @@
-import { IsDefined, IsOptional, IsString, IsBoolean } from "class-validator";
+import { IsOptional, IsString } from "class-validator";
 import { Expose } from "class-transformer";
 
-import { dtoMessageIsDefined, dtoMessageIsValidValue } from "constants/dtoErrorMessage";
+import { dtoMessageIsValidValue } from "constants/dtoErrorMessage";
 
 export class RequestEditGoalDTO {
   @Expose()
-  @IsDefined({ message: dtoMessageIsDefined })
+  @IsOptional()
   @IsString({ message: dtoMessageIsValidValue })
   name?: string;
 
@@ -13,9 +13,4 @@ export class RequestEditGoalDTO {
   @IsOptional()
   @IsString({ message: dtoMessageIsValidValue })
   description?: string;
-
-  @Expose()
-  @IsOptional()
-  @IsBoolean({ message: dtoMessageIsValidValue })
-  impelement?: boolean;
 }
