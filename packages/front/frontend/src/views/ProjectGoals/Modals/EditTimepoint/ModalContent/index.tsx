@@ -21,7 +21,8 @@ interface ModalContentInterface {
 }
 
 function ModalContent({ timepoint, goalId, close, onSuccess }: ModalContentInterface) {
-  const { createTimepoint, updateTimepoint } = useViewContext().containerInstance.get(GoalStorage);
+  const { createTimepoint, updateTimepoint,  loadGoals } = useViewContext().containerInstance.get(GoalStorage);
+  const { query } = useRouter();
   const { t } = useTranslation("goal-detail");
   const entity = React.useMemo(
     () => (timepoint ? EditTimepointEntity.buildFromTimepoint(timepoint) : EditTimepointEntity.buildEmpty(goalId!)),
@@ -32,6 +33,7 @@ function ModalContent({ timepoint, goalId, close, onSuccess }: ModalContentInter
     const result = timepoint ? await updateTimepoint(entity.options.id!, entity) : await createTimepoint(entity);
 
     if (result.success) {
+      loadGoals(query.id as string)
       close();
       onSuccess?.();
       return;

@@ -18,7 +18,7 @@ interface ModalContentInterface {
 
 function ModalContent({ goal, close, onSuccess }: ModalContentInterface) {
   const { query } = useRouter();
-  const { createGoal, updateGoal } = useViewContext().containerInstance.get(GoalStorage);
+  const { createGoal, updateGoal, loadGoals } = useViewContext().containerInstance.get(GoalStorage);
   const { t } = useTranslation("goal-detail");
   const entity = React.useMemo(
     () => (goal ? EditGoalEntity.buildFromGoal(goal) : EditGoalEntity.buildEmpty(query.id as string)),
@@ -29,6 +29,7 @@ function ModalContent({ goal, close, onSuccess }: ModalContentInterface) {
     const result = goal ? await updateGoal(entity.options.id!, entity) : await createGoal(entity);
 
     if (result.success) {
+      loadGoals(query.id as string)
       close();
       onSuccess?.();
       return;

@@ -1,4 +1,4 @@
-import { useViewContext } from "@app/front-kit";
+import { useRouter, useViewContext } from "@app/front-kit";
 import { GoalStorage } from "core/storages/goal";
 import React from "react";
 import { useAsyncFn } from "@worksolutions/react-utils";
@@ -13,12 +13,14 @@ interface DeleteTimepointActionInterface {
 
 function DeleteButton({ entity, onOpenedChange }: DeleteTimepointActionInterface) {
   const { deleteTimepoint } = useViewContext().containerInstance.get(GoalStorage);
-
+  const { loadGoals } = useViewContext().containerInstance.get(GoalStorage);
+  const { query } = useRouter();
   const [{ loading }, asyncDeleteTimepoint] = useAsyncFn(deleteTimepoint, [deleteTimepoint]);
 
   const handleDelete = React.useCallback(async () => {
     const result = await asyncDeleteTimepoint(entity.id);
     if (result.success) {
+      loadGoals(query.id as string)
       return;
     }
 

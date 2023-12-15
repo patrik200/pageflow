@@ -9,6 +9,7 @@ import Actions from "./Actions";
 import { useViewContext } from "@app/front-kit";
 import { GoalStorage } from "core/storages/goal";
 import CardLoading from "components/Card/pressets/CardLoading";
+import CreateGoal from "./Actions/CreateGoal";
 
 interface GoalsTableInterface {
   projectId: string;
