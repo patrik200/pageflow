@@ -41,7 +41,7 @@ export class ProjectsController {
     private deleteProjectService: DeleteProjectService,
     private editProjectPreviewService: EditProjectPreviewService,
     private deleteProjectPreviewService: DeleteProjectPreviewService,
-  ) {}
+  ) { }
 
   @Get()
   @withUserAuthorized([UserRole.USER])
@@ -81,7 +81,6 @@ export class ProjectsController {
       loadContractor: true,
       loadContractorLogo: true,
       loadAuthorAvatar: true,
-      loadGoals: true,
     });
 
     return new ControllerResponse(ResponseProjectDTO, project);

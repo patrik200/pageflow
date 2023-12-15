@@ -49,8 +49,6 @@ export class ProjectEntity extends MinimalProjectEntity {
 
   @observable @Expose() @IsDefined() @IsNumber() activeTicketsCount!: number;
 
-  @observable @Expose() @IsDefined() @Type(() => GoalEntity) @ValidateNested({ each: true }) goals!: GoalEntity[];
-
   @observable
   @Expose()
   @Type(() => UserEntity)

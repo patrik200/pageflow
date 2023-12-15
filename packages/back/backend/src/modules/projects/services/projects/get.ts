@@ -21,7 +21,7 @@ export class GetProjectService {
     private getProjectIsFavouritesService: GetProjectIsFavouritesService,
     private getGoalsListService: GetGoalsListService,
     @Inject(forwardRef(() => PermissionAccessService)) private permissionAccessService: PermissionAccessService,
-  ) {}
+  ) { }
 
   async getProjectOrFail(
     projectId: string,
@@ -77,30 +77,26 @@ export class GetProjectService {
         preview: options.loadPreview,
         contractor: options.loadContractor
           ? {
-              logo: options.loadContractorLogo,
-            }
+            logo: options.loadContractorLogo,
+          }
           : false,
       },
     });
 
     if (!unsafeIgnoreClient) project.calculateAllCans(getCurrentUser());
 
-    if (options.loadGoals) {
-      project.goals = await this.getGoalsListService.getGoalsListOrFail({projectId: project.id})
-    }
-
     await Promise.all([
       loadFavourites && this.getProjectIsFavouritesService.loadProjectIsFavourite(project),
       loadActiveTicketsCount &&
-        this.getActiveTicketsCountService
-          .unsafeGetActiveTicketsCountForProject(project.id)
-          .then((activeTicketsCount) => (project.activeTicketsCount = activeTicketsCount)),
+      this.getActiveTicketsCountService
+        .unsafeGetActiveTicketsCountForProject(project.id)
+        .then((activeTicketsCount) => (project.activeTicketsCount = activeTicketsCount)),
       loadPermissions &&
-        this.permissionAccessService.loadPermissions(
-          { entityId: project.id, entityType: PermissionEntityType.PROJECT },
-          project,
-          { loadUser: true, unsafeIgnoreClient },
-        ),
+      this.permissionAccessService.loadPermissions(
+        { entityId: project.id, entityType: PermissionEntityType.PROJECT },
+        project,
+        { loadUser: true, unsafeIgnoreClient },
+      ),
     ]);
 
     return project;

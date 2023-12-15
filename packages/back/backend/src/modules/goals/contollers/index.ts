@@ -2,7 +2,7 @@ import { Body, Controller, Get, Param, Patch, Post, Query, Delete } from "@nestj
 import { ControllerResponse, ServiceError } from "@app/back-kit";
 import { GetGoalService } from "../service/goal/get";
 import { CreateGoalsService } from "../service/goal/create";
-import { ResponseGoalDTO } from "../dto/get/Goal";
+import { ResponseGoalDTO, ResponseGoalsListDTO } from "../dto/get/Goal";
 import { RequestCreateGoalDTO } from "../dto/edit/CreateGoal";
 import { RequestCreateTimePointDTO } from "../dto/edit/CreateTimePoint";
 import { RequestEditGoalDTO } from "../dto/edit/EditGoal";
@@ -31,6 +31,12 @@ export class GoalController {
     private deleteGoalService: DeleteGoalService,
     private deleteTimepointService: DeleteTimepointService,
   ) { }
+
+  @Get("projects/:id")
+  async getGoalsList(@Param("id") id: string) {
+    const list = await this.getGoalsListService.getGoalsListOrFail({ projectId: id }, { loadTimepoints: true });
+    return new ControllerResponse(ResponseGoalsListDTO, { list });
+  }
 
   @Get(":id")
   async getGoal(@Param("id") id: string) {
