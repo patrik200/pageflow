@@ -7,19 +7,24 @@ import { useTranslation } from "@app/front-kit";
 import EditGoalModal from "views/ProjectGoals/Modals/EditGoal";
 import { buttonStyles } from "./style.css";
 import Card from "components/Card";
+import { GoalEntity } from "core/entities/goal/goal";
 
-function CreateGoalAction() {
+interface EditGoalInterface {
+  entity: GoalEntity
+}
+
+function EditGoalAction({ entity } : EditGoalInterface) {
   const [opened, onOpen, onClose] = useBoolean(false);
   const { t } = useTranslation("goal-detail");
 
   return (
-    <Card>
+    <>
       <Button size="SMALL" type="PRIMARY" onClick={onOpen} className={buttonStyles}>
-        {t({ scope: "create_goal", place: "actions", name: "create" })}
+        {/* {t({ scope: "edit_goal", place: "actions", name: "create" })} */}Редактировать
       </Button>
-      <EditGoalModal opened={opened} close={onClose} />
-    </Card>
+      <EditGoalModal goal={entity} opened={opened} close={onClose} />
+    </>
   );
 }
 
-export default observer(CreateGoalAction);
+export default observer(EditGoalAction);

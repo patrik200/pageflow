@@ -4,6 +4,7 @@ import Detail from "views/ProjectGoals/Detail";
 
 import { GoalEntity } from "core/entities/goal/goal";
 import Actions from "./Actions";
+import CreateGoal from "./Actions/CreateGoal";
 
 interface GoalsTableInterface {
   goals: GoalEntity[];
@@ -12,7 +13,7 @@ interface GoalsTableInterface {
 function GoalsList({ goals }: GoalsTableInterface) {
   return (
     <div>
-      <Actions />
+      <CreateGoal />
       {goals.map((goal, index) => (
         <Detail key={index} goal={goal} />
       ))}

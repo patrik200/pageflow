@@ -5,7 +5,7 @@ import { useToggle } from "@worksolutions/react-utils";
 import Card from "components/Card";
 
 import Table from "./Table";
-
+import GoalActions from "../List/Actions";
 import {
   lineStyles,
   pointStyles,
@@ -14,6 +14,7 @@ import {
   descriptionStyles,
   lineWrapperStyles,
   buttonStyles,
+  titleWrapperStyles,
 } from "./style.css";
 import { Button } from "@app/ui-kit";
 import { GoalEntity } from "core/entities/goal/goal";
@@ -27,7 +28,9 @@ function GoalsDetail({ goal }: GoalsDetailInterface) {
 
   return (
     <Card className={wrapperStyles}>
-      <div className={nameStyles}>{goal.name}</div>
+      <div className={titleWrapperStyles}><div className={nameStyles}>{goal.name}</div>
+      <GoalActions goal={goal}/>
+      </div>
       <div className={descriptionStyles}>{goal.description}</div>
       <div className={lineWrapperStyles}>
         <div className={lineStyles}>

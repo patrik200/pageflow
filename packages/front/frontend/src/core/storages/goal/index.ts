@@ -115,6 +115,7 @@ export class GoalStorage extends Storage {
       })({ urlParams: { goalId } });
       return { success: true } as const;
     } catch (error) {
+      console.log(goalId)
       return { success: false, error: parseServerError(error) } as const;
     }
   }

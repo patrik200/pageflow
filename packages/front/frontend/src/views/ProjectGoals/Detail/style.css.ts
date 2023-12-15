@@ -47,3 +47,9 @@ export const buttonStyles = style({
   color: "black",
   marginBottom: 16,
 });
+
+export const titleWrapperStyles = style({
+  display: "flex",
+  flexDirection: "row",
+  justifyContent: "space-between",
+})
