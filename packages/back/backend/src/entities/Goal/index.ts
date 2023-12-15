@@ -17,7 +17,4 @@ export class GoalEntity extends BaseGeneratedIDEntity {
 
   @Column({ type: "text", nullable: true })
   description!: string | null;
-
-  @Column()
-  implemented!: boolean;
 }

@@ -29,8 +29,7 @@ export class CreateGoalsService {
     const savedGoal = await this.goalsRepository.save({
       name: data.name,
       description: data.description,
-      project: { id: data.projectId },
-      implemented: false,
+      project: { id: data.projectId }
     });
 
     this.eventEmitter.emit(GoalCreated.eventName, new GoalCreated(savedGoal));

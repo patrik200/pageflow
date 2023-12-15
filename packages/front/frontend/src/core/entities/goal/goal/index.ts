@@ -18,9 +18,6 @@ export class GoalEntity extends BaseEntity {
   @Expose() @IsOptional() @IsString() @withDefaultValue("") description!: string;
 
   @Expose() @IsDefined() @Type(() => TimepointEntity) @ValidateNested({ each: true }) timepoints!: TimepointEntity[];
-
-  @observable @Expose() @IsDefined() @IsBoolean() @withDefaultValue(false) implemented!: boolean;
-  setImplemented = this.createSetter("implemented");
 }
 
 export const arrayOfGoalsDecoder = arrayOfEntitiesDecoder(GoalEntity);
