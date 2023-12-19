@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { Repository } from "typeorm";
+import { FindOptionsWhere, Repository } from "typeorm";
 import { Transactional } from "typeorm-transactional";
 
 import { DocumentEntity } from "entities/Document/Document";
@@ -13,19 +13,27 @@ export class RemoveDocumentFavouritesService {
   constructor(
     @InjectRepository(DocumentEntity) private documentRepository: Repository<DocumentEntity>,
     @InjectRepository(DocumentFavouriteEntity)
-    private documentFavouriteRepository: Repository<DocumentFavouriteEntity>,
+    private favouriteRepository: Repository<DocumentFavouriteEntity>,
   ) {}
 
   @Transactional()
-  async removeDocumentFavouriteOrFail(documentId: string) {
-    const { clientId, userId } = getCurrentUser();
+  async removeDocumentFavouriteOrFail(documentId: string, { forAllUsers }: { forAllUsers: boolean }) {
+    const documentFindOptions: FindOptionsWhere<DocumentEntity> = { id: documentId };
+    const favouriteFindOptions: FindOptionsWhere<DocumentFavouriteEntity> = {};
+
+    const currentUser = getCurrentUser();
+    documentFindOptions.client = { id: currentUser.clientId };
+
+    if (!forAllUsers) {
+      favouriteFindOptions.user = { id: currentUser.userId };
+    }
+
     const document = await this.documentRepository.findOneOrFail({
-      withDeleted: true,
-      where: { id: documentId, client: { id: clientId } },
+      where: documentFindOptions,
     });
-    await this.documentFavouriteRepository.delete({
-      document: { id: document.id },
-      user: { id: userId },
-    });
+
+    favouriteFindOptions.document = { id: document.id };
+
+    await this.favouriteRepository.delete(favouriteFindOptions);
   }
 }

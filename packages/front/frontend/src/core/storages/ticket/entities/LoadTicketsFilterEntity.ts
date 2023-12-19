@@ -6,14 +6,14 @@ import { TicketSortingFields, TicketPriorities } from "@app/shared-enums";
 import { filterChangeSubscriber } from "core/entities/_utils/filterChangeSubscriber";
 
 export class LoadTicketsFilterEntity extends BaseEntity {
-  static buildEmpty(boardId: string) {
+  static buildEmpty(boardId: string | undefined) {
     return new LoadTicketsFilterEntity(boardId);
   }
 
-  constructor(private boardId: string) {
+  constructor(private boardId: string | undefined) {
     super();
     this.initEntity();
-    this.setSorting(TicketSortingFields.CREATED_AT, "DESC");
+    if (typeof window !== "undefined") this.setSorting(TicketSortingFields.CREATED_AT, "DESC");
   }
 
   @observable presentationType: "kanban" | "list" = "kanban";

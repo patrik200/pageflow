@@ -2,6 +2,7 @@ import { METHODS } from "@app/kit";
 import { Inject, Service } from "typedi";
 import { action, observable } from "mobx";
 import { InternalRequestManager, parseServerError, Storage } from "@app/front-kit";
+import { PaymentType } from "@app/shared-enums";
 
 import { SubscriptionEntity } from "core/entities/subscription/subscription";
 import { SubscriptionBuyEntity } from "core/entities/subscription/buy";
@@ -46,13 +47,13 @@ export class SubscriptionStorage extends Storage {
     }
   };
 
-  @action buySubscription = async () => {
+  @action buySubscription = async (data: { paymentType: PaymentType }) => {
     try {
       const result = await this.requestManager.createRequest({
         url: "/subscription/buy",
         method: METHODS.POST,
         serverDataEntityDecoder: SubscriptionBuyEntity,
-      })();
+      })({ body: { paymentType: data.paymentType } });
       return { success: true, data: result } as const;
     } catch (error) {
       return { success: false, error: parseServerError(error) } as const;

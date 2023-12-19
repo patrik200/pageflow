@@ -8,7 +8,7 @@ import { Socket } from "socket.io";
 import { ServiceError } from "@app/back-kit";
 
 import { GetSubscriptionService } from "modules/subscription/services/get";
-import { GetClientsService } from "modules/clients/services/client/get";
+import { GetClientService } from "modules/clients/services/client/get";
 
 import { AuthUserEntity } from "types/express";
 
@@ -19,7 +19,7 @@ export class JwtAuthStrategy extends PassportStrategy(PassportJwtStrategy, "jwt"
   constructor(
     private userAuthService: UserGetterService,
     @Inject(forwardRef(() => GetSubscriptionService)) private getSubscriptionService: GetSubscriptionService,
-    @Inject(forwardRef(() => GetClientsService)) private getClientsService: GetClientsService,
+    @Inject(forwardRef(() => GetClientService)) private getClientService: GetClientService,
   ) {
     super({
       ignoreExpiration: true,
@@ -44,8 +44,8 @@ export class JwtAuthStrategy extends PassportStrategy(PassportJwtStrategy, "jwt"
 
     const [validatedUserInfo, subscription, client] = await Promise.all([
       userInfo.validateTokenPromise,
-      this.getSubscriptionService.unsafeGetSubscriptionByClientIdOrFail(userInfo.unsafeUserInfo.clientId),
-      this.getClientsService.getClientByIdOrFail(userInfo.unsafeUserInfo.clientId),
+      this.getSubscriptionService.dangerGetSubscriptionByClientIdOrFail(userInfo.unsafeUserInfo.clientId),
+      this.getClientService.dangerGetClientByIdOrFail(userInfo.unsafeUserInfo.clientId),
     ]);
 
     if (!validatedUserInfo) throw new ServiceError("token", "Токен доступа не действителен", 400).serializeToHttp();

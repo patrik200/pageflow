@@ -1,6 +1,7 @@
 import { forwardRef, Inject, Injectable, OnApplicationBootstrap } from "@nestjs/common";
 import { EventEmitter2 } from "@nestjs/event-emitter";
 import { Transactional } from "typeorm-transactional";
+import { SentryTextService } from "@app/back-kit";
 
 import { AppNotification, NotificationService } from "modules/notifications";
 
@@ -13,6 +14,7 @@ export class CorrespondenceRevisionCommentEventListenerService implements OnAppl
     @Inject(forwardRef(() => NotificationService)) private notificationService: NotificationService,
     private getCorrespondenceRevisionCommentService: GetCorrespondenceRevisionCommentService,
     private eventEmitter: EventEmitter2,
+    private sentryTextService: SentryTextService,
   ) {}
 
   @Transactional()
@@ -45,7 +47,12 @@ export class CorrespondenceRevisionCommentEventListenerService implements OnAppl
     this.eventEmitter.on(
       CorrespondenceRevisionCommentCreated.eventName,
       (event: CorrespondenceRevisionCommentCreated) =>
-        this.handleCommentCreated(event.commentId, event.triggerUserId).catch(() => null),
+        this.handleCommentCreated(event.commentId, event.triggerUserId).catch((e) =>
+          this.sentryTextService.error(e, {
+            context: CorrespondenceRevisionCommentCreated.eventName,
+            contextService: CorrespondenceRevisionCommentEventListenerService.name,
+          }),
+        ),
     );
   }
 }

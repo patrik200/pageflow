@@ -1,12 +1,12 @@
 import { createParamDecorator, ExecutionContext, HttpException, HttpStatus } from "@nestjs/common";
 import { PaginationQueryInterface } from "@app/kit";
 
-import { BaseExpressRequestWithoutUser } from "types";
+import { BaseExpressRequest } from "types";
 
 function getPageParamsFromExecutionContext(ctx: ExecutionContext) {
   switch (ctx.getType()) {
     case "http": {
-      const request = ctx.switchToHttp().getRequest<BaseExpressRequestWithoutUser>();
+      const request = ctx.switchToHttp().getRequest<BaseExpressRequest<{}>>();
       const { page, perPage } = Object.assign({}, request.query, request.body);
       return { page, perPage };
     }

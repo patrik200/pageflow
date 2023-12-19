@@ -14,10 +14,11 @@ import UpdateDictionaryValueModal from "./UpdateValueModal";
 import { useReorder } from "./hooks";
 
 interface DictionaryCardInterface {
+  className?: string;
   dictionary: DictionaryEntity;
 }
 
-function DictionaryCard({ dictionary }: DictionaryCardInterface) {
+function DictionaryCard({ className, dictionary }: DictionaryCardInterface) {
   const { t } = useTranslation("settings");
   const list = useObservableAsDeferredMemo(
     (values): DictionaryValueRowInterface[] => values.map((value) => ({ value, valueKey: value.key, dictionary })),
@@ -30,7 +31,11 @@ function DictionaryCard({ dictionary }: DictionaryCardInterface) {
   const [reorderLoading, handleReorder] = useReorder(dictionary);
 
   return (
-    <CardTitlePreset title={t({ scope: "common:dictionary_types", name: dictionary.type })} size="small">
+    <CardTitlePreset
+      className={className}
+      title={t({ scope: "common:dictionary_types", name: dictionary.type })}
+      size="small"
+    >
       <SingleColumnDraggableList
         list={list}
         loading={reorderLoading}

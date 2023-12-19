@@ -36,12 +36,11 @@ export class GetCorrespondenceRootGroupService {
     @Inject(forwardRef(() => GetDocumentService)) private getDocumentService: GetDocumentService,
   ) {}
 
-  async unsafeGetCorrespondenceRootGroupOrFail(
+  async dangerGetCorrespondenceRootGroupOrFail(
+    clientId: string,
     identifierOptions: GetCorrespondenceRootGroupIdentifier,
     options: CorrespondenceRootGroupSelectOptions = {},
   ) {
-    const currentUser = getCurrentUser();
-
     const commonRelations: FindOptionsRelations<CorrespondenceRootGroupEntity> = {
       client: true,
       parentDocument: options.loadParentDocument,
@@ -60,14 +59,14 @@ export class GetCorrespondenceRootGroupService {
 
     if ("rootGroupId" in identifierOptions) {
       return await this.correspondenceRootGroupRepository.findOneOrFail({
-        where: { client: { id: currentUser.clientId }, id: identifierOptions.rootGroupId },
+        where: { client: { id: clientId }, id: identifierOptions.rootGroupId },
         relations: commonRelations,
       });
     }
 
     if ("projectId" in identifierOptions) {
       return await this.correspondenceRootGroupRepository.findOneOrFail({
-        where: { client: { id: currentUser.clientId }, parentProject: { id: identifierOptions.projectId } },
+        where: { client: { id: clientId }, parentProject: { id: identifierOptions.projectId } },
         relations: {
           ...commonRelations,
           parentProject: true,
@@ -77,7 +76,7 @@ export class GetCorrespondenceRootGroupService {
 
     if ("documentId" in identifierOptions) {
       return await this.correspondenceRootGroupRepository.findOneOrFail({
-        where: { client: { id: currentUser.clientId }, parentDocument: { id: identifierOptions.documentId } },
+        where: { client: { id: clientId }, parentDocument: { id: identifierOptions.documentId } },
         relations: {
           ...commonRelations,
           parentDocument: true,
@@ -86,9 +85,17 @@ export class GetCorrespondenceRootGroupService {
     }
 
     return await this.correspondenceRootGroupRepository.findOneOrFail({
-      where: { client: { id: currentUser.clientId }, parentProject: IsNull(), parentDocument: IsNull() },
+      where: { client: { id: clientId }, parentProject: IsNull(), parentDocument: IsNull() },
       relations: commonRelations,
     });
+  }
+
+  async unsafeGetCorrespondenceRootGroupOrFail(
+    identifierOptions: GetCorrespondenceRootGroupIdentifier,
+    options: CorrespondenceRootGroupSelectOptions = {},
+  ) {
+    const currentUser = getCurrentUser();
+    return await this.dangerGetCorrespondenceRootGroupOrFail(currentUser.clientId, identifierOptions, options);
   }
 
   async getCorrespondenceRootGroupOrFail(

@@ -10,6 +10,8 @@ export class StorageFileEntity extends BaseIDEntity {
 
   @Column() size!: number;
 
+  @Column({ default: false }) public!: boolean;
+
   @ManyToOne(() => StorageFileEntity, (file) => file.childVariants, { nullable: true })
   parentFile!: StorageFileEntity | null;
 

@@ -1,6 +1,8 @@
 import { Body, Controller, Get, Post } from "@nestjs/common";
 import { ControllerResponse } from "@app/back-kit";
 
+import { megabyteToByte } from "utils/megabyteToByte";
+
 import { CreateClientLandingService } from "../services/client/create";
 import { GetTariffsLandingService } from "../services/tariffs/create";
 
@@ -27,7 +29,7 @@ export class LandingController {
       companyName: body.companyName,
       name: body.name,
       email: body.email,
-      filesMemoryLimitByte: 1024 * 1024 * 150, // 150Mb
+      filesMemoryLimitByte: megabyteToByte(150),
     });
   }
 }

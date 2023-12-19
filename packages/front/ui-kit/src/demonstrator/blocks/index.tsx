@@ -19,6 +19,7 @@ import { ProgressBarDemo } from "./progressBar";
 import { TooltipDemo } from "./tooltip";
 import { ColorsDemo } from "./colors";
 import { BadgesDemo } from "./badges";
+import { CopyToClipboardDemo } from "./copyToClipboard";
 
 registerDemoComponent("Popup manager", PopupManagerDemo);
 registerDemoComponent("Typography", TypographyDemo);
@@ -40,5 +41,6 @@ registerDemoComponent("Progress bar", ProgressBarDemo);
 registerDemoComponent("Tooltip", TooltipDemo);
 registerDemoComponent("Colors", ColorsDemo);
 registerDemoComponent("Badges", BadgesDemo);
+registerDemoComponent("Copy to clipboard", CopyToClipboardDemo);
 
 sortRegisteredComponents();

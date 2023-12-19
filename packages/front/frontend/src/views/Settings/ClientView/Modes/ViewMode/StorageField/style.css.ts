@@ -10,6 +10,7 @@ export const storageWrapperStyles = style({
 export const storageTextWrapperStyles = style({
   display: "flex",
   justifyContent: "space-between",
+  gap: 64,
 });
 
 export const storageTextStyles = style([body2regularStyles]);

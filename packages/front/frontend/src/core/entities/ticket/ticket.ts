@@ -31,21 +31,25 @@ export class TicketTypeEntity extends BaseEntity {
   @observable @Expose() @IsDefined() @IsString() key!: string;
 }
 
-export class TicketEntity extends BaseEntity {
+export class MinimalTicketEntity extends BaseEntity {
   constructor() {
     super();
     this.initEntity();
   }
 
+  @observable @Expose() @IsDefined() @IsString() slug!: string;
+
+  @observable @Expose() @IsDefined() @IsString() id!: string;
+
+  @observable @Expose() @IsDefined() @IsString() name!: string;
+}
+
+export class TicketEntity extends MinimalTicketEntity {
   private intlDate!: IntlDate;
 
   configure(intlDate: IntlDate) {
     this.intlDate = intlDate;
   }
-
-  @observable @Expose() @IsDefined() @IsString() id!: string;
-
-  @observable @Expose() @IsDefined() @IsString() name!: string;
 
   @observable @Expose() @IsDefined() @IsNumber() sort!: number;
 
@@ -116,6 +120,10 @@ export class TicketEntity extends BaseEntity {
     if (this.priority === TicketPriorities.HIGH) return BadgeColorVariants.ALARM;
     if (this.priority === TicketPriorities.MEDIUM) return BadgeColorVariants.WARNING;
     return BadgeColorVariants.INFO;
+  }
+
+  @computed get fullName() {
+    return `${this.slug} ${this.name}`;
   }
 }
 

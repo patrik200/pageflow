@@ -22,9 +22,8 @@ function CardTitleTabsPreset<CODE extends string>({
   ...props
 }: CardTitleTabsPresetInterface<CODE>) {
   React.useEffect(() => {
-    if (!items.some((item) => item.code === active)) {
-      onChange(items[0].code);
-    }
+    if (items.some((item) => item.code === active)) return;
+    onChange(items[0].code);
   }, [active, items, onChange]);
 
   return (

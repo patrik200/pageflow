@@ -1,14 +1,14 @@
 import { forwardRef, Inject, Injectable } from "@nestjs/common";
 import { ServiceError } from "@app/back-kit";
 
-import { GetClientsService } from "modules/clients";
+import { GetClientService } from "modules/clients";
 
 @Injectable()
 export class ValidateDomainLandingService {
-  constructor(@Inject(forwardRef(() => GetClientsService)) private getClientsService: GetClientsService) {}
+  constructor(@Inject(forwardRef(() => GetClientService)) private getClientService: GetClientService) {}
 
   async validateDomain(domain: string) {
-    const alreadyCreatedClient = await this.getClientsService.getClientIdByDomain(domain);
+    const alreadyCreatedClient = await this.getClientService.getClientIdByDomainOrFail(domain);
     if (alreadyCreatedClient) throw new ServiceError("error", "domain_already_created");
   }
 }

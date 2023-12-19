@@ -15,11 +15,13 @@ import HomeCorrespondenceRevision from "./CorrespondenceRevision";
 import HomeProject from "./Project";
 import HomeCorrespondenceGroup from "./CorrespondenceGroup";
 import HomeDocumentGroup from "./DocumentGroup";
+import Statistics from "./Statistics";
 
 function HomeView() {
   const { t } = useTranslation("home");
   const {
     loadAll,
+    statistics,
     documents,
     documentGroups,
     documentRevisions,
@@ -33,13 +35,14 @@ function HomeView() {
 
   return (
     <PageWrapper loading={loading} title={t({ scope: "meta", name: "title" })}>
+      {statistics && <Statistics statistics={statistics} />}
+
       {documents.length === 0 &&
         documentRevisions.length === 0 &&
         correspondences.length === 0 &&
         correspondenceRevisions.length === 0 &&
-        projects.length === 0 && (
-          <CardTable title={t({ scope: "need_to_add_to_favourites_card", name: "title" })}>{null}</CardTable>
-        )}
+        projects.length === 0 && <CardTable title={t({ scope: "no_favourites", name: "title" })}>{null}</CardTable>}
+
       {documents.length !== 0 && (
         <CardTable title={t({ scope: "documents_card", name: "title" })}>
           {documents.map((document) => (

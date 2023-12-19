@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { Repository } from "typeorm";
+import { FindManyOptions, Repository } from "typeorm";
 
 import { UserFlowEntity } from "entities/UserFlow";
 
@@ -93,5 +93,9 @@ export class GetUserFlowService {
     userFlow.rows?.sort((a, b) => a.sort - b.sort);
     userFlow.calculateAllCans(currentUser);
     return userFlow;
+  }
+
+  async dangerGetUserFlowsList(options?: FindManyOptions<UserFlowEntity>) {
+    return await this.userFlowRepository.find(options);
   }
 }

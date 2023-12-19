@@ -37,7 +37,10 @@ export class DeleteDocumentService {
   ) {}
 
   @Transactional()
-  async deleteDocumentOrFail(documentId: string, { checkPermissions = true }: { checkPermissions?: boolean } = {}) {
+  async deleteDocumentOrFail(
+    documentId: string,
+    { checkPermissions = true, emitEvents = true }: { checkPermissions?: boolean; emitEvents?: boolean } = {},
+  ) {
     const document = await this.getDocumentService.getDocumentOrFail(documentId, {
       loadRevisions: true,
       loadCorrespondenceRootGroup: true,
@@ -54,9 +57,10 @@ export class DeleteDocumentService {
       ...document.revisions.map((revision) =>
         this.deleteDocumentRevisionsService.deleteRevisionOrFail(revision.id, {
           checkPermissions: false,
+          emitEvents: false,
         }),
       ),
-      this.removeDocumentFavouritesService.removeDocumentFavouriteOrFail(document.id),
+      this.removeDocumentFavouritesService.removeDocumentFavouriteOrFail(document.id, { forAllUsers: true }),
       this.deleteCorrespondenceRootGroupService.deleteGroupOrFail(document.correspondenceRootGroup.id),
       this.deletePermissionService.deleteAllPermissionsOrFail({
         entityId: document.id,
@@ -69,7 +73,7 @@ export class DeleteDocumentService {
       this.deleteDocumentsElasticService.elasticDeleteDocumentIndexOrFail(document.id),
     ]);
 
-    this.eventEmitter.emit(DocumentDeleted.eventName, new DocumentDeleted(document.id));
+    if (emitEvents) this.eventEmitter.emit(DocumentDeleted.eventName, new DocumentDeleted(document.id));
   }
 
   @Transactional()

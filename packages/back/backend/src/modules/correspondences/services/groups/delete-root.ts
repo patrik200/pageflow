@@ -36,6 +36,7 @@ export class DeleteCorrespondenceRootGroupService {
         if (parentGroup) return null;
         return this.deleteCorrespondenceService.deleteCorrespondenceOrFail(id, {
           checkPermissions: false,
+          emitEvents: false,
         });
       }),
     ]);

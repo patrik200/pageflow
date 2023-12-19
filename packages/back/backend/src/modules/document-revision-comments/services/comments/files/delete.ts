@@ -28,7 +28,7 @@ export class DeleteDocumentRevisionCommentFilesService {
   @Transactional()
   async deleteCommentFile(
     fileId: string,
-    { checkPermissions = true, emitEvent = true }: { checkPermissions?: boolean; emitEvent?: boolean } = {},
+    { checkPermissions = true, emitEvents = true }: { checkPermissions?: boolean; emitEvents?: boolean } = {},
   ) {
     const commentFile = await this.commentFilesRepository.findOneOrFail({
       where: { file: { id: fileId } },
@@ -48,7 +48,7 @@ export class DeleteDocumentRevisionCommentFilesService {
     await this.commentFilesRepository.delete({ id: commentFile.id });
     await this.deleteFileService.deleteFileOrFail(commentFile.file);
 
-    if (emitEvent)
+    if (emitEvents)
       this.eventEmitter.emit(DocumentRevisionCommentUpdated.eventName, new DocumentRevisionCommentUpdated(comment.id));
   }
 }

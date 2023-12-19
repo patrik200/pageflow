@@ -12,7 +12,7 @@ import { StorageFileEntity } from "entities/StorageFileEntity";
 
 import { S3StorageService } from "../storage-implementations/s3";
 
-type GetStorageFileEntityOptions = { bucket: string; id: string };
+type GetStorageFileEntityOptions = { bucket: string; id: string; onlyPublic?: boolean };
 
 @Injectable()
 export class StorageGetService {
@@ -30,7 +30,7 @@ export class StorageGetService {
   private findOrFailStorageFileEntity({ id, bucket }: GetStorageFileEntityOptions) {
     return this.storageFileRepository.findOneOrFail({
       where: { id, bucket },
-      select: ["id", "bucket", "size"],
+      select: ["id", "bucket", "size", "public"],
     });
   }
 
@@ -43,6 +43,7 @@ export class StorageGetService {
   async getFileStream(options: GetStorageFileEntityOptions, group?: true) {
     try {
       const storageFileEntity = await this.findOrFailStorageFileEntity(options);
+      if (options.onlyPublic && !storageFileEntity.public) return null;
       const readableStream = await this.storageService.getFileContentStreamByID(
         storageFileEntity.bucket,
         storageFileEntity.id,
@@ -57,6 +58,7 @@ export class StorageGetService {
   async getFileBuffer(options: GetStorageFileEntityOptions) {
     try {
       const storageFileEntity = await this.findOrFailStorageFileEntity(options);
+      if (options.onlyPublic && !storageFileEntity.public) return null;
       const readableStream = await this.storageService.getFileContentStreamByID(
         storageFileEntity.bucket,
         storageFileEntity.id,

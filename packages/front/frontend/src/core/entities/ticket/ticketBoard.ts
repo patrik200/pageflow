@@ -22,6 +22,8 @@ export class TicketBoardEntity extends BaseEntity {
 
   @observable @Expose() @IsDefined() @IsString() name!: string;
 
+  @observable @Expose() @IsDefined() @IsString() slug!: string;
+
   @observable @Expose() @IsDefined() @IsBoolean() isPrivate!: boolean;
 
   @observable @Expose() @IsDefined() @IsBoolean() favourite!: boolean;

@@ -14,6 +14,7 @@ export const titleStyles = style([
     paddingLeft: 12,
     fontSize: 14,
     whiteSpace: "nowrap",
+    color: globalThemeColorVars.textSecondary,
   },
 ]);
 

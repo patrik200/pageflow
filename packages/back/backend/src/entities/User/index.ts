@@ -17,8 +17,6 @@ export class UserEntity extends BaseGeneratedIDEntity {
 
   @Index() @Column() name!: string;
 
-  @Column({ default: false, select: false }) system!: boolean;
-
   @Column({ type: "varchar", nullable: true }) position!: string | null;
 
   @Column({ type: "varchar", nullable: true }) phone!: string | null;

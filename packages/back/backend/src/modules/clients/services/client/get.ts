@@ -7,10 +7,10 @@ import { ClientEntity } from "entities/Client";
 import { getCurrentUser } from "modules/auth";
 
 @Injectable()
-export class GetClientsService {
+export class GetClientService {
   constructor(@InjectRepository(ClientEntity) private clientsRepository: Repository<ClientEntity>) {}
 
-  async getClientByIdOrFail(id: string, options: { loadLogo?: boolean } = {}) {
+  async dangerGetClientByIdOrFail(id: string, options: { loadLogo?: boolean } = {}) {
     return await this.clientsRepository.findOneOrFail({
       where: { id },
       relations: { logo: options.loadLogo },
@@ -19,14 +19,14 @@ export class GetClientsService {
 
   async getCurrentClientOrFail(options: { loadLogo?: boolean } = {}) {
     const { clientId } = getCurrentUser();
-    return await this.getClientByIdOrFail(clientId, options);
+    return await this.dangerGetClientByIdOrFail(clientId, options);
   }
 
-  async getClientTenant(domain: string, options: { loadLogo?: boolean } = {}) {
+  async getClientByDomainOrFail(domain: string, options: { loadLogo?: boolean } = {}) {
     return await this.clientsRepository.findOneOrFail({ where: { domain }, relations: { logo: options.loadLogo } });
   }
 
-  async getClientIdByDomain(domain: string) {
+  async getClientIdByDomainOrFail(domain: string) {
     const client = await this.clientsRepository.findOne({ where: { domain } });
     if (!client) return null;
     return client.id;

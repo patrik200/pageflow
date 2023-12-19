@@ -1,10 +1,10 @@
 import { Injectable, Logger } from "@nestjs/common";
-import { ElasticService, errorLogBeautifier } from "@app/back-kit";
+import { ElasticService, SentryTextService } from "@app/back-kit";
 import { isString } from "@worksolutions/utils";
 
 @Injectable()
 export class InitElasticDocumentRevisionsService {
-  constructor(private elasticService: ElasticService) {}
+  constructor(private elasticService: ElasticService, private sentryTextService: SentryTextService) {}
 
   async createIndex() {
     const created = await this.elasticService.createIndexIfNotCreatedOrFail("document-revisions");
@@ -27,7 +27,10 @@ export class InitElasticDocumentRevisionsService {
     } catch (e) {
       return {
         message: "Can not create document revisions elastic index mapping...",
-        logBeautifulError: () => errorLogBeautifier(e),
+        logBeautifulError: () =>
+          this.sentryTextService.log(e as Error, {
+            contextService: InitElasticDocumentRevisionsService.name,
+          }),
       };
     }
   }
@@ -35,13 +38,13 @@ export class InitElasticDocumentRevisionsService {
   async appBootstrap() {
     const index = await this.createIndex();
     if (isString(index)) {
-      Logger.error(index, "Document revisions module bootstrap");
+      Logger.error(index, InitElasticDocumentRevisionsService.name);
       process.exit(1);
     }
 
     const mapping = await this.createMapping();
     if (mapping !== true) {
-      Logger.error(mapping.message, "Document revisions module bootstrap");
+      Logger.error(mapping.message, InitElasticDocumentRevisionsService.name);
       mapping.logBeautifulError();
       process.exit(1);
     }

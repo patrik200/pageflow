@@ -11,7 +11,11 @@ interface TicketTitleInterface {
 }
 
 function TicketTitle({ ticket }: TicketTitleInterface) {
-  return <Typography className={titleStyles}>{ticket.name}</Typography>;
+  return (
+    <span>
+      <Typography className={titleStyles}>{ticket.name}</Typography>
+    </span>
+  );
 }
 
 export default observer(TicketTitle);

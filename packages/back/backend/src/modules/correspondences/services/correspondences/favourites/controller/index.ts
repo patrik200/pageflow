@@ -37,6 +37,6 @@ export class CorrespondenceFavouritesController {
   @Delete(":correspondenceId")
   @withUserAuthorized([UserRole.USER])
   async deleteCorrespondenceFavourite(@Param("correspondenceId") correspondenceId: string) {
-    await this.removeFavouritesService.removeCorrespondenceFavouriteOrFail(correspondenceId);
+    await this.removeFavouritesService.removeCorrespondenceFavouriteOrFail(correspondenceId, { forAllUsers: false });
   }
 }

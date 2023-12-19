@@ -1,11 +1,17 @@
 export enum PaymentStatus {
   WAITING_FOR_PAYMENT = "waiting_for_payment",
-  WAITING_FOR_ACCEPT = "waiting_for_accept",
   COMPLETED = "completed",
   CANCELED = "canceled",
+  REFUND = "refund",
 }
 
 export enum PaymentMode {
   AUTOMATIC = "automatic",
   MANUAL = "manual",
+}
+
+export enum PaymentType {
+  SBP = "sbp",
+  BANK_CARD = "bank_card",
+  YOO_MONEY = "yoo_money",
 }

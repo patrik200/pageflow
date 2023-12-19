@@ -1,6 +1,6 @@
 import { forwardRef, Inject, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { Repository } from "typeorm";
+import { FindOptionsWhere, Repository } from "typeorm";
 
 import { CorrespondenceRevisionCommentEntity } from "entities/Correspondence/Correspondence/Revision/Comment";
 
@@ -28,17 +28,11 @@ export class GetCorrespondenceRevisionCommentService {
       loadRevisionAuthor?: boolean;
     } = {},
   ) {
-    const currentUser = getCurrentUser();
+    const findOptions: FindOptionsWhere<CorrespondenceRevisionCommentEntity> = { id: commentId };
+    findOptions.revision = { correspondence: { client: { id: getCurrentUser().clientId } } };
 
     const comment = await this.commentsRepository.findOneOrFail({
-      where: {
-        id: commentId,
-        revision: {
-          correspondence: {
-            client: { id: currentUser.clientId },
-          },
-        },
-      },
+      where: findOptions,
       relations: {
         author: {
           avatar: options.loadAuthorAvatar,
@@ -55,7 +49,7 @@ export class GetCorrespondenceRevisionCommentService {
 
     await this.getCorrespondenceRevisionService.getRevisionOrFail(comment.revision.id, { checkPermissions });
 
-    comment.calculateAllCans(currentUser);
+    comment.calculateAllCans(getCurrentUser());
 
     return comment;
   }

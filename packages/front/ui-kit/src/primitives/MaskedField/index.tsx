@@ -10,6 +10,7 @@ import { formatValue as libFormatValue, parseMask as libParseMask } from "./inte
 
 export type MaskedFieldWithoutMaskConfigInterface = Omit<TextFieldInterface, "onChange"> & {
   alwaysShowMask?: boolean;
+  renderAsSimpleTextField?: boolean;
 };
 
 export type MaskedFieldInterface = MaskedFieldWithoutMaskConfigInterface & MaskParserConfigInterface;
@@ -24,6 +25,7 @@ export const defaultMaskFormatChars = {
   "&": "[0-9]",
   "@": "[0-9.]",
   "!": "[A-Fa-f0-9]",
+  "#": "[A-Za-z]",
 };
 
 export interface MaskParserResultInterface {
@@ -53,6 +55,7 @@ function MaskedField(
     maskCharacter = null,
     alwaysShowMask = false,
     formatCharacters = defaultMaskFormatChars,
+    renderAsSimpleTextField,
     ...props
   }: MaskedFieldInterface,
   ref: React.Ref<HTMLDivElement>,
@@ -72,7 +75,7 @@ function MaskedField(
     [alwaysShowMask, formatCharacters, maskCharacter, mask],
   );
 
-  return <TextField {...props} ref={ref} as={maskedInput} />;
+  return <TextField {...props} ref={ref} as={renderAsSimpleTextField ? undefined : maskedInput} />;
 }
 
 export default React.memo(React.forwardRef(MaskedField)) as ComponentWithRef<MaskedFieldInterface, HTMLDivElement>;

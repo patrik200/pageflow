@@ -32,7 +32,10 @@ export class DeleteCorrespondenceRevisionsService {
   ) {}
 
   @Transactional()
-  async deleteRevisionOrFail(revisionId: string, { checkPermissions = true }: { checkPermissions?: boolean } = {}) {
+  async deleteRevisionOrFail(
+    revisionId: string,
+    { checkPermissions = true, emitEvents = true }: { checkPermissions?: boolean; emitEvents?: boolean } = {},
+  ) {
     const revision = await this.getCorrespondenceRevisionService.getRevisionOrFail(revisionId, {
       checkPermissions,
       loadFiles: true,
@@ -56,10 +59,10 @@ export class DeleteCorrespondenceRevisionsService {
       ...revision.comments.map((comment) =>
         this.deleteCorrespondenceRevisionCommentsService.deleteCommentOrFail(comment.id, {
           checkPermissions: false,
-          emitEvent: false,
+          emitEvents: false,
         }),
       ),
-      this.removeRevisionFavouritesService.removeFavouriteOrFail(revision.id),
+      this.removeRevisionFavouritesService.removeFavouriteOrFail(revision.id, { forAllUsers: true }),
     ]);
 
     await this.revisionRepository.delete(revision.id);
@@ -68,6 +71,7 @@ export class DeleteCorrespondenceRevisionsService {
       this.elasticService.getDocumentId("correspondence-revisions", revision.id),
     );
 
-    this.eventEmitter.emit(CorrespondenceRevisionDeleted.eventName, new CorrespondenceRevisionDeleted(revision.id));
+    if (emitEvents)
+      this.eventEmitter.emit(CorrespondenceRevisionDeleted.eventName, new CorrespondenceRevisionDeleted(revision.id));
   }
 }

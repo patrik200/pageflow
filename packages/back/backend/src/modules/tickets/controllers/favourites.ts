@@ -37,6 +37,6 @@ export class TicketFavouritesController {
   @Delete(":ticketId")
   @withUserAuthorized([UserRole.USER])
   async deleteFavourite(@Param("ticketId") ticketId: string) {
-    await this.removeFavouritesService.removeFavouriteOrFail(ticketId);
+    await this.removeFavouritesService.removeFavouriteOrFail(ticketId, { forAllUsers: false });
   }
 }

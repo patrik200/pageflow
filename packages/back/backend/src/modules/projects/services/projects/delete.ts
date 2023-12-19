@@ -14,12 +14,15 @@ import { DeleteTicketBoardService } from "modules/ticket-boards";
 import { DeletePermissionService } from "modules/permissions";
 
 import { DeleteProjectPreviewService } from "../preview/delete";
+import { RemoveProjectFavouritesService } from "../favorite/remove";
 import { GetProjectService } from "./get";
 import { ProjectDeleted } from "../../events/ProjectDeleted";
 
 interface DeleteProjectOptionsInterface {
   moveDocuments: boolean;
   moveCorrespondencesToClient: boolean;
+  checkPermissions?: boolean;
+  emitEvents?: boolean;
 }
 
 @Injectable()
@@ -38,6 +41,7 @@ export class DeleteProjectService {
     private deleteTicketBoardService: DeleteTicketBoardService,
     private deleteProjectPreviewService: DeleteProjectPreviewService,
     @Inject(forwardRef(() => DeletePermissionService)) private deletePermissionService: DeletePermissionService,
+    private removeProjectFavouritesService: RemoveProjectFavouritesService,
     private eventEmitter: EventEmitter2,
   ) {}
 
@@ -77,11 +81,15 @@ export class DeleteProjectService {
   }
 
   @Transactional()
-  async deleteProjectOrFail(projectId: string, options: DeleteProjectOptionsInterface) {
+  async deleteProjectOrFail(
+    projectId: string,
+    { checkPermissions = true, emitEvents = true, ...options }: DeleteProjectOptionsInterface,
+  ) {
     const project = await this.getProjectService.getProjectOrFail(projectId, {
       loadDocumentRootGroup: true,
       loadCorrespondenceRootGroup: true,
       loadTicketBoards: true,
+      checkPermissions,
     });
 
     if (options.moveDocuments) throw new ServiceError("moveDocuments", "Документы можно только удалить");
@@ -91,6 +99,7 @@ export class DeleteProjectService {
       this.moveDocuments(project, options),
       this.deleteProjectPreview(project),
       this.deleteProjectTicketBoards(project),
+      this.removeProjectFavouritesService.removeFavouriteOrFail(project.id, { forAllUsers: true }),
     ]);
 
     await Promise.all([
@@ -98,13 +107,14 @@ export class DeleteProjectService {
         entityId: project.id,
         entityType: PermissionEntityType.PROJECT,
       }),
-      this.projectRepository.delete(projectId),
+
+      this.projectRepository.delete(project.id),
     ]);
 
     await this.elasticService.deleteIndexDocumentOrFail(
       this.elasticService.getDocumentId("projects", project.id, "project"),
     );
 
-    this.eventEmitter.emit(ProjectDeleted.eventName, new ProjectDeleted(project.id));
+    if (emitEvents) this.eventEmitter.emit(ProjectDeleted.eventName, new ProjectDeleted(project.id));
   }
 }

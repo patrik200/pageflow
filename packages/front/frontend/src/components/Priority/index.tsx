@@ -8,9 +8,10 @@ import { containerStyles, themeColorStyleVariants, titleStyles } from "./style.c
 
 interface PriorityInterface {
   priority: TicketPriorities;
+  showText?: boolean;
 }
 
-function Priority({ priority }: PriorityInterface) {
+function Priority({ priority, showText = true }: PriorityInterface) {
   const { t } = useTranslation();
 
   const iconByPriority = React.useMemo(() => {
@@ -22,9 +23,11 @@ function Priority({ priority }: PriorityInterface) {
   return (
     <div className={containerStyles}>
       <Icon className={themeColorStyleVariants[priority]} icon={iconByPriority} />
-      <Typography className={cn(titleStyles, themeColorStyleVariants[priority])}>
-        {t({ scope: "kanban", place: "ticket_priorities", name: priority })}
-      </Typography>
+      {showText && (
+        <Typography className={cn(titleStyles, themeColorStyleVariants[priority])}>
+          {t({ scope: "kanban", place: "ticket_priorities", name: priority })}
+        </Typography>
+      )}
     </div>
   );
 }

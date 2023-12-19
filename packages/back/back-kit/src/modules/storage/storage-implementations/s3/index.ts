@@ -1,17 +1,19 @@
-import { Injectable, Logger } from "@nestjs/common";
+import { Injectable } from "@nestjs/common";
 import type { Readable } from "node:stream";
 import type { BucketItem } from "minio";
 import chalk from "chalk";
 import { BucketItemFromList } from "minio";
 
-import { errorLogBeautifier, streamToPromise } from "libs";
+import { streamToPromise } from "libs";
+
+import { SentryTextService } from "modules/sentry";
 
 import { S3ControllerService } from "./internal/S3ControllerService";
 import { FileBufferToSaveInterface, FileStreamToSaveInterface } from "../../types";
 
 @Injectable()
 export class S3StorageService {
-  constructor(private s3Controller: S3ControllerService) {}
+  constructor(private s3Controller: S3ControllerService, private sentryTextService: SentryTextService) {}
 
   private get s3() {
     return this.s3Controller.s3;
@@ -34,8 +36,10 @@ export class S3StorageService {
       await this.statFile(bucket, id);
       return true;
     } catch (e) {
-      Logger.error(`Check file exists ${chalk.cyan(id)} in bucket ${chalk.cyan(bucket)} error:`, "S3");
-      errorLogBeautifier(e);
+      this.sentryTextService.error(e, {
+        context: `Check file exists ${chalk.cyan(id)} in bucket ${chalk.cyan(bucket)}`,
+        contextService: "S3",
+      });
       return false;
     }
   }
@@ -45,8 +49,10 @@ export class S3StorageService {
       await this.s3.removeObject(bucket, id);
       return true;
     } catch (e) {
-      Logger.error(`Delete file ${chalk.cyan(id)} in bucket ${chalk.cyan(bucket)} error:`, "S3");
-      errorLogBeautifier(e);
+      this.sentryTextService.error(e, {
+        context: `Delete file ${chalk.cyan(id)} in bucket ${chalk.cyan(bucket)}`,
+        contextService: "S3",
+      });
       return false;
     }
   }
@@ -55,8 +61,10 @@ export class S3StorageService {
     try {
       return await this.s3.statObject(bucket, id);
     } catch (e) {
-      Logger.error(`Stat file ${chalk.cyan(id)} in bucket ${chalk.cyan(bucket)} error:`, "S3");
-      errorLogBeautifier(e);
+      this.sentryTextService.error(e, {
+        context: `Stat file ${chalk.cyan(id)} in bucket ${chalk.cyan(bucket)}`,
+        contextService: "S3",
+      });
       return null;
     }
   }
@@ -67,8 +75,10 @@ export class S3StorageService {
       if (!bucketExists) await this.s3.makeBucket(bucket);
       return true;
     } catch (e) {
-      Logger.error(`Create bucket ${chalk.cyan(bucket)} error:`, "S3");
-      errorLogBeautifier(e);
+      this.sentryTextService.error(e, {
+        context: `Create bucket ${chalk.cyan(bucket)}`,
+        contextService: "S3",
+      });
       return false;
     }
   }
@@ -77,7 +87,10 @@ export class S3StorageService {
     try {
       const bucketExists = await this.s3.bucketExists(bucket);
       if (!bucketExists) {
-        Logger.error(`Delete bucket error: bucket ${chalk.cyan(bucket)} does not exist`, "S3");
+        this.sentryTextService.info(`Bucket ${chalk.cyan(bucket)} does not exist`, {
+          context: `Delete bucket error`,
+          contextService: "S3",
+        });
         return false;
       }
       const files = await this.getBucketFiles(bucket);
@@ -88,8 +101,10 @@ export class S3StorageService {
       await this.s3.removeBucket(bucket);
       return true;
     } catch (e) {
-      Logger.error(`Delete bucket ${chalk.cyan(bucket)} error:`, "S3");
-      errorLogBeautifier(e);
+      this.sentryTextService.error(e, {
+        context: `Delete bucket ${chalk.cyan(bucket)}`,
+        contextService: "S3",
+      });
       return false;
     }
   }
@@ -98,8 +113,10 @@ export class S3StorageService {
     try {
       return await this.s3.listBuckets();
     } catch (e) {
-      Logger.error(`Get buckets list error:`, "S3");
-      errorLogBeautifier(e);
+      this.sentryTextService.error(e, {
+        context: `Get buckets list`,
+        contextService: "S3",
+      });
       return [] as BucketItemFromList[];
     }
   }
@@ -108,8 +125,10 @@ export class S3StorageService {
     try {
       return await streamToPromise<BucketItem[]>(this.s3.listObjects(bucket));
     } catch (e) {
-      Logger.error(`Get bucket ${chalk.cyan(bucket)} files error:`, "S3");
-      errorLogBeautifier(e);
+      this.sentryTextService.error(e, {
+        context: `Get bucket ${chalk.cyan(bucket)} files`,
+        contextService: "S3",
+      });
       return [] as BucketItem[];
     }
   }

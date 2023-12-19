@@ -66,10 +66,10 @@ function AuthLoginView() {
             onChangeInput={entity.setPassword}
           />
           <Button className={actionStyles} loading={loading} onClick={handleSubmit}>
-            {t({ scope: "content", name: "signInButton" })}
+            {t({ scope: "content", name: "sign_in_button" })}
           </Button>
           <Link className={restorePasswordStyles} href="/auth/reset-password">
-            Забыли пароль?
+            {t({ scope: "content", name: "reset_password_link" })}
           </Link>
         </Form>
       </AuthPageWrapper>

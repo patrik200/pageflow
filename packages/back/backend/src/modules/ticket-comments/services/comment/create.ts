@@ -29,7 +29,7 @@ export class CreateTicketCommentsService {
 
   @Transactional()
   async createCommentOrFail(ticketId: string, data: CreateTicketCommentInterface) {
-    const ticket = await this.getTicketService.getTicketOrFail(ticketId);
+    const ticket = await this.getTicketService.getTicketOrFail(ticketId, "id");
 
     const replyForTicketComment = data.replyForCommentId
       ? await this.getCommentsService.getCommentOrFail(data.replyForCommentId)

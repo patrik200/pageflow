@@ -1,5 +1,5 @@
 import { style } from "@vanilla-extract/css";
-import { globalThemeColorVars, windowInnerHeightVar } from "@app/ui-kit";
+import { createBreakpointFrom, globalThemeColorVars, windowInnerHeightVar } from "@app/ui-kit";
 import { padding } from "polished";
 
 export const pageWrapperStyles = style({
@@ -15,5 +15,8 @@ export const childrenWrapperStyles = style({
   flex: 1,
   flexDirection: "column",
   gap: 16,
-  ...padding(24, 24, 76, null),
+  ...padding(null, null, 76, null),
+  "@media": createBreakpointFrom("tablet", {
+    ...padding(24, 24, 76, null),
+  }),
 });

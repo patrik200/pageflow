@@ -14,9 +14,3 @@ export function initializeAcceptLanguageByContext(context: ServerSidePropsContex
   getVariable("setAcceptLanguage")(context.locale, container);
   initializeAcceptLanguage(container);
 }
-
-export function initializeAcceptLanguageByNavigator(container: ContainerInstance) {
-  const [language] = navigator.language.split("-");
-  getVariable("setAcceptLanguage")(language, container);
-  initializeAcceptLanguage(container);
-}

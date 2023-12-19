@@ -1,7 +1,7 @@
 import { Inject, Injectable, forwardRef } from "@nestjs/common";
 
 import { getCurrentUser } from "modules/auth";
-import { GetClientsService } from "modules/clients";
+import { GetClientService } from "modules/clients";
 import { EmailRendererService, EmailSenderService } from "modules/email";
 
 import { VerifyInvitationService } from "./verify";
@@ -12,12 +12,12 @@ export class SendInvitationService {
     private verifyInvitationService: VerifyInvitationService,
     @Inject(forwardRef(() => EmailRendererService)) private emailRendererService: EmailRendererService,
     @Inject(forwardRef(() => EmailSenderService)) private emailSenderService: EmailSenderService,
-    @Inject(forwardRef(() => GetClientsService)) private getClientsService: GetClientsService,
+    @Inject(forwardRef(() => GetClientService)) private getClientService: GetClientService,
   ) {}
 
   async sendEmail(targetEmail: string, token: string) {
     const { clientId } = getCurrentUser();
-    const client = await this.getClientsService.getClientByIdOrFail(clientId);
+    const client = await this.getClientService.dangerGetClientByIdOrFail(clientId);
 
     const { exp } = await this.verifyInvitationService.verifyTokenOrFail(token);
     const invitationExpiresAt = new Date(exp * 1000);

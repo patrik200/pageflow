@@ -1,6 +1,11 @@
 import { globalFontFace } from "@vanilla-extract/css";
 
 globalFontFace("Roboto", {
+  src: "url(/fonts/Roboto-Light.woff2)",
+  fontWeight: 200,
+});
+
+globalFontFace("Roboto", {
   src: "url(/fonts/Roboto-Regular.woff2)",
   fontWeight: 400,
 });

@@ -37,6 +37,6 @@ export class DocumentRevisionFavouritesController {
   @Delete(":revisionId")
   @withUserAuthorized([UserRole.USER])
   async deleteFavourite(@Param("revisionId") revisionId: string) {
-    await this.removeDocumentRevisionFavouritesService.removeFavouriteOrFail(revisionId);
+    await this.removeDocumentRevisionFavouritesService.removeFavouriteOrFail(revisionId, { forAllUsers: false });
   }
 }

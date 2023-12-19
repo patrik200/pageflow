@@ -23,7 +23,7 @@ export class DeleteDocumentRevisionCommentDiscussionsService {
   @Transactional()
   async deleteDiscussion(
     discussionId: string,
-    { checkPermissions = true, emitEvent = true }: { checkPermissions?: boolean; emitEvent?: boolean } = {},
+    { checkPermissions = true, emitEvents = true }: { checkPermissions?: boolean; emitEvents?: boolean } = {},
   ) {
     const discussion = await this.getDocumentRevisionCommentDiscussionsForEditService.getDiscussionForUpdateOrFail(
       discussionId,
@@ -34,14 +34,14 @@ export class DeleteDocumentRevisionCommentDiscussionsService {
       discussion.files.map((discussionFile) =>
         this.deleteDocumentRevisionCommentDiscussionFilesService.deleteDiscussionFile(discussionFile.file.id, {
           checkPermissions: false,
-          emitEvent: false,
+          emitEvents: false,
         }),
       ),
     );
 
     await this.discussionsRepository.delete(discussion.id);
 
-    if (emitEvent)
+    if (emitEvents)
       this.eventEmitter.emit(
         DocumentRevisionDiscussionDeleted.eventName,
         new DocumentRevisionDiscussionDeleted(discussion.id),

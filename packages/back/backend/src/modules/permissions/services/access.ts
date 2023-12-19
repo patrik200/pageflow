@@ -18,7 +18,6 @@ export interface PermissionIdentifier {
 export interface PermissionSelectOptions {
   loadUser?: boolean;
   loadUserAvatar?: boolean;
-  unsafeIgnoreClient?: boolean;
 }
 
 @Injectable()
@@ -33,8 +32,8 @@ export class PermissionAccessService {
       entityId: identifier.entityId,
       entityType: identifier.entityType,
     };
+    where.client = { id: getCurrentUser().clientId };
 
-    if (!selectOptions.unsafeIgnoreClient) where.client = { id: getCurrentUser().clientId };
     return await this.permissionRepository.find({
       where,
       order: { createdAt: "ASC" },

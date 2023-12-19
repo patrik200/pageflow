@@ -1,5 +1,5 @@
 import { BaseGeneratedIDEntity } from "@app/back-kit";
-import { Column, Entity, JoinColumn, OneToMany, OneToOne } from "typeorm";
+import { Column, Entity, Index, JoinColumn, OneToMany, OneToOne } from "typeorm";
 import { DateTime } from "luxon";
 import { isDateBefore } from "@worksolutions/utils";
 import { config } from "@app/core-config";
@@ -19,8 +19,13 @@ export class SubscriptionEntity extends BaseGeneratedIDEntity {
   @OneToOne(() => ClientEntity, { onDelete: "CASCADE", nullable: false })
   client!: ClientEntity;
 
+  @Index()
   @Column({ type: "timestamptz", nullable: true })
   payedUntil!: Date | null;
+
+  @Index()
+  @Column({ default: false })
+  payedAtLeastOneTime!: boolean;
 
   @Column({ type: "varchar", nullable: true })
   autoRenewPaymentMethodId!: string | null;
@@ -43,5 +48,11 @@ export class SubscriptionEntity extends BaseGeneratedIDEntity {
 
   get tariffFixture() {
     return tariffsFixture.get(this.tariff)!;
+  }
+
+  // virtual fields --------
+
+  get autoPaymentsAvailable() {
+    return config.subscription.autoPaymentsAvailable;
   }
 }

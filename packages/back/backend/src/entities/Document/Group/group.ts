@@ -56,7 +56,10 @@ export class DocumentGroupEntity extends BaseGeneratedIDEntity {
 
     // eslint-disable-next-line no-constant-condition
     while (true) {
-      const group = await repository.findOneOrFail({ where: { id: currentGroupLink.id }, relations: ["parentGroup"] });
+      const group = await repository.findOneOrFail({
+        where: { id: currentGroupLink.id },
+        relations: { parentGroup: true },
+      });
       if (!group.parentGroup) break;
       this.path.splice(0, 0, group.parentGroup.id);
       currentGroupLink = group.parentGroup;

@@ -1,6 +1,6 @@
-import { errorLogBeautifier, INTLService, INTLServiceLang } from "@app/back-kit";
+import { INTLService, INTLServiceLang, SentryTextService } from "@app/back-kit";
 import { config } from "@app/core-config";
-import { ProjectsStatus } from "@app/shared-enums";
+import { ProjectsStatus, UserRole } from "@app/shared-enums";
 import { forwardRef, Inject, Injectable, Logger, OnApplicationBootstrap, OnApplicationShutdown } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { isDateBefore, setAsyncInterval } from "@worksolutions/utils";
@@ -10,6 +10,7 @@ import { DateTime } from "luxon";
 
 import { ProjectEntity } from "entities/Project";
 
+import { currentUserStorage, emptyCurrentUserStorageValue } from "modules/auth";
 import { AppNotification, NotificationService } from "modules/notifications";
 
 import { GetProjectListService } from "../projects/get-list";
@@ -23,17 +24,19 @@ export class ProjectNotifyEndDatePlanService implements OnApplicationBootstrap, 
     private getProjectListService: GetProjectListService,
     private getProjectService: GetProjectService,
     @Inject(forwardRef(() => NotificationService)) private notificationService: NotificationService,
+    private sentryTextService: SentryTextService,
   ) {}
 
-  private loggerContext = "Project notify end date plan";
-
-  private async notifyProjectByNotifyInDays(projectId: string) {
-    const project = await this.getProjectService.getProjectOrFail(projectId, {
-      unsafeIgnoreClient: true,
-      checkPermissions: false,
-      loadPermissions: true,
-      loadClient: true,
-    });
+  private async notifyProjectByNotifyInDays(projectId: string, clientId: string) {
+    const project = await currentUserStorage.run(
+      { ...emptyCurrentUserStorageValue, clientId, role: UserRole.ADMIN },
+      () =>
+        this.getProjectService.getProjectOrFail(projectId, {
+          checkPermissions: false,
+          loadPermissions: true,
+          loadClient: true,
+        }),
+    );
 
     const needNotifyIn = DateTime.fromJSDate(project.endDatePlan!).minus({ day: project.notifyInDays! });
     const now = this.intlService.getCurrentDateTime();
@@ -57,13 +60,16 @@ export class ProjectNotifyEndDatePlanService implements OnApplicationBootstrap, 
     await Promise.all(project.permissions!.map((permission) => notifyUser(permission.user.id)));
   }
 
-  private async notifyProjectByAfterEndDatePlan(projectId: string) {
-    const project = await this.getProjectService.getProjectOrFail(projectId, {
-      unsafeIgnoreClient: true,
-      checkPermissions: false,
-      loadPermissions: true,
-      loadClient: true,
-    });
+  private async notifyProjectByAfterEndDatePlan(projectId: string, clientId: string) {
+    const project = await currentUserStorage.run(
+      { ...emptyCurrentUserStorageValue, clientId, role: UserRole.ADMIN },
+      () =>
+        this.getProjectService.getProjectOrFail(projectId, {
+          checkPermissions: false,
+          loadPermissions: true,
+          loadClient: true,
+        }),
+    );
 
     const needNotifyIn = DateTime.fromJSDate(project.endDatePlan!);
     const now = this.intlService.getCurrentDateTime();
@@ -95,6 +101,7 @@ export class ProjectNotifyEndDatePlanService implements OnApplicationBootstrap, 
         notifyInDays: Not(IsNull()),
         endDatePlan: Not(IsNull()),
       },
+      relations: { client: true },
     });
 
     const projectsNotNotifiedAfterEndDatePlan = await this.getProjectListService.dangerGetProjectsList({
@@ -103,23 +110,28 @@ export class ProjectNotifyEndDatePlanService implements OnApplicationBootstrap, 
         status: ProjectsStatus.IN_PROGRESS,
         endDatePlan: Not(IsNull()),
       },
+      relations: { client: true },
     });
 
     for (const project of projectsNotNotifiedInDays) {
       try {
-        await this.notifyProjectByNotifyInDays(project.id);
+        await this.notifyProjectByNotifyInDays(project.id, project.client.id);
       } catch (e) {
-        Logger.error(`Error while notify project ${project.id}:`, this.loggerContext);
-        errorLogBeautifier(e);
+        this.sentryTextService.error(e, {
+          context: `Notify project ${project.id} in days`,
+          contextService: ProjectNotifyEndDatePlanService.name,
+        });
       }
     }
 
     for (const project of projectsNotNotifiedAfterEndDatePlan) {
       try {
-        await this.notifyProjectByAfterEndDatePlan(project.id);
+        await this.notifyProjectByAfterEndDatePlan(project.id, project.client.id);
       } catch (e) {
-        Logger.error(`Error while notify project ${project.id}:`, this.loggerContext);
-        errorLogBeautifier(e);
+        this.sentryTextService.error(e, {
+          context: `Notify project ${project.id} after end date plan`,
+          contextService: ProjectNotifyEndDatePlanService.name,
+        });
       }
     }
   }
@@ -129,7 +141,7 @@ export class ProjectNotifyEndDatePlanService implements OnApplicationBootstrap, 
     await this.checkProjects();
     Logger.log(
       `Run checking with interval [${chalk.cyan(`${config.projects.endDatePlanCheckIntervalMs}ms`)}]`,
-      this.loggerContext,
+      ProjectNotifyEndDatePlanService.name,
     );
     this.disposeTimer = setAsyncInterval(() => this.checkProjects(), config.projects.endDatePlanCheckIntervalMs);
   }

@@ -6,7 +6,7 @@ import { boxShadow } from "utils";
 export const wrapperStyles = style({
   padding: 10,
   borderRadius: 12,
-  minHeight: 44,
+  minHeight: 40,
   backgroundColor: globalThemeColorVars.backgroundCard,
   border: "1px solid " + globalThemeColorVars.strokeLight,
   boxShadow: boxShadow({ y: 3, blur: 10, color: globalThemeColorVars.defaultShadow }),

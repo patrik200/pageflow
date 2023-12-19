@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { Repository } from "typeorm";
+import { FindOptionsWhere, Repository } from "typeorm";
 import { Transactional } from "typeorm-transactional";
 
 import { CorrespondenceEntity } from "entities/Correspondence/Correspondence";
@@ -17,15 +17,23 @@ export class RemoveCorrespondenceFavouritesService {
   ) {}
 
   @Transactional()
-  async removeCorrespondenceFavouriteOrFail(correspondenceId: string) {
-    const { clientId, userId } = getCurrentUser();
+  async removeCorrespondenceFavouriteOrFail(correspondenceId: string, { forAllUsers }: { forAllUsers: boolean }) {
+    const correspondenceFindOptions: FindOptionsWhere<CorrespondenceEntity> = { id: correspondenceId };
+    const favouriteFindOptions: FindOptionsWhere<CorrespondenceFavouriteEntity> = {};
+
+    const currentUser = getCurrentUser();
+    correspondenceFindOptions.client = { id: currentUser.clientId };
+
+    if (!forAllUsers) {
+      favouriteFindOptions.user = { id: currentUser.userId };
+    }
+
     const correspondence = await this.correspondenceRepository.findOneOrFail({
-      withDeleted: true,
-      where: { id: correspondenceId, client: { id: clientId } },
+      where: correspondenceFindOptions,
     });
-    await this.correspondenceFavouriteRepository.delete({
-      correspondence: { id: correspondence.id },
-      user: { id: userId },
-    });
+
+    favouriteFindOptions.correspondence = { id: correspondence.id };
+
+    await this.correspondenceFavouriteRepository.delete(favouriteFindOptions);
   }
 }

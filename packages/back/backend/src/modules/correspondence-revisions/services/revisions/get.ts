@@ -1,6 +1,6 @@
 import { forwardRef, Inject, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { Repository } from "typeorm";
+import { FindOptionsWhere, Repository } from "typeorm";
 import { PermissionEntityType } from "@app/shared-enums";
 
 import { CorrespondenceRevisionEntity } from "entities/Correspondence/Correspondence/Revision";
@@ -42,9 +42,11 @@ export class GetCorrespondenceRevisionService {
       loadCorrespondenceRootGroupParentDocument?: boolean;
     } = {},
   ) {
-    const currentUser = getCurrentUser();
+    const findOptions: FindOptionsWhere<CorrespondenceRevisionEntity> = { id: revisionId };
+    findOptions.correspondence = { client: { id: getCurrentUser().clientId } };
+
     const revision = await this.revisionsRepository.findOneOrFail({
-      where: { id: revisionId, correspondence: { client: { id: currentUser.clientId } } },
+      where: findOptions,
       relations: {
         correspondence: {
           client: true,
@@ -71,7 +73,7 @@ export class GetCorrespondenceRevisionService {
         true,
       );
 
-    revision.calculateAllCans(currentUser);
+    revision.calculateAllCans(getCurrentUser());
 
     await Promise.all([
       calculateParentGroupPath && revision.correspondence.parentGroup?.calculateGroupsPath(this.groupsRepository),

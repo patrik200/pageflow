@@ -7,8 +7,11 @@ import ViewTicketCard, {
 } from "components/Tickets/TicketDetailModal/ModalContent/ContentModes/View";
 import CardTitlePreset from "components/Card/pressets/CardTitle";
 import Card from "components/Card";
+import TicketSlug from "components/Tickets/TicketDetailModal/ModalContent/Slug";
 
 import { TicketDetailEntity } from "core/entities/ticket/ticketDetail";
+
+import { slugStyles } from "./style.css";
 
 interface TicketDetailViewInterface {
   ticket: TicketDetailEntity;
@@ -26,6 +29,7 @@ function TicketDetailView({ ticket, onEnableEditMode }: TicketDetailViewInterfac
   return (
     <>
       <CardTitlePreset
+        preTitle={<TicketSlug className={slugStyles} ticket={ticket} />}
         title={t({ scope: "meta", name: "view" }, { name: ticket.name || "" })}
         actions={
           <ViewTicketCardActions

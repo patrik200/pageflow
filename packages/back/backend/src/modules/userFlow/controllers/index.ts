@@ -8,6 +8,8 @@ import { withUserAuthorized } from "modules/auth";
 
 import { GetUserFlowService } from "../services/get";
 import { EditUserFlowService } from "../services/edit";
+import { CreateUserFlowService } from "../services/create";
+import { DeleteUserFlowService } from "../services/delete";
 
 import { ResponseUserFlowDTO, ResponseUserFlowListDTO } from "../dto/get/UserFlow";
 import { RequestCreateUserFlowDTO } from "../dto/edit/CreateUserFlow";
@@ -15,7 +17,12 @@ import { RequestUpdateUserFlowDTO } from "../dto/edit/UpdateUserFlow";
 
 @Controller("user-flow")
 export class UserFlowController {
-  constructor(private getUserFlowService: GetUserFlowService, private editUserFlowService: EditUserFlowService) {}
+  constructor(
+    private getUserFlowService: GetUserFlowService,
+    private editUserFlowService: EditUserFlowService,
+    private createUserFlowService: CreateUserFlowService,
+    private deleteUserFlowService: DeleteUserFlowService,
+  ) {}
 
   @Get()
   @withUserAuthorized([UserRole.USER])
@@ -52,7 +59,7 @@ export class UserFlowController {
   @Post()
   @withUserAuthorized([UserRole.USER])
   async createUserFlow(@Body() body: RequestCreateUserFlowDTO) {
-    const userFlowId = await this.editUserFlowService.createOrFail(body);
+    const userFlowId = await this.createUserFlowService.createOrFail(body);
     return new ControllerResponse(ResponseIdDTO, { id: userFlowId });
   }
 
@@ -65,6 +72,6 @@ export class UserFlowController {
   @Delete(":userFlowId")
   @withUserAuthorized([UserRole.USER])
   async deleteUserFlow(@Param("userFlowId") id: string) {
-    await this.editUserFlowService.deleteOrFail(id);
+    await this.deleteUserFlowService.deleteUserFlowOrFail(id);
   }
 }

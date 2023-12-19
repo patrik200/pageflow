@@ -45,7 +45,7 @@ export class DeleteDocumentGroupService {
       ...group.childrenDocuments.map(({ id }) =>
         this.deleteDocumentService.deleteDocumentOrFail(id, { checkPermissions: false }),
       ),
-      this.removeDocumentGroupFavouritesService.removeGroupFavouriteOrFail(group.id),
+      this.removeDocumentGroupFavouritesService.removeGroupFavouriteOrFail(group.id, { forAllUsers: true }),
       this.deleteDocumentGroupsElasticService.elasticDeleteGroupIndexOrFail(group.id),
     ]);
 

@@ -1,7 +1,7 @@
 import { PermissionEntityType } from "@app/shared-enums";
 import { forwardRef, Inject, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { Repository } from "typeorm";
+import { FindOptionsWhere, Repository } from "typeorm";
 
 import { CorrespondenceGroupEntity } from "entities/Correspondence/Group/group";
 
@@ -43,8 +43,11 @@ export class GetCorrespondenceGroupService {
       );
     }
 
+    const findOptions: FindOptionsWhere<CorrespondenceGroupEntity> = { id: groupId };
+    findOptions.client = { id: getCurrentUser().clientId };
+
     const group = await this.correspondenceGroupRepository.findOneOrFail({
-      where: { client: { id: getCurrentUser().clientId }, id: groupId },
+      where: findOptions,
       relations: {
         rootGroup: options.loadRootGroup,
         parentGroup: options.loadParentGroup,

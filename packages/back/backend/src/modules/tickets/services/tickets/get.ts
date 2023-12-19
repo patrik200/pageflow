@@ -19,7 +19,8 @@ export class GetTicketService {
   ) {}
 
   async getTicketOrFail(
-    ticketId: string,
+    identifier: string,
+    identifierMode: "id" | "slug",
     {
       loadFavourites,
       checkPermissions = true,
@@ -40,7 +41,7 @@ export class GetTicketService {
     } = {},
   ) {
     const ticket = await this.ticketsRepository.findOneOrFail({
-      where: { id: ticketId, client: { id: getCurrentUser().clientId } },
+      where: { [identifierMode === "slug" ? "slug" : "id"]: identifier, client: { id: getCurrentUser().clientId } },
       relations: {
         board: true,
         client: options.loadClient,

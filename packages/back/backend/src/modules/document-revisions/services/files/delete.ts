@@ -33,7 +33,7 @@ export class DeleteDocumentRevisionFilesService {
   async deleteFileOrFail(
     revisionId: string,
     fileId: string,
-    { checkPermissions = true, emitEvent = true }: { checkPermissions?: boolean; emitEvent?: boolean } = {},
+    { checkPermissions = true, emitEvents = true }: { checkPermissions?: boolean; emitEvents?: boolean } = {},
   ) {
     const revision = await this.getDocumentRevisionService.getRevisionOrFail(revisionId, {
       checkPermissions,
@@ -63,7 +63,7 @@ export class DeleteDocumentRevisionFilesService {
     await this.revisionFilesRepository.delete(revisionFile.id);
     await this.deleteFileService.deleteFileOrFail(revisionFile.file);
 
-    if (emitEvent) {
+    if (emitEvents) {
       this.eventEmitter.emit(DocumentRevisionUpdated.eventName, new DocumentRevisionUpdated(revision.id, revision));
     }
   }

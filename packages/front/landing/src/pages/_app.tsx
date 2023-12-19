@@ -11,10 +11,15 @@ import "reseter.css/css/reseter.min.css";
 import "styles";
 
 export default function CustomApp({ Component, pageProps, router }: AppProps) {
-  const isInternalPage = router.pathname === "/404" || router.pathname === "/500";
+  const isPayments = router.pathname === "/payments";
+  const isInternalPage = router.pathname === "/404" || router.pathname === "/500" || isPayments;
   return (
     <main id="root">
-      <Component {...pageProps} Wrapper={isInternalPage ? null : RootWrapper} additionalElement={<RootObservers />} />
+      <Component
+        {...pageProps}
+        Wrapper={isInternalPage ? null : RootWrapper}
+        additionalElement={isPayments ? undefined : <RootObservers />}
+      />
     </main>
   );
 }

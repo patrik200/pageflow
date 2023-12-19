@@ -1,5 +1,5 @@
 import { style, styleVariants } from "@vanilla-extract/css";
-import { h2boldStyles, h3mediumStyles, h4mediumStyles } from "@app/ui-kit";
+import { createBreakpointFrom, h2boldStyles, h3mediumStyles, h4mediumStyles } from "@app/ui-kit";
 import { margin } from "polished";
 
 export const cardSizeStyleVariants = styleVariants({
@@ -13,6 +13,10 @@ export const topContentWrapperStyles = style({
   alignItems: "flex-start",
   gap: 24,
   justifyContent: "space-between",
+  paddingLeft: 48,
+  "@media": createBreakpointFrom("tablet", {
+    paddingLeft: 0
+  })
 });
 
 export const titleWrapperStyles = style({

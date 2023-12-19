@@ -40,7 +40,7 @@ export class GetChangeFeedEventsService {
     }
 
     if (options.entityType === ChangeFeedEntityType.TICKET) {
-      await this.getTicketService.getTicketOrFail(options.entityId);
+      await this.getTicketService.getTicketOrFail(options.entityId, "slug");
       return;
     }
 

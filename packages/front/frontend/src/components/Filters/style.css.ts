@@ -1,3 +1,4 @@
+import { createBreakpointFrom } from "@app/ui-kit";
 import { style } from "@vanilla-extract/css";
 
 export const wrapperStyles = style({
@@ -7,13 +8,14 @@ export const wrapperStyles = style({
 
 export const primaryRowStyles = style({
   display: "flex",
-  gap: 16,
   alignItems: "center",
+  "@media": createBreakpointFrom("tablet", {
+    gap: 16,
+  })
 });
 
 export const filterButtonWrapperStyles = style({
   display: "flex",
-  flex: 1,
   justifyContent: "flex-end",
 });
 
@@ -38,4 +40,5 @@ export const secondaryRowsWrapperStyles = style({
 export const secondaryRowStyles = style({
   display: "flex",
   gap: 24,
+  flexDirection: "column"
 });

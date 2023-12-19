@@ -15,7 +15,6 @@ export class CreateClientCommand {
         domain: data.domain,
         tariff: Tariffs.ON_PREMISE,
         filesMemoryLimitByte: null,
-        includeSubdomainForDomainValidator: true,
       });
       logger.log(`Client "${data.name}" created. ID = "${clientId}"`, "Create client command");
     } catch (e) {

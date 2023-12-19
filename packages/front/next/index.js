@@ -137,7 +137,7 @@ function applyFavicon(config, isServer, rootFolder, faviconConfig) {
     new FaviconsWebpackPlugin({
       inject: false,
       prefix: "favicon/",
-      logo: path.join(rootFolder, "packages", "frontend", "public", "base_favicon.svg"),
+      logo: path.join(rootFolder, "packages", "front", "frontend", "public", "base_favicon.svg"),
       favicons: faviconConfig,
     }),
   );

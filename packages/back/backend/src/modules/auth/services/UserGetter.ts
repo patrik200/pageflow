@@ -22,7 +22,7 @@ export class UserGetterService {
   async getUserIdAndRoleByEmailAndPasswordForClient(email: string, password: string, clientId: string) {
     if (email === "") return null;
     const user = await this.usersRepository.findOne({
-      where: { email, client: { id: clientId }, system: false },
+      where: { email, client: { id: clientId } },
       select: ["id", "role", "email", "passwordHash"],
     });
     if (!user) return null;

@@ -24,7 +24,7 @@ export class DeleteCorrespondenceRevisionCommentsService {
   @Transactional()
   async deleteCommentOrFail(
     commentId: string,
-    { checkPermissions = true, emitEvent = true }: { checkPermissions?: boolean; emitEvent?: boolean } = {},
+    { checkPermissions = true, emitEvents = true }: { checkPermissions?: boolean; emitEvents?: boolean } = {},
   ) {
     const comment = await this.getCommentService.getCommentOrFail(commentId, {
       loadFiles: true,
@@ -39,14 +39,14 @@ export class DeleteCorrespondenceRevisionCommentsService {
       comment.files.map((commentFile) =>
         this.deleteCorrespondenceRevisionCommentFilesService.deleteCommentFile(commentFile.file.id, {
           checkPermissions,
-          emitEvent: false,
+          emitEvents: false,
         }),
       ),
     );
 
     await this.commentsRepository.delete(comment.id);
 
-    if (emitEvent)
+    if (emitEvents)
       this.eventEmitter.emit(
         CorrespondenceRevisionCommentDeleted.eventName,
         new CorrespondenceRevisionCommentDeleted(comment.id),

@@ -1,19 +1,19 @@
 import { Expose, Type } from "class-transformer";
 import { IsBoolean, IsDefined, IsEnum, IsNumber, IsOptional, IsString, ValidateNested } from "class-validator";
 import { TicketPriorities, TicketSortingFields } from "@app/shared-enums";
-import { IsBooleanConverter, IsDate, IsSorting } from "@app/kit";
 import type { Sorting } from "@app/kit";
+import { IsBooleanConverter, IsDate, IsSorting } from "@app/kit";
 import { ContainsStorageFilesDTO } from "@app/back-kit";
 
-import { dtoMessageIsDefined, dtoMessageIsValidValue } from "constants/dtoErrorMessage";
+import { dtoMessageIsValidValue } from "constants/dtoErrorMessage";
 
 import { ResponseProfileDTO } from "modules/users";
 
 export class RequestGetTicketsDTO {
   @Expose()
-  @IsDefined({ message: dtoMessageIsDefined })
+  @IsOptional()
   @IsString({ message: dtoMessageIsValidValue })
-  boardId!: string;
+  boardId?: string;
 
   @Expose() @IsOptional() @IsString() search?: string;
 
@@ -37,6 +37,8 @@ export class RequestGetTicketsDTO {
 }
 
 export class ResponseMinimalTicketDTO {
+  @Expose() @IsDefined() @IsString() slug!: string;
+
   @Expose() @IsDefined() @IsString() id!: string;
 
   @Expose() @IsDefined() @IsString() name!: string;

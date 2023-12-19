@@ -2,7 +2,7 @@ import { forwardRef, Inject, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { runOnTransactionRollback, Transactional } from "typeorm-transactional";
-import { PaymentMode, PaymentStatus } from "@app/shared-enums";
+import { PaymentMode, PaymentStatus, PaymentType } from "@app/shared-enums";
 
 import { PaymentEntity } from "entities/Payments";
 
@@ -15,7 +15,10 @@ type CreatePaymentInterface = {
   amount: number;
   description?: string;
   subscriptionId: string;
-} & ({ mode: PaymentMode.MANUAL; redirectUrl: string } | { mode: PaymentMode.AUTOMATIC; paymentMethodId: string });
+} & (
+  | { mode: PaymentMode.MANUAL; redirectUrl: string; type: PaymentType; savePaymentMethod: boolean }
+  | { mode: PaymentMode.AUTOMATIC; paymentMethodId: string }
+);
 
 @Injectable()
 export class CreatePaymentService {

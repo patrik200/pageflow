@@ -94,7 +94,7 @@ export class StorageSaveService {
   async delete(bucket: string, id: string) {
     const file = await this.storageFileRepository.findOneOrFail({
       where: { id, bucket },
-      relations: ["childVariants"],
+      relations: { childVariants: true },
     });
 
     await this.storageFileRepository.save({ id, childVariants: [] });

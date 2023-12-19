@@ -20,7 +20,6 @@ interface CreateClientInterface {
   tariff: Tariffs;
   filesMemoryLimitByte: number | null;
   addTrial?: boolean;
-  includeSubdomainForDomainValidator: boolean;
 }
 
 @Injectable()
@@ -37,7 +36,7 @@ export class CreateClientService {
   ) {}
 
   private async initializeSubscription(clientId: string, options: { tariff: Tariffs; addTrial: boolean | undefined }) {
-    await this.createSubscriptionService.unsafeCreateSubscriptionOrFail({
+    await this.createSubscriptionService.dangerCreateSubscriptionOrFail({
       clientId,
       tariff: options.tariff,
       addTrial: options.addTrial,
@@ -70,8 +69,8 @@ export class CreateClientService {
     if (!projectsBucket) throw new ServiceError("files", "Не удалось создать хранилище файлов [projects]");
   }
 
-  async validateDomain(domain: string, { includeSubdomain }: { includeSubdomain: boolean }) {
-    const matched = new RegExp(`^[-a-z0-9${includeSubdomain ? "." : ""}]{1,256}$`).test(domain);
+  async validateDomain(domain: string) {
+    const matched = new RegExp(`^[-a-z0-9.]{1,128}$`).test(domain);
     if (!matched) return false;
     const foundClient = await this.clientsRepository.findOne({ where: { domain }, select: ["id", "domain"] });
     if (foundClient) return false;
@@ -106,15 +105,8 @@ export class CreateClientService {
   }
 
   @Transactional()
-  async createClientOrFail({
-    name,
-    domain,
-    tariff,
-    filesMemoryLimitByte,
-    addTrial,
-    includeSubdomainForDomainValidator,
-  }: CreateClientInterface) {
-    const domainValid = await this.validateDomain(domain, { includeSubdomain: includeSubdomainForDomainValidator });
+  async createClientOrFail({ name, domain, tariff, filesMemoryLimitByte, addTrial }: CreateClientInterface) {
+    const domainValid = await this.validateDomain(domain);
     if (!domainValid) throw new ServiceError("domain", "Не валидный домен");
 
     const client = await this.clientsRepository.save({ name, domain, filesMemoryLimitByte });

@@ -20,6 +20,8 @@ import { updateFileArrayRequest } from "core/storages/_common/updateFile";
 
 import { EditTicketEntity } from "./entities/EditTicket";
 import { LoadTicketsFilterEntity } from "./entities/LoadTicketsFilterEntity";
+import { TicketRelationsStorage as TicketRelationsStorageInject } from "./relations";
+import type { TicketRelationsStorage as TicketRelationsStorageType } from "./relations";
 
 @Service()
 export class TicketsStorage extends Storage {
@@ -33,6 +35,7 @@ export class TicketsStorage extends Storage {
   @Inject() private requestManager!: InternalRequestManager;
   @Inject() private intlDateStorage!: IntlDateStorage;
   @Inject() private dictionariesCommonStorage!: DictionariesCommonStorage;
+  @Inject(() => TicketRelationsStorageInject) private ticketRelationsStorage!: TicketRelationsStorageType;
 
   @observable filter!: LoadTicketsFilterEntity;
 
@@ -96,8 +99,10 @@ export class TicketsStorage extends Storage {
       const intlDate = this.intlDateStorage.getIntlDate();
       ticketsPage.items.forEach((ticket) => ticket.configure(intlDate));
 
-      this.ticketsList.pagination = ticketsPage.pagination;
-      this.ticketsList.items = page === 1 ? ticketsPage.items : this.ticketsList.items.concat(ticketsPage.items);
+      this.ticketsList = {
+        pagination: ticketsPage.pagination,
+        items: page === 1 ? ticketsPage.items : this.ticketsList.items.concat(ticketsPage.items),
+      } as unknown as PaginatedEntities<TicketEntity>;
       this.kanbanColumns = [];
 
       return { success: true } as const;
@@ -106,20 +111,20 @@ export class TicketsStorage extends Storage {
     }
   };
 
-  @action loadTicketDetail = async (ticketId: string) => {
+  @action loadTicketDetail = async (ticketSlug: string) => {
     try {
       const [ticketDetail, { array: changeFeedEvents }] = await Promise.all([
         this.requestManager.createRequest({
-          url: "/tickets/{ticketId}",
+          url: "/tickets/{ticketSlug}",
           method: METHODS.GET,
           serverDataEntityDecoder: TicketDetailEntity,
-        })({ urlParams: { ticketId } }),
+        })({ urlParams: { ticketSlug } }),
         this.requestManager.createRequest({
-          url: "/change-feed/ticket/{ticketId}",
+          url: "/change-feed/ticket/{ticketSlug}",
           method: METHODS.GET,
           serverDataEntityDecoder: arrayOfChangeFeedEventEntities,
           responseDataFieldPath: ["list"],
-        })({ urlParams: { ticketId } }),
+        })({ urlParams: { ticketSlug } }),
       ]);
       ticketDetail.configure(this.intlDateStorage.getIntlDate());
       ticketDetail.changeFeedEvents = changeFeedEvents;
@@ -153,6 +158,8 @@ export class TicketsStorage extends Storage {
           return file;
         },
       });
+
+      await this.ticketRelationsStorage.editTicketRelations(entity.relations, result.id);
 
       return { success: true, uploadResults, deleteResults, ticketId: result.id } as const;
     } catch (error) {
@@ -190,6 +197,9 @@ export class TicketsStorage extends Storage {
           }),
       });
 
+      console.log(entity.relations.length);
+      await this.ticketRelationsStorage.editTicketRelations(entity.relations, entity.id);
+
       await this.reloadTicketAfterUpdate(entity);
 
       return { success: true, uploadResults, deleteResults } as const;
@@ -199,8 +209,7 @@ export class TicketsStorage extends Storage {
   };
 
   @action private reloadTicketAfterUpdate = async (entity: EditTicketEntity) => {
-    const loadResult = await this.loadTicketDetail(entity.id);
-
+    const loadResult = await this.loadTicketDetail(entity.slug);
     if (!loadResult.success) return;
 
     const ticketIndexInList = this.ticketsList.items.findIndex((ticket) => ticket.id === entity.id);

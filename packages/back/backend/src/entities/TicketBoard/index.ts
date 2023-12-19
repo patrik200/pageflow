@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne, OneToMany } from "typeorm";
+import { Column, Entity, ManyToOne, OneToMany, Unique } from "typeorm";
 import { BaseGeneratedIDEntity } from "@app/back-kit";
 
 import { UserEntity } from "entities/User";
@@ -10,6 +10,7 @@ import { PermissionEntity } from "entities/Permission";
 import { TicketBoardFavouriteEntity } from "./Favourite";
 
 @Entity({ name: "ticket_boards" })
+@Unique(["client", "slug"])
 export class TicketBoardEntity extends BaseGeneratedIDEntity {
   @ManyToOne(() => ClientEntity, { onDelete: "CASCADE", nullable: false }) client!: ClientEntity;
 
@@ -18,6 +19,10 @@ export class TicketBoardEntity extends BaseGeneratedIDEntity {
   @ManyToOne(() => ProjectEntity, { nullable: true }) project!: ProjectEntity | null;
 
   @Column() name!: string;
+
+  @Column() slug!: string;
+
+  @Column({ default: 1 }) nextTicketNumber!: number;
 
   @Column() isPrivate!: boolean;
 

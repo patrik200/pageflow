@@ -34,7 +34,7 @@ export class DeleteDocumentRootGroupService {
       }),
       ...rootGroup.allChildrenDocuments.map(({ id, parentGroup }) => {
         if (parentGroup) return null;
-        return this.deleteDocumentService.deleteDocumentOrFail(id, { checkPermissions: false });
+        return this.deleteDocumentService.deleteDocumentOrFail(id, { checkPermissions: false, emitEvents: false });
       }),
     ]);
 

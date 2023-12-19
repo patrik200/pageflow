@@ -2,6 +2,7 @@ import { forwardRef, Inject, Injectable, OnApplicationBootstrap } from "@nestjs/
 import { EventEmitter2 } from "@nestjs/event-emitter";
 import { Transactional } from "typeorm-transactional";
 import { ChangeFeedEntityType } from "@app/shared-enums";
+import { SentryTextService } from "@app/back-kit";
 
 import { TicketEntity } from "entities/Ticket";
 
@@ -31,11 +32,12 @@ export class TicketEventListenerService implements OnApplicationBootstrap {
     @Inject(forwardRef(() => ChangeFeedEventChangeDetectionService))
     private feedEventChangeDetectionService: ChangeFeedEventChangeDetectionService,
     @Inject(forwardRef(() => NotificationService)) private notificationService: NotificationService,
+    private sentryTextService: SentryTextService,
   ) {}
 
   @Transactional()
   private async handleTicketCreated(ticketId: string, triggerUserId: string) {
-    const ticket = await this.getTicketService.getTicketOrFail(ticketId, {
+    const ticket = await this.getTicketService.getTicketOrFail(ticketId, "id", {
       checkPermissions: false,
       loadClient: true,
       loadResponsible: true,
@@ -52,7 +54,7 @@ export class TicketEventListenerService implements OnApplicationBootstrap {
       "Создан новый запрос",
       {
         name: ticket.name,
-        id: ticket.id,
+        id: ticket.slug,
         authorName: ticket.author.name,
         createdAt: ticket.createdAt,
       },
@@ -78,7 +80,7 @@ export class TicketEventListenerService implements OnApplicationBootstrap {
 
   @Transactional()
   private async handleTicketUpdated(ticketId: string, oldTicket: TicketEntity, triggerUserId: string) {
-    const ticket = await this.getTicketService.getTicketOrFail(ticketId, {
+    const ticket = await this.getTicketService.getTicketOrFail(ticketId, "id", {
       checkPermissions: false,
       loadClient: true,
       loadStatus: true,
@@ -94,7 +96,7 @@ export class TicketEventListenerService implements OnApplicationBootstrap {
     });
 
     await this.createChangeFeedEventService.createChangeFeedEventOrFail({
-      entityId: ticketId,
+      entityId: ticket.slug,
       entityType: ChangeFeedEntityType.TICKET,
       eventType: "updated",
       data: {
@@ -114,7 +116,7 @@ export class TicketEventListenerService implements OnApplicationBootstrap {
       "Обновление запроса",
       {
         name: ticket.name,
-        id: ticket.id,
+        id: ticket.slug,
         updatedAt: ticket.updatedAt,
       },
       { emailTemplateName: "TicketUpdated" },
@@ -131,13 +133,28 @@ export class TicketEventListenerService implements OnApplicationBootstrap {
 
   onApplicationBootstrap() {
     this.eventEmitter.on(TicketCreated.eventName, (event: TicketCreated) =>
-      this.handleTicketCreated(event.ticketId, event.triggerUserId).catch(() => null),
+      this.handleTicketCreated(event.ticketId, event.triggerUserId).catch((e) =>
+        this.sentryTextService.error(e, {
+          context: TicketCreated.eventName,
+          contextService: TicketEventListenerService.name,
+        }),
+      ),
     );
     this.eventEmitter.on(TicketDeleted.eventName, (event: TicketDeleted) =>
-      this.handleTicketDeleted(event.ticketId).catch(() => null),
+      this.handleTicketDeleted(event.ticketId).catch((e) =>
+        this.sentryTextService.error(e, {
+          context: TicketDeleted.eventName,
+          contextService: TicketEventListenerService.name,
+        }),
+      ),
     );
     this.eventEmitter.on(TicketUpdated.eventName, (event: TicketUpdated) =>
-      this.handleTicketUpdated(event.ticketId, event.oldTicket, event.triggerUserId).catch(() => null),
+      this.handleTicketUpdated(event.ticketId, event.oldTicket, event.triggerUserId).catch((e) =>
+        this.sentryTextService.error(e, {
+          context: TicketUpdated.eventName,
+          contextService: TicketEventListenerService.name,
+        }),
+      ),
     );
   }
 }

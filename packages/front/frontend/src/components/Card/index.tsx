@@ -7,10 +7,15 @@ import { cardStyles } from "./style.css";
 interface CardInterface {
   className?: string;
   children: React.ReactNode;
+  onClick?: React.MouseEventHandler<HTMLDivElement>;
 }
 
-function Card({ className, children }: CardInterface) {
-  return <div className={cn(className, cardStyles)}>{children}</div>;
+function Card({ className, children, onClick }: CardInterface) {
+  return (
+    <div className={cn(className, cardStyles)} onClick={onClick}>
+      {children}
+    </div>
+  );
 }
 
 export default observer(Card);

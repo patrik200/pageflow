@@ -26,14 +26,12 @@ export class GetProjectService {
   async getProjectOrFail(
     projectId: string,
     {
-      unsafeIgnoreClient,
       loadActiveTicketsCount,
       loadFavourites,
       checkPermissions = true,
       loadPermissions,
       ...options
     }: {
-      unsafeIgnoreClient?: boolean;
       loadActiveTicketsCount?: boolean;
       loadFavourites?: boolean;
       checkPermissions?: boolean;
@@ -58,8 +56,7 @@ export class GetProjectService {
     }
 
     const where: FindOptionsWhere<ProjectEntity> = { id: projectId };
-
-    if (!unsafeIgnoreClient) where.client = { id: getCurrentUser().clientId };
+    where.client = { id: getCurrentUser().clientId };
 
     const project = await this.projectRepository.findOneOrFail({
       where,
@@ -83,19 +80,16 @@ export class GetProjectService {
       },
     });
 
-    if (!unsafeIgnoreClient) project.calculateAllCans(getCurrentUser());
+    project.calculateAllCans(getCurrentUser());
 
     await Promise.all([
       loadFavourites && this.getProjectIsFavouritesService.loadProjectIsFavourite(project),
-      loadActiveTicketsCount &&
-        this.getActiveTicketsCountService
-          .unsafeGetActiveTicketsCountForProject(project.id)
-          .then((activeTicketsCount) => (project.activeTicketsCount = activeTicketsCount)),
+      loadActiveTicketsCount && this.getActiveTicketsCountService.unsafeLoadActiveTicketsCountForBoard(project),
       loadPermissions &&
         this.permissionAccessService.loadPermissions(
           { entityId: project.id, entityType: PermissionEntityType.PROJECT },
           project,
-          { loadUser: true, unsafeIgnoreClient },
+          { loadUser: true },
         ),
     ]);
 

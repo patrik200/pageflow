@@ -10,12 +10,14 @@ export const kanbanCardContentStyles = style({
   flex: 1,
   padding: 16,
 });
+
 export const listCardContentStyles = style({
   flex: 1,
   paddingTop: 16,
 });
 
 export const kanbanStyles = style({
+  minHeight: 200,
   ...margin(null, -16, -28, -16),
   ...padding(null, 16, 8, 16),
 });

@@ -1,9 +1,13 @@
+import { createBreakpointFrom } from "@app/ui-kit";
 import { style } from "@vanilla-extract/css";
 
 export const wrapperStyles = style({
   display: "flex",
   gap: 16,
-  alignItems: "flex-start",
+  flexDirection: "column-reverse",
+  "@media": createBreakpointFrom("miniDesktop", {
+    flexDirection: "row",
+  }),
 });
 
 export const mainWrapperStyles = style({
@@ -14,5 +18,9 @@ export const mainWrapperStyles = style({
 });
 
 export const additionalWrapperStyles = style({
-  width: 390,
+  "@media": {
+    ...createBreakpointFrom("desktop", {
+      minWidth: 390,
+    }),
+  },
 });

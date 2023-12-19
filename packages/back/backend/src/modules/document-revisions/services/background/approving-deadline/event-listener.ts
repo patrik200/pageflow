@@ -1,6 +1,7 @@
 import { forwardRef, Inject, Injectable, OnApplicationBootstrap } from "@nestjs/common";
 import { EventEmitter2 } from "@nestjs/event-emitter";
 import { Transactional } from "typeorm-transactional";
+import { SentryTextService } from "@app/back-kit";
 
 import { AppNotification, NotificationService } from "modules/notifications";
 
@@ -13,6 +14,7 @@ export class DocumentRevisionApprovingDeadlineEventListenerService implements On
     private eventEmitter: EventEmitter2,
     private getDocumentRevisionService: GetDocumentRevisionService,
     @Inject(forwardRef(() => NotificationService)) private notificationService: NotificationService,
+    private sentryTextService: SentryTextService,
   ) {}
 
   @Transactional()
@@ -51,7 +53,12 @@ export class DocumentRevisionApprovingDeadlineEventListenerService implements On
 
   onApplicationBootstrap() {
     this.eventEmitter.on(DocumentRevisionApprovingDeadline.eventName, (event: DocumentRevisionApprovingDeadline) =>
-      this.handleApprovingDeadline(event.revisionId).catch(() => null),
+      this.handleApprovingDeadline(event.revisionId).catch((e) =>
+        this.sentryTextService.error(e, {
+          context: DocumentRevisionApprovingDeadline.eventName,
+          contextService: DocumentRevisionApprovingDeadlineEventListenerService.name,
+        }),
+      ),
     );
   }
 }

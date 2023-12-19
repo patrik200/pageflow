@@ -2,6 +2,7 @@ import { forwardRef, Inject, Injectable, OnApplicationBootstrap } from "@nestjs/
 import { EventEmitter2 } from "@nestjs/event-emitter";
 import { Transactional } from "typeorm-transactional";
 import { ChangeFeedEntityType } from "@app/shared-enums";
+import { SentryTextService } from "@app/back-kit";
 
 import { ProjectEntity } from "entities/Project";
 
@@ -29,6 +30,7 @@ export class ProjectEventListenerService implements OnApplicationBootstrap {
     @Inject(forwardRef(() => ChangeFeedEventChangeDetectionService))
     private feedEventChangeDetectionService: ChangeFeedEventChangeDetectionService,
     @Inject(forwardRef(() => NotificationService)) private notificationService: NotificationService,
+    private sentryTextService: SentryTextService,
   ) {}
 
   @Transactional()
@@ -139,13 +141,28 @@ export class ProjectEventListenerService implements OnApplicationBootstrap {
 
   onApplicationBootstrap() {
     this.eventEmitter.on(ProjectCreated.eventName, (event: ProjectCreated) =>
-      this.handleProjectCreated(event.projectId, event.triggerUserId).catch(() => null),
+      this.handleProjectCreated(event.projectId, event.triggerUserId).catch((e) =>
+        this.sentryTextService.error(e, {
+          context: ProjectCreated.eventName,
+          contextService: ProjectEventListenerService.name,
+        }),
+      ),
     );
     this.eventEmitter.on(ProjectDeleted.eventName, (event: ProjectDeleted) =>
-      this.handleProjectDeleted(event.projectId).catch(() => null),
+      this.handleProjectDeleted(event.projectId).catch((e) =>
+        this.sentryTextService.error(e, {
+          context: ProjectDeleted.eventName,
+          contextService: ProjectEventListenerService.name,
+        }),
+      ),
     );
     this.eventEmitter.on(ProjectUpdated.eventName, (event: ProjectUpdated) =>
-      this.handleProjectUpdated(event.projectId, event.oldProject, event.triggerUserId).catch(() => null),
+      this.handleProjectUpdated(event.projectId, event.oldProject, event.triggerUserId).catch((e) =>
+        this.sentryTextService.error(e, {
+          context: ProjectUpdated.eventName,
+          contextService: ProjectEventListenerService.name,
+        }),
+      ),
     );
   }
 }

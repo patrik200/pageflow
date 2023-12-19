@@ -16,7 +16,7 @@ import { patchLogger } from "./internal/pathLogger";
 import { initializeFiles } from "./internal/initializeFiles";
 import { initializeElastic } from "./internal/initializeElastic";
 import { initializeImageProcessor } from "./internal/initializeImageProcessor";
-import { errorLogBeautifier } from "../libs";
+import { initializeSentry, initializeSentryModules } from "./internal/initializeSentry";
 
 Error.stackTraceLimit = 100;
 
@@ -32,6 +32,7 @@ export async function bootstrap<MAIN>(
   { logEventEmitter, logOrm, entityPaths, synchronizeDB, projectRootPath }: BootstrapOptions,
 ) {
   patchLogger(logEventEmitter);
+
   @Module({
     imports: [
       MainModule,
@@ -42,6 +43,7 @@ export async function bootstrap<MAIN>(
       initializeStorage(),
       initializeElastic(),
       initializeImageProcessor(),
+      ...initializeSentryModules(),
     ],
   })
   class AppModule {}
@@ -54,6 +56,8 @@ export async function bootstrap<MAIN>(
   initializeSerializers(app);
   initializeCors(app);
   initializeCookies(app);
+  await initializeSentry(app);
+
   app.setGlobalPrefix("/api");
 
   return { app, listen: listenFabric(app, config.server), close: closeFabric(app) };
@@ -62,11 +66,13 @@ export async function bootstrap<MAIN>(
 function listenFabric(app: INestApplication, port: number) {
   async function run() {
     try {
-      await app.listen(port, () => Logger.log(`App server listening http://localhost:${port}`, "Bootstrap"));
+      await app.listen(port, () =>
+        Logger.log(`${chalk.bgBlueBright(`App server listening`)} http://localhost:${port}`, "Bootstrap"),
+      );
       return true;
     } catch (e) {
       Logger.error("Can not run server. Turning off", "Bootstrap");
-      errorLogBeautifier(e);
+      Logger.error(e);
       setTimeout(() => process.exit(1), 3000);
       return false;
     }
@@ -82,7 +88,7 @@ function closeFabric(app: INestApplication) {
       Logger.log(`App server closed`, "Bootstrap");
     } catch (e) {
       Logger.error("Can not close server. Turning off", "Bootstrap");
-      errorLogBeautifier(e);
+      Logger.error(e);
       setTimeout(() => process.exit(1), 3000);
       return false;
     }

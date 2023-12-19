@@ -14,6 +14,7 @@ import { getCurrentUser } from "modules/auth";
 
 import { DeleteTicketFilesService } from "../file/delete";
 import { GetTicketsForEditService } from "./get-for-update";
+import { RemoveTicketFavouritesService } from "../favourite/remove";
 import { EditTicketsService } from "./edit";
 import { TicketDeleted } from "../../events/TicketDeleted";
 
@@ -28,10 +29,11 @@ export class DeleteTicketService {
     private deleteTicketCommentsService: DeleteTicketCommentsService,
     private elasticService: ElasticService,
     private editTicketsService: EditTicketsService,
+    private removeTicketFavouritesService: RemoveTicketFavouritesService,
   ) {}
 
   @Transactional()
-  async deleteTicketOrFail(ticketId: string) {
+  async deleteTicketOrFail(ticketId: string, { emitEvents = true }: { emitEvents?: boolean } = {}) {
     const ticket = await this.getTicketsForEditService.getTicketForUpdating(ticketId, {
       loadComments: true,
     });
@@ -44,16 +46,21 @@ export class DeleteTicketService {
 
     await Promise.all(
       ticket.comments.map((comment) =>
-        this.deleteTicketCommentsService.deleteCommentOrFail(comment.id, { checkPermissions: false }),
+        this.deleteTicketCommentsService.deleteCommentOrFail(comment.id, {
+          checkPermissions: false,
+          emitEvents: false,
+        }),
       ),
     );
+
+    await this.removeTicketFavouritesService.removeFavouriteOrFail(ticket.id, { forAllUsers: true });
 
     await Promise.all([
       this.ticketsRepository.delete(ticket.id),
       this.elasticService.deleteIndexDocumentOrFail(this.elasticService.getDocumentId("tickets", ticket.id)),
     ]);
 
-    this.eventEmitter.emit(TicketDeleted.eventName, new TicketDeleted(ticket.id));
+    if (emitEvents) this.eventEmitter.emit(TicketDeleted.eventName, new TicketDeleted(ticket.id));
   }
 
   @Transactional()

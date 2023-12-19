@@ -21,7 +21,7 @@ export class CreateSubscriptionService {
     throw new Error("Unknown tariff");
   }
 
-  async unsafeCreateSubscriptionOrFail(options: { clientId: string; tariff: Tariffs; addTrial?: boolean }) {
+  async dangerCreateSubscriptionOrFail(options: { clientId: string; tariff: Tariffs; addTrial?: boolean }) {
     return await this.subscriptionRepository.save({
       client: { id: options.clientId },
       tariff: options.tariff,

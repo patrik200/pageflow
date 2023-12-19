@@ -1,6 +1,5 @@
 import { Injectable } from "@nestjs/common";
 import crypto from "node:crypto";
-import { slugify } from "transliteration";
 
 type Key = string;
 
@@ -39,10 +38,6 @@ export class CryptoService {
       decipher.update(Buffer.isBuffer(encryptedText) ? encryptedText : Buffer.from(encryptedText, "base64url")),
       decipher.final(),
     ]);
-  }
-
-  slug(text: string) {
-    return slugify(text, { separator: "-", trim: true, unknown: "", lowercase: true });
   }
 
   generateRandom(length: number) {

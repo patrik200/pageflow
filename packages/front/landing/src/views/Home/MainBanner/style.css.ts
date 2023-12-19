@@ -1,99 +1,185 @@
 import { style } from "@vanilla-extract/css";
-import { padding } from "polished";
+import { padding, margin } from "polished";
 
 import { globalThemeColorVars } from "styles";
 
 export const wrapperStyles = style({
-  zIndex: 0,
   position: "relative",
-  width: "100%",
-  minHeight: 600,
-  overflow: "hidden",
-  marginTop: -70,
-  ...padding(0, 10),
+  width: "calc(100% - 48px)",
+  background: 'url("/images/blocks/mainBanner/index.jpg")',
+  backgroundPosition: "50%",
+  backgroundSize: "cover",
+  borderRadius: 24,
+  height: 715,
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  ...padding(32, 16),
+  ...margin(24, 24, 0, 24),
 
   "@media": {
     "screen and (max-width: 768px)": {
-      minHeight: 300,
+      height: 568,
+      width: "calc(100% - 32px)",
+      ...margin(16, 16, 0, 16),
     },
   },
 });
 
-export const circleStyles = style({
-  zIndex: -1,
-  position: "absolute",
-  bottom: "5%",
-  top: "-40%",
-  left: "-60%",
-  right: "-60%",
-  borderRadius: "100%",
-  background: globalThemeColorVars.primary,
-  opacity: 0.08,
+export const contentWrapperStyles = style({
+  maxWidth: 1120,
+  width: "100%",
+  display: "flex",
+  flexDirection: "column",
+  gap: 132,
+
+  "@media": {
+    "screen and (max-width: 768px)": {
+      gap: 64,
+    },
+  },
+});
+
+export const logoWrapperStyles = style({
+  display: "flex",
+  gap: 12,
+  alignItems: "center",
+});
+
+export const logoImageStyles = style({
+  width: 44,
+});
+
+export const logoTextStyles = style({
+  fontSize: 24,
+  fontWeight: "500",
+  letterSpacing: 0.5,
+  color: globalThemeColorVars.textInverse,
 });
 
 export const contentStyles = style({
-  maxWidth: 1180,
-  height: "100%",
   display: "flex",
   flexDirection: "column",
-  alignItems: "center",
-  margin: "0 auto",
-  marginTop: 142,
+  gap: 24,
+
+  "@media": {
+    "screen and (max-width: 768px)": {
+      gap: 8,
+    },
+  },
 });
 
 export const titleStyles = style({
-  fontSize: 64,
-  textAlign: "center",
+  fontSize: 96,
+  display: "block",
   fontWeight: "600",
+  lineHeight: "87px",
+  color: globalThemeColorVars.textInverse,
 
   "@media": {
     "screen and (max-width: 768px)": {
-      fontSize: 24,
+      fontSize: 64,
+      lineHeight: "56px",
+    },
+
+    "screen and (max-width: 540px)": {
+      fontSize: 32,
+      lineHeight: "28px",
     },
   },
 });
 
-export const descriptionStyles = style({
-  fontSize: 24,
-  textAlign: "center",
-  maxWidth: 740,
-  lineHeight: 1.4,
-  marginTop: 12,
+export const titleSystemTextStyles = style([
+  titleStyles,
+  {
+    fontWeight: 200,
+  },
+]);
+
+export const titleDocumentsTextStyles = style([
+  titleStyles,
+  {
+    color: globalThemeColorVars.primary,
+    textAlign: "right",
+  },
+]);
+
+export const tryFreeWrapperStyles = style({
+  display: "flex",
+  marginTop: 24,
+  gap: 20,
+  alignItems: "center",
+  justifyContent: "center",
 
   "@media": {
     "screen and (max-width: 768px)": {
-      fontSize: 16,
+      flexDirection: "column",
     },
   },
+});
+
+export const tryFreeSpacingStyles = style({
+  flex: 1,
 });
 
 export const tryButtonStyles = style({
   fontFamily: "Roboto, sans-serif",
-  marginTop: 48,
+  height: 53,
+  marginLeft: "auto",
   outline: "none",
-  background: globalThemeColorVars.primary,
+  background: "transparent",
   color: globalThemeColorVars.textInverse,
-  borderRadius: 16,
-  ...padding(27, 50),
-  fontSize: 20,
-  fontWeight: "700",
+  borderRadius: 8,
+  fontSize: 18,
+  ...padding(0, 24),
+  fontWeight: 600,
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
   cursor: "pointer",
-  border: "none",
-  boxShadow: "rgba(0, 0, 0, 0.1) 0px 4px 4px -2px, rgba(0, 0, 0, 0.1) 0px 8px 16px 0px",
+  position: "relative",
+  border: `2px solid ${globalThemeColorVars.primary}`,
 
   "@media": {
     "screen and (max-width: 768px)": {
       marginTop: 24,
       ...padding(16, 24),
+      fontSize: 16,
     },
   },
 });
 
-export const buttonInfoTextStyles = style({
+export const tryButtonTextStyles = style({
+  zIndex: 1,
+});
+
+export const tryButtonShadowStyles = style({
+  position: "absolute",
+  width: "100%",
+  height: "100%",
+  borderRadius: "100%",
+  background: "radial-gradient(50% 50% at 50% 50%, rgba(0, 0, 0, 0.52) 0%, rgba(0, 0, 0, 0.00) 100%)",
+  filter: "blur(26px)",
+});
+
+export const tryFreeDividerStyles = style({
+  width: 2,
+  height: 52,
+  background: globalThemeColorVars.textInverse,
+  borderRadius: 2,
+
+  "@media": {
+    "screen and (max-width: 768px)": {
+      display: "none",
+    },
+  },
+});
+
+export const tryButtonInfoTextStyles = style({
   textAlign: "center",
-  color: globalThemeColorVars.textSecondary,
-  fontSize: 14,
-  marginTop: 12,
+  color: globalThemeColorVars.textInverse,
+  fontSize: 18,
+  fontWeight: 600,
 
   "@media": {
     "screen and (max-width: 768px)": {
@@ -101,3 +187,10 @@ export const buttonInfoTextStyles = style({
     },
   },
 });
+
+export const tryButtonHighlightTextStyles = style([
+  tryButtonInfoTextStyles,
+  {
+    color: globalThemeColorVars.primary,
+  },
+]);

@@ -1,8 +1,13 @@
 import { style } from "@vanilla-extract/css";
+import { margin } from "polished";
 
 export const wrapperStyles = style({
-  display: "grid",
-  gridTemplateColumns: "repeat(3, minmax(0, 1fr))",
-  gap: 24,
-  alignItems: "flex-start",
+  ...margin(null, -8),
+});
+
+export const itemStyles = style({
+  width: "33.33%",
+  paddingLeft: 8,
+  paddingRight: 8,
+  paddingBottom: 16,
 });

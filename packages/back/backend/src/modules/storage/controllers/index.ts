@@ -11,12 +11,22 @@ export class StorageController {
 
   @Get("files/:bucket/:fileId")
   @withUserAuthorized([UserRole.USER])
-  async fileAuthorizedOrCertainUser(
+  async filePrivate(
     @Res() res: Response,
     @Param("bucket") bucket: string,
     @Param("fileId") id: string,
     @Query("width") width: string,
   ) {
-    return await this.storageControllerService.file(res, { bucket, id }, { width });
+    return await this.storageControllerService.file(res, { bucket, id, mode: "any" }, { width });
+  }
+
+  @Get("files/:bucket/:fileId/public")
+  async filePublic(
+    @Res() res: Response,
+    @Param("bucket") bucket: string,
+    @Param("fileId") id: string,
+    @Query("width") width: string,
+  ) {
+    return await this.storageControllerService.file(res, { bucket, id, mode: "onlyPublic" }, { width });
   }
 }

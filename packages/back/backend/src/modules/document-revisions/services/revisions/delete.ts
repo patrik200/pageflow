@@ -41,7 +41,10 @@ export class DeleteDocumentRevisionsService {
   ) {}
 
   @Transactional()
-  async deleteRevisionOrFail(revisionId: string, { checkPermissions = true }: { checkPermissions?: boolean } = {}) {
+  async deleteRevisionOrFail(
+    revisionId: string,
+    { checkPermissions = true, emitEvents = true }: { checkPermissions?: boolean; emitEvents?: boolean } = {},
+  ) {
     const revision = await this.getDocumentRevisionService.getRevisionOrFail(revisionId, {
       checkPermissions,
       loadFiles: true,
@@ -61,16 +64,16 @@ export class DeleteDocumentRevisionsService {
       ...revision.files.map(({ file }) =>
         this.deleteDocumentRevisionFilesService.deleteFileOrFail(revision.id, file.id, {
           checkPermissions: false,
-          emitEvent: false,
+          emitEvents: false,
         }),
       ),
       ...revision.comments.map((comment) =>
         this.deleteDocumentRevisionCommentsService.deleteComment(comment.id, {
           checkPermissions: false,
-          emitEvent: false,
+          emitEvents: false,
         }),
       ),
-      this.removeDocumentRevisionFavouritesService.removeFavouriteOrFail(revision.id),
+      this.removeDocumentRevisionFavouritesService.removeFavouriteOrFail(revision.id, { forAllUsers: true }),
     ]);
 
     await this.revisionsRepository.delete(revision.id);
@@ -79,7 +82,7 @@ export class DeleteDocumentRevisionsService {
       this.elasticService.getDocumentId("document-revisions", revision.id),
     );
 
-    this.eventEmitter.emit(DocumentRevisionDeleted.eventName, new DocumentRevisionDeleted(revision.id));
+    if (emitEvents) this.eventEmitter.emit(DocumentRevisionDeleted.eventName, new DocumentRevisionDeleted(revision.id));
   }
 
   @Transactional()

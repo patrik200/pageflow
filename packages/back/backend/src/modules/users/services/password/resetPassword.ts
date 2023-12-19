@@ -7,7 +7,7 @@ import { DateTime } from "luxon";
 
 import { EmailRendererService, EmailSenderService } from "modules/email";
 import { currentUserStorage, emptyCurrentUserStorageValue } from "modules/auth";
-import { GetClientsService } from "modules/clients";
+import { GetClientService } from "modules/clients";
 
 import { GetUserService } from "../user/get";
 import { EditUserService } from "../user/edit";
@@ -25,7 +25,7 @@ export class ResetPasswordService {
     private getUserService: GetUserService,
     @Inject(forwardRef(() => EmailSenderService)) private emailSenderService: EmailSenderService,
     @Inject(forwardRef(() => EmailRendererService)) private emailRendererService: EmailRendererService,
-    @Inject(forwardRef(() => GetClientsService)) private getClientsService: GetClientsService,
+    @Inject(forwardRef(() => GetClientService)) private getClientService: GetClientService,
     private editUserService: EditUserService,
   ) {}
 
@@ -49,7 +49,7 @@ export class ResetPasswordService {
       config._secrets.restorePassword.cryptoIv,
     );
 
-    const client = await this.getClientsService.getClientByIdOrFail(clientId);
+    const client = await this.getClientService.dangerGetClientByIdOrFail(clientId);
 
     const html = await this.emailRendererService.renderEmailComponent("ResetPasswordCreated", client.domain, {
       token: token.toString("base64url"),

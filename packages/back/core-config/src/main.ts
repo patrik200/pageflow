@@ -49,6 +49,7 @@ export const config = {
     restorePasswordTokenExpiresInMS: IS_PROD ? ms("2h") : ms("5m"),
   },
   subscription: {
+    autoPaymentsAvailable: true,
     gracePeriodDays: 3,
     checkForAutoRenewIntervalMs: ms("5m"),
   },
@@ -60,7 +61,6 @@ export const config = {
     verify: IS_PROD,
     queueMaxElements: 3,
   },
-  ipc: { serverName: "app-ipc-server", clientName: "app-ipc-client" },
   notifications: {
     checkIntervalMs: IS_PROD ? ms("3m") : ms("20s"),
     enabled: parseBool(env.ENABLE_EMAIL_NOTIFICATIONS, false),
@@ -68,7 +68,19 @@ export const config = {
   invitations: {
     tokenExpiresInMS: ms("1d"),
   },
+  client: {
+    checkForDeleteUnusedIntervalMs: ms("1d"),
+  },
+  landing: {
+    domainsBlackList: new Set(["api", "demo", "www", "info"]),
+  },
+  sentry: {
+    enabled: IS_PROD,
+  },
   _secrets: {
+    sentry: {
+      dsn: process.env.SENTRY_DSN,
+    },
     cookies: {
       key: env.COOKIE_SECRET,
     },
@@ -77,7 +89,6 @@ export const config = {
       secret: env.S3_SECRET_KEY,
     },
     auth: {
-      cryptoIv: env.AUTH_JWT_CRYPTO_IV,
       sign: env.AUTH_JWT_SIGN,
     },
     restorePassword: {

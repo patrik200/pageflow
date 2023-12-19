@@ -99,3 +99,8 @@ export { default as OnlyBrowser } from "primitives/OnlyBrowser";
 
 export { default as Badge } from "primitives/Badge";
 export * from "primitives/Badge";
+
+export { default as Drawer } from "primitives/Drawer";
+export * from "primitives/Drawer";
+
+export { default as CopyToClipboard } from "primitives/CopyToClipboard";

@@ -1,28 +1,41 @@
 import { style } from "@vanilla-extract/css";
+import { padding } from "polished";
+
+import { globalThemeColorVars } from "styles";
 
 export const wrapperStyles = style({
-  display: "flex",
-  gap: 64,
   margin: "0 auto",
-  marginTop: 140,
-  alignItems: "center",
+  width: "100%",
+  maxWidth: 1080,
+  marginTop: 96,
 
   "@media": {
     "screen and (max-width: 768px)": {
-      marginTop: 80,
+      marginTop: 64,
     },
   },
 });
 
 export const titleStyles = style({
-  fontSize: 32,
-  fontWeight: "600",
-  lineHeight: "140%",
-  textAlign: "center",
+  fontSize: 48,
+  fontWeight: 500,
+  display: "block",
+  letterSpacing: 0.48,
+  lineHeight: "110%",
+  color: globalThemeColorVars.primary,
+  ...padding(0, 24),
 
   "@media": {
     "screen and (max-width: 768px)": {
       fontSize: 24,
+      textAlign: "center",
     },
   },
 });
+
+export const subTitleStyles = style([
+  titleStyles,
+  {
+    color: globalThemeColorVars.textPrimary,
+  },
+]);

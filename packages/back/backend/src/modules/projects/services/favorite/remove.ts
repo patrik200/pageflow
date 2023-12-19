@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { Repository } from "typeorm";
+import { FindOptionsWhere, Repository } from "typeorm";
 import { Transactional } from "typeorm-transactional";
 
 import { ProjectEntity } from "entities/Project";
@@ -18,12 +18,23 @@ export class RemoveProjectFavouritesService {
   ) {}
 
   @Transactional()
-  async removeFavouriteOrFail(projectId: string) {
-    const { clientId, userId } = getCurrentUser();
+  async removeFavouriteOrFail(projectId: string, { forAllUsers }: { forAllUsers: boolean }) {
+    const projectFindOptions: FindOptionsWhere<ProjectEntity> = { id: projectId };
+    const favouriteFindOptions: FindOptionsWhere<ProjectFavouriteEntity> = {};
+
+    const currentUser = getCurrentUser();
+    projectFindOptions.client = { id: currentUser.clientId };
+
+    if (!forAllUsers) {
+      favouriteFindOptions.user = { id: currentUser.userId };
+    }
+
     const project = await this.projectRepository.findOneOrFail({
-      withDeleted: true,
-      where: { id: projectId, client: { id: clientId } },
+      where: projectFindOptions,
     });
-    await this.favouriteRepository.delete({ project: { id: project.id }, user: { id: userId } });
+
+    favouriteFindOptions.project = { id: project.id };
+
+    await this.favouriteRepository.delete(favouriteFindOptions);
   }
 }

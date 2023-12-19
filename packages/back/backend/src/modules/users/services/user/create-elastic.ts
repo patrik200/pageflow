@@ -8,13 +8,12 @@ import { UserEntity } from "entities/User";
 @Injectable()
 export class CreateUserElasticService {
   constructor(
-    @InjectRepository(UserEntity)
-    private usersRepository: Repository<UserEntity>,
+    @InjectRepository(UserEntity) private userRepository: Repository<UserEntity>,
     private elasticService: ElasticService,
   ) {}
 
   async createElasticIndexUserOrFail(userId: string, refreshIndex?: boolean) {
-    const user = await this.usersRepository.findOneOrFail({
+    const user = await this.userRepository.findOneOrFail({
       where: { id: userId },
       relations: { client: true },
       withDeleted: true,

@@ -10,6 +10,8 @@ export class ResponseTicketBoardDTO {
 
   @Expose() @IsDefined() @IsString() name!: string;
 
+  @Expose() @IsDefined() @IsString() slug!: string;
+
   @Expose() @IsDefined() @IsBoolean() isPrivate!: boolean;
 
   @Expose() @IsDefined() @IsBoolean() favourite!: boolean;

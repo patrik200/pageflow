@@ -12,18 +12,18 @@ import TicketDetailModalViewMode from "./ModalModes/View";
 import { spinnerStyles } from "./style.css";
 
 interface TicketDetailModalContentInterface {
-  ticketId: string | null;
+  ticketSlug: string | null;
   close: () => void;
 }
 
-function TicketDetailModalContent({ ticketId, close }: TicketDetailModalContentInterface) {
+function TicketDetailModalContent({ ticketSlug, close }: TicketDetailModalContentInterface) {
   const { ticketDetail, loadTicketDetail } = useViewContext().containerInstance.get(TicketsStorage);
   const [{ loading }, asyncLoadTicketDetail] = useAsyncFn(loadTicketDetail, [loadTicketDetail], { loading: true });
 
   React.useEffect(() => {
-    if (!ticketId) return;
-    void asyncLoadTicketDetail(ticketId);
-  }, [asyncLoadTicketDetail, ticketId]);
+    if (!ticketSlug) return;
+    void asyncLoadTicketDetail(ticketSlug);
+  }, [asyncLoadTicketDetail, ticketSlug]);
 
   const [editMode, enableEditMode, disableEditMode] = useBoolean(false);
 

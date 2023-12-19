@@ -2,7 +2,7 @@ import http, { RequestOptions } from "node:http";
 import https from "node:https";
 import { Response } from "express";
 
-import { BaseExpressRequestWithoutUser } from "types";
+import { BaseExpressRequest } from "types";
 
 export type ProxyStreamProtocol = "http:" | "https:";
 
@@ -16,7 +16,7 @@ export class ProxyStream {
     } = {},
   ) {}
 
-  private mergeHeadersFromRequest(req: BaseExpressRequestWithoutUser) {
+  private mergeHeadersFromRequest(req: BaseExpressRequest<{}>) {
     return Object.assign({ "original-host": req.headers.host }, req.headers, {
       connection: null,
       host: null,
@@ -27,7 +27,7 @@ export class ProxyStream {
     return protocol === "https:" ? https.request : http.request;
   }
 
-  createRequest(req: BaseExpressRequestWithoutUser, res: Response, onError: (e: Error) => void) {
+  createRequest(req: BaseExpressRequest<{}>, res: Response, onError: (e: Error) => void) {
     const newPath = req.baseUrl + req.url;
     const newHeaders = this.mergeHeadersFromRequest(req);
     const requestOptions: RequestOptions = {

@@ -1,6 +1,7 @@
-import { CryptoService, errorLogBeautifier, ServiceError } from "@app/back-kit";
+import { CryptoService, SentryTextService, ServiceError } from "@app/back-kit";
 import { forwardRef, Inject, Injectable } from "@nestjs/common";
 import { Transactional } from "typeorm-transactional";
+import { config } from "@app/core-config";
 
 import { Tariffs } from "fixtures/tariffs";
 
@@ -26,6 +27,7 @@ export class CreateClientLandingService {
     private sendEmailLandingService: SendEmailLandingService,
     private validateDomainLandingService: ValidateDomainLandingService,
     private cryptoService: CryptoService,
+    private sentryTextService: SentryTextService,
   ) {}
 
   private async createClient(domain: string, options: CreateClientOptions) {
@@ -34,26 +36,22 @@ export class CreateClientLandingService {
       domain,
       tariff: Tariffs.START,
       filesMemoryLimitByte: options.filesMemoryLimitByte,
-      includeSubdomainForDomainValidator: true,
       addTrial: true,
     });
   }
 
   @Transactional()
   async createClientInBackgroundOrFail(domain: string, options: CreateClientOptions) {
-    console.log("Create client in background");
     try {
       const clientId = await this.createClient(domain, options);
-      console.log("Client created");
       const password = this.cryptoService.generateRandom(12);
-      console.log("Password generated");
       await this.createAdminLandingService.createAdmin(clientId, password, options);
-      console.log("Admin created");
       await this.sendEmailLandingService.sendEmail(domain, options.email, password);
-      console.log("Email sent");
     } catch (e) {
-      console.log("Create client in background error");
-      errorLogBeautifier(e);
+      this.sentryTextService.error(e, {
+        context: "Create client in background error",
+        contextService: "Create client landing",
+      });
       throw e;
     }
   }
@@ -61,8 +59,7 @@ export class CreateClientLandingService {
   private validateOptions(options: CreateClientOptions) {
     const userDomain = options.domain.replaceAll(/[^a-zA-Z0-9-]/g, "");
     if (userDomain !== options.domain) throw new ServiceError("error", "bad_domain");
-    if (userDomain === "api") throw new ServiceError("error", "bad_domain");
-    if (userDomain === "pageflow") throw new ServiceError("error", "bad_domain");
+    if (config.landing.domainsBlackList.has(userDomain)) throw new ServiceError("error", "bad_domain");
   }
 
   @Transactional()

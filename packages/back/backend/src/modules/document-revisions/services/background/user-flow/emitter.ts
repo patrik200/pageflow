@@ -1,4 +1,4 @@
-import { errorLogBeautifier } from "@app/back-kit";
+import { SentryTextService } from "@app/back-kit";
 import { config } from "@app/core-config";
 import { DocumentRevisionStatus } from "@app/shared-enums";
 import { Injectable, Logger, OnApplicationBootstrap, OnApplicationShutdown } from "@nestjs/common";
@@ -15,12 +15,11 @@ import { DocumentRevisionUserFlowDeadline } from "../../../events/RevisionUserFl
 
 @Injectable()
 export class DocumentRevisionUserFlowDeadlineEmitterService implements OnApplicationBootstrap, OnApplicationShutdown {
-  private loggerContext = "Revision user flow deadline emitter";
-
   constructor(
     private eventEmitter: EventEmitter2,
     @InjectRepository(DocumentRevisionResponsibleUserFlowEntity)
     private documentRevisionResponsibleUserFlowRepository: Repository<DocumentRevisionResponsibleUserFlowEntity>,
+    private sentryTextService: SentryTextService,
   ) {}
 
   private isReadyToNotify(userFlow: DocumentRevisionResponsibleUserFlowEntity) {
@@ -39,8 +38,10 @@ export class DocumentRevisionUserFlowDeadlineEmitterService implements OnApplica
         new DocumentRevisionUserFlowDeadline(userFlow.id),
       );
     } catch (e) {
-      Logger.error(`Error while notify userFlow:`, this.loggerContext);
-      errorLogBeautifier(e);
+      this.sentryTextService.error(e, {
+        context: "notify userFlow",
+        contextService: DocumentRevisionUserFlowDeadlineEmitterService.name,
+      });
     }
   }
 
@@ -64,7 +65,7 @@ export class DocumentRevisionUserFlowDeadlineEmitterService implements OnApplica
     await this.checkUserFlowDeadlines();
     Logger.log(
       `Run checking with interval [${chalk.cyan(`${config.documentRevisions.userFlowDeadlineCheckIntervalMs}ms`)}]`,
-      this.loggerContext,
+      DocumentRevisionUserFlowDeadlineEmitterService.name,
     );
     this.disposeTimer = setAsyncInterval(
       () => this.checkUserFlowDeadlines(),

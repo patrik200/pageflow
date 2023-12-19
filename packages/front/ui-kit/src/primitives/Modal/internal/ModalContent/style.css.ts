@@ -11,7 +11,7 @@ export const modalContentStyle = style({
   verticalAlign: "middle",
   maxHeight: calc(windowInnerHeightVar).subtract("40px").toString(),
   textAlign: "left",
-  borderRadius: 24,
+  borderRadius: 12,
   backgroundColor: globalThemeColorVars.backgroundCard,
   border: "1px solid " + globalThemeColorVars.background,
   maxWidth: calc("100%").subtract("80px").subtract(safeAreaLeft).subtract(safeAreaRight).toString(),

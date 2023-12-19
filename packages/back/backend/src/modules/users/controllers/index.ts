@@ -121,7 +121,7 @@ export class UsersController {
   @HttpCode(HttpStatus.NO_CONTENT)
   @withUserAuthorized([UserRole.ADMIN])
   async deleteUser(@Param("id") userId: string) {
-    await this.deleteUserService.deleteUserOfFail(userId);
+    await this.deleteUserService.deleteUserOrFail(userId);
   }
 
   @Post(":id/restore")

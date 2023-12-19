@@ -5,7 +5,7 @@ import { Transactional } from "typeorm-transactional";
 import chalk from "chalk";
 import { config } from "@app/core-config";
 import { asyncTimeout, setAsyncInterval } from "@worksolutions/utils";
-import { errorLogBeautifier } from "@app/back-kit";
+import { SentryTextService } from "@app/back-kit";
 import { DateTime } from "luxon";
 import { PaymentMode } from "@app/shared-enums";
 
@@ -19,9 +19,8 @@ export class SubscriptionAutoRenewService implements OnApplicationBootstrap, OnA
     @InjectRepository(SubscriptionEntity) private subscriptionRepository: Repository<SubscriptionEntity>,
     @Inject(forwardRef(() => CreatePaymentService)) private createPaymentService: CreatePaymentService,
     @Inject(forwardRef(() => GetPaymentService)) private getPaymentService: GetPaymentService,
+    private sentryTextService: SentryTextService,
   ) {}
-
-  private loggerContext = "Subscription background auto renew";
 
   @Transactional()
   private async checkSubscription(subscription: SubscriptionEntity) {
@@ -35,7 +34,7 @@ export class SubscriptionAutoRenewService implements OnApplicationBootstrap, OnA
     const price = subscription.tariffFixture.price;
     if (price === null) return;
 
-    const lastPayment = await this.getPaymentService.unsafeGetLastPayment(subscription.id, { loadAuthor: true });
+    const lastPayment = await this.getPaymentService.dangerGetLastPayment(subscription.id, { loadAuthor: true });
 
     if (!lastPayment) return;
     if (lastPayment.paymentInProgress) return;
@@ -62,8 +61,10 @@ export class SubscriptionAutoRenewService implements OnApplicationBootstrap, OnA
       try {
         await this.checkSubscription(subscription);
       } catch (e) {
-        Logger.error(`Error while check subscription:`, this.loggerContext);
-        errorLogBeautifier(e);
+        this.sentryTextService.error(e, {
+          context: "check subscription",
+          contextService: SubscriptionAutoRenewService.name,
+        });
       }
     }
   }
@@ -74,7 +75,7 @@ export class SubscriptionAutoRenewService implements OnApplicationBootstrap, OnA
     await this.checkSubscriptions();
     Logger.log(
       `Run checking with interval [${chalk.cyan(`${config.subscription.checkForAutoRenewIntervalMs}ms`)}]`,
-      this.loggerContext,
+      SubscriptionAutoRenewService.name,
     );
     this.disposeTimer = setAsyncInterval(
       () => this.checkSubscriptions(),

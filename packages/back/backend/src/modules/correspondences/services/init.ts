@@ -1,10 +1,10 @@
 import { Injectable, Logger } from "@nestjs/common";
-import { ElasticService, errorLogBeautifier } from "@app/back-kit";
+import { ElasticService, SentryTextService } from "@app/back-kit";
 import { isString } from "@worksolutions/utils";
 
 @Injectable()
 export class InitElasticCorrespondenceAndGroupService {
-  constructor(private elasticService: ElasticService) {}
+  constructor(private elasticService: ElasticService, private sentryTextService: SentryTextService) {}
 
   async createIndex() {
     const created = await this.elasticService.createIndexIfNotCreatedOrFail("correspondences");
@@ -41,7 +41,10 @@ export class InitElasticCorrespondenceAndGroupService {
     } catch (e) {
       return {
         message: "Can not create Correspondence elastic index mapping...",
-        logBeautifulError: () => errorLogBeautifier(e),
+        logBeautifulError: () =>
+          this.sentryTextService.log(e as Error, {
+            contextService: InitElasticCorrespondenceAndGroupService.name,
+          }),
       };
     }
   }
@@ -50,13 +53,13 @@ export class InitElasticCorrespondenceAndGroupService {
     const index = await this.createIndex();
 
     if (isString(index)) {
-      Logger.error(index, "Correspondence module bootstrap");
+      Logger.error(index, InitElasticCorrespondenceAndGroupService.name);
       process.exit(1);
     }
 
     const mapping = await this.createMapping();
     if (mapping !== true) {
-      Logger.error(mapping.message, "Correspondence module bootstrap");
+      Logger.error(mapping.message, InitElasticCorrespondenceAndGroupService.name);
       mapping.logBeautifulError();
       process.exit(1);
     }

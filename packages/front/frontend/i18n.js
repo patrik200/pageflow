@@ -19,7 +19,7 @@ module.exports = {
     "/": ["home"],
     "/tickets": ["tickets", "ticket-detail", "comments-common"],
     "/tickets/create": ["ticket-detail", "comments-common"],
-    "/tickets/[id]": ["ticket-detail", "comments-common"],
+    "/tickets/[slug]": ["ticket-detail", "comments-common"],
     "/projects": ["projects"],
     "/projects/create": ["project-detail"],
     "/projects/[id]": [

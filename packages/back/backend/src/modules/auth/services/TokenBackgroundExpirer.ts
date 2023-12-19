@@ -4,7 +4,7 @@ import { Repository } from "typeorm";
 import { config } from "@app/core-config";
 import { isDateBefore, setAsyncInterval } from "@worksolutions/utils";
 import { DateTime } from "luxon";
-import { errorLogBeautifier, INTLService, INTLServiceLang } from "@app/back-kit";
+import { INTLService, INTLServiceLang, SentryTextService } from "@app/back-kit";
 import chalk from "chalk";
 
 import { UserTokenEntity } from "entities/User/Token";
@@ -14,6 +14,7 @@ export class TokenBackgroundExpirerService implements OnApplicationBootstrap, On
   constructor(
     @Inject(INTLServiceLang.RU) private intlService: INTLService,
     @InjectRepository(UserTokenEntity) private userTokensRepository: Repository<UserTokenEntity>,
+    private sentryTextService: SentryTextService,
   ) {}
 
   private checkTokenDateIsValid(refreshTokenExpiresAt: Date) {
@@ -33,24 +34,20 @@ export class TokenBackgroundExpirerService implements OnApplicationBootstrap, On
       try {
         await this.checkUserToken(token);
       } catch (e) {
-        Logger.error(`Error while check admin token expirations:`, "Background token checker");
-        errorLogBeautifier(e);
-        Logger.error(`tokenId=${chalk.cyan("123")}`, "Background token checker");
-        Logger.log(
-          `Run checking with interval [${chalk.cyan(`${config.auth.tokenBackgroundExpiresCheckMs}ms`)}]`,
-          "Background token checker",
-        );
+        this.sentryTextService.error(e, {
+          context: `Check admin token expirations; tokenId=${chalk.cyan(token.id)}`,
+          contextService: TokenBackgroundExpirerService.name,
+        });
       }
     }
   }
 
   private disposeTimer: Function | undefined;
-
   private async run() {
     await this.checkUserTokens();
     Logger.log(
       `Run checking with interval [${chalk.cyan(`${config.auth.tokenBackgroundExpiresCheckMs}ms`)}]`,
-      "Background token checker",
+      TokenBackgroundExpirerService.name,
     );
     this.disposeTimer = setAsyncInterval(() => this.checkUserTokens(), config.auth.tokenBackgroundExpiresCheckMs);
   }

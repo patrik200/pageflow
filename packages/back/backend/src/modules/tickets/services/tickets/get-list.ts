@@ -16,10 +16,11 @@ import { getCurrentUser } from "modules/auth";
 import { GetUserService } from "modules/users";
 
 import { GetTicketIsFavouritesService } from "../favourite/get-is-favourite";
+import { TicketBoardEntity } from "../../../../entities/TicketBoard";
 
 interface GetTicketsListQueryOptions {
-  boardId: string;
-  pagination?: PaginationQueryInterface;
+  boardId: string | null;
+  pagination: PaginationQueryInterface | null;
   search?: string;
   searchInAttachments: boolean;
   sorting: Sorting<TicketSortingFields>;
@@ -118,24 +119,37 @@ export class GetTicketsListService {
   private async injectSearchToElasticQuery(searchParams: GetTicketsListQueryOptions, query: QueryDslQueryContainer[]) {
     if (!this.getHasSearch(searchParams)) return;
 
+    const search = searchParams.search!.trim();
+
     query.push({
-      multi_match: {
-        query: searchParams.search!,
-        fields: [
-          "name",
-          "description",
-          ...(searchParams.searchInAttachments ? ["attachments.attachment.content"] : []),
+      bool: {
+        should: [
+          {
+            multi_match: {
+              query: search,
+              fields: [
+                "name",
+                "description",
+                ...(searchParams.searchInAttachments ? ["attachments.attachment.content"] : []),
+              ],
+              fuzziness: "AUTO",
+            },
+          },
+          {
+            query_string: {
+              query: `*${search}*`,
+              fields: ["slug"],
+              minimum_should_match: search.length,
+            },
+          },
         ],
-        fuzziness: "AUTO",
       },
     });
   }
 
   private async getElasticQuery(searchParams: GetTicketsListQueryOptions): Promise<{ query: QueryDslQueryContainer }> {
-    const mustQuery: QueryDslQueryContainer[] = [
-      { term: { boardId: searchParams.boardId } },
-      { term: { clientId: getCurrentUser().clientId } },
-    ];
+    const mustQuery: QueryDslQueryContainer[] = [{ term: { clientId: getCurrentUser().clientId } }];
+    if (searchParams.boardId) mustQuery.push({ term: { boardId: searchParams.boardId } });
 
     await Promise.all([
       this.injectPriorityToElasticQuery(searchParams, mustQuery),
@@ -152,12 +166,16 @@ export class GetTicketsListService {
 
   private async searchTicketsInElastic(searchParams: GetTicketsListQueryOptions) {
     const query = await this.getElasticQuery(searchParams);
-    const response = await this.elasticService.searchQueryMatchOrFail<{}>("tickets", query, {
-      pagination: searchParams.pagination,
+
+    const response = await this.elasticService.searchQueryMatchOrFail<{ boardId: string }>("tickets", query, {
+      pagination: searchParams.pagination ?? undefined,
       sorting: convertSortingToElasticSearch(searchParams.sorting),
     });
 
-    return { total: response.total, hitIds: response.hits.map(({ _id }) => _id) };
+    return {
+      total: response.total,
+      hits: response.hits.map(({ _id, _source }) => ({ ticketId: _id, boardId: _source.boardId })),
+    };
   }
 
   async getTicketsListOrFail(
@@ -176,15 +194,16 @@ export class GetTicketsListService {
       loadStatus?: boolean;
     } = {},
   ) {
-    await this.permissionAccessService.validateToRead(
-      { entityId: query.boardId, entityType: PermissionEntityType.TICKET_BOARD },
-      true,
-    );
+    if (query.boardId)
+      await this.permissionAccessService.validateToRead(
+        { entityId: query.boardId, entityType: PermissionEntityType.TICKET_BOARD },
+        true,
+      );
 
-    const { hitIds, total } = await this.searchTicketsInElastic(query);
+    const { hits, total } = await this.searchTicketsInElastic(query);
 
     const rawTicketsBySearchHitIds = await this.ticketsRepository.find({
-      where: { id: In(hitIds) },
+      where: { id: In(hits.map((hit) => hit.ticketId)) },
       relations: {
         responsible: options.loadResponsible
           ? {
@@ -206,15 +225,39 @@ export class GetTicketsListService {
       },
     });
 
-    const foundTickets = hitIds.map((hitId) => rawTicketsBySearchHitIds.find((ticket) => ticket.id === hitId)!);
+    const foundTickets = hits.map((hit) => {
+      const ticket = rawTicketsBySearchHitIds.find((ticket) => ticket.id === hit.ticketId)!;
+      ticket.board = { id: hit.boardId } as TicketBoardEntity;
+      return ticket;
+    });
+
+    const filteredTicketsByPermissions = query.boardId
+      ? foundTickets
+      : (
+          await Promise.all(
+            foundTickets.map(async (ticket) => {
+              const hasAccess = await this.permissionAccessService.validateToRead(
+                { entityId: ticket.board.id, entityType: PermissionEntityType.TICKET_BOARD },
+                false,
+              );
+              if (!hasAccess) return undefined!;
+              return ticket;
+            }),
+          )
+        ).filter(Boolean);
 
     await Promise.all([
       loadFavourites &&
-        Promise.all(foundTickets.map((ticket) => this.getTicketIsFavouritesService.loadTicketIsFavourite(ticket))),
+        Promise.all(
+          filteredTicketsByPermissions.map((ticket) => this.getTicketIsFavouritesService.loadTicketIsFavourite(ticket)),
+        ),
     ]);
 
-    if (query.pagination !== undefined)
-      return injectPaginationToFindAndCountResult(query.pagination, [foundTickets, total]);
+    if (query.pagination !== null)
+      return injectPaginationToFindAndCountResult(query.pagination, [
+        foundTickets,
+        total - (foundTickets.length - filteredTicketsByPermissions.length),
+      ]);
 
     return foundTickets;
   }

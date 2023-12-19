@@ -5,12 +5,12 @@ import { PaymentEntity } from "entities/Payments";
 
 import { CreatePaymentService } from "./services/create";
 import { GetExternalPaymentInfoService } from "./services/external/get-info";
-import { AcceptExternalPaymentService } from "./services/external/accept";
-import { CancelExternalPaymentService } from "./services/external/cancel";
+import { RefundExternalPaymentService } from "./services/external/refund";
 import { GetPaymentService } from "./services/get";
 import { PaymentsListenerService } from "./services/background/payments-listener";
 import { CreateExternalPaymentService } from "./services/external/create";
 import { PaymentsCancellerService } from "./services/background/payments-canceller";
+import { DeletePaymentService } from "./services/delete";
 
 @Global()
 @Module({
@@ -19,19 +19,19 @@ import { PaymentsCancellerService } from "./services/background/payments-cancell
     CreatePaymentService,
     GetPaymentService,
     GetExternalPaymentInfoService,
-    AcceptExternalPaymentService,
-    CancelExternalPaymentService,
+    RefundExternalPaymentService,
     PaymentsListenerService,
     CreateExternalPaymentService,
     PaymentsCancellerService,
+    DeletePaymentService,
   ],
-  exports: [CreatePaymentService, GetPaymentService],
+  exports: [CreatePaymentService, GetPaymentService, DeletePaymentService],
 })
 export class PaymentsModule {}
 
 export * from "./services/create";
+export * from "./services/delete";
 export * from "./services/get";
 
 export * from "./events/Cancel";
 export * from "./events/Complete";
-export * from "./events/WaitingForAccept";

@@ -38,6 +38,6 @@ export class CorrespondenceRevisionFavouritesController {
   @Delete(":revisionId")
   @withUserAuthorized([UserRole.USER])
   async deleteFavourite(@Param("revisionId") revisionId: string) {
-    await this.removeRevisionFavouritesService.removeFavouriteOrFail(revisionId);
+    await this.removeRevisionFavouritesService.removeFavouriteOrFail(revisionId, { forAllUsers: false });
   }
 }

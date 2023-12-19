@@ -3,12 +3,13 @@ import { observer } from "mobx-react-lite";
 
 import Typography from "components/Typography";
 
-import { titleStyles, wrapperStyles } from "./style.css";
+import { subTitleStyles, titleStyles, wrapperStyles } from "./style.css";
 
 function FeaturesTitle() {
   return (
     <div className={wrapperStyles}>
-      <Typography className={titleStyles}>Основные функциональные возможности</Typography>
+      <Typography className={titleStyles}>ОСНОВНЫЕ ФУНКЦИОНАЛЬНЫЕ</Typography>
+      <Typography className={subTitleStyles}>ВОЗМОЖНОСТИ</Typography>
     </div>
   );
 }

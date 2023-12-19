@@ -11,6 +11,7 @@ import { GetSubscriptionService } from "./services/get";
 import { CancelSubscriptionService } from "./services/cancel";
 import { SubscriptionPaymentsEventListenerService } from "./services/background/event-listener";
 import { SubscriptionAutoRenewService } from "./services/background/auto-renew";
+import { DeleteSubscriptionService } from "./services/delete";
 
 @Global()
 @Module({
@@ -23,12 +24,20 @@ import { SubscriptionAutoRenewService } from "./services/background/auto-renew";
     CancelSubscriptionService,
     SubscriptionPaymentsEventListenerService,
     SubscriptionAutoRenewService,
+    DeleteSubscriptionService,
   ],
-  exports: [GetSubscriptionService, CreateSubscriptionService, BuySubscriptionService, CancelSubscriptionService],
+  exports: [
+    GetSubscriptionService,
+    CreateSubscriptionService,
+    BuySubscriptionService,
+    CancelSubscriptionService,
+    DeleteSubscriptionService,
+  ],
 })
 export class SubscriptionModule {}
 
 export * from "./services/buy";
 export * from "./services/cancel";
 export * from "./services/create";
+export * from "./services/delete";
 export * from "./services/get";

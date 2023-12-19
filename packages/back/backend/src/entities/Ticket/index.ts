@@ -10,6 +10,7 @@ import { TicketCommentEntity } from "./Comment";
 import { TicketFileEntity } from "./File";
 import { TicketFavouriteEntity } from "./Favourite";
 import { TicketBoardEntity } from "../TicketBoard";
+import { TicketRelationEntity } from "./TicketRelation";
 
 @Entity({ name: "tickets" })
 export class TicketEntity extends BaseGeneratedIDEntity {
@@ -20,6 +21,8 @@ export class TicketEntity extends BaseGeneratedIDEntity {
   @ManyToOne(() => TicketBoardEntity, { nullable: false }) board!: TicketBoardEntity;
 
   @Column() name!: string;
+
+  @Column() slug!: string;
 
   @Column({ type: "text", nullable: true }) description!: string | null;
 
@@ -43,6 +46,12 @@ export class TicketEntity extends BaseGeneratedIDEntity {
 
   @OneToMany(() => TicketFavouriteEntity, (favourite) => favourite.ticket)
   favourites!: TicketFavouriteEntity[];
+
+  @OneToMany(() => TicketRelationEntity, (relation) => relation.mainTicket)
+  relationsAsMain!: TicketRelationEntity[];
+
+  @OneToMany(() => TicketRelationEntity, (relation) => relation.relatedTicket)
+  relationsAsRelated!: TicketRelationEntity[];
 
   // virtual fields -----
   favourite?: boolean;

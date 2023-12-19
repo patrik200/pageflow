@@ -1,14 +1,12 @@
 import React from "react";
 import { observer } from "mobx-react-lite";
 import { Button } from "@app/ui-kit";
-import { useTranslation, useViewContext } from "@app/front-kit";
-import { useAsyncFn } from "@worksolutions/react-utils";
-
-import { emitRequestError } from "core/emitRequest";
+import { useTranslation } from "@app/front-kit";
+import { useBoolean } from "@worksolutions/react-utils";
 
 import { SubscriptionEntity } from "core/entities/subscription/subscription";
 
-import { SubscriptionStorage } from "core/storages/subscription";
+import BuySubscriptionModal from "./Modal";
 
 import { buttonStyles } from "./style.css";
 
@@ -19,34 +17,25 @@ interface BuySubscriptionInterface {
 function BuySubscription({ subscription }: BuySubscriptionInterface) {
   const { t } = useTranslation("settings");
 
-  const { buySubscription } = useViewContext().containerInstance.get(SubscriptionStorage);
-
-  const [{ loading }, asyncBuySubscription] = useAsyncFn(buySubscription, [buySubscription]);
-  const handleBuySubscription = React.useCallback(async () => {
-    const result = await asyncBuySubscription();
-    if (result.success) {
-      document.location.href = result.data.confirmationUrl;
-      return;
-    }
-
-    emitRequestError(
-      undefined,
-      result.error,
-      t({ scope: "tab_payments", place: "subscription", name: "buy", parameter: "unexpected_error_message" }),
-    );
-  }, [asyncBuySubscription, t]);
-
-  const handleButtonClick = React.useCallback(() => handleBuySubscription(), [handleBuySubscription]);
+  const [opened, open, close] = useBoolean(false);
 
   if (subscription.autoRenew) return null;
 
   return (
-    <Button className={buttonStyles} loading={loading} size="SMALL" onClick={handleButtonClick}>
-      {t(
-        { scope: "tab_payments", place: "subscription", name: "buy", parameter: "button" },
-        { price: subscription.pricePerMonth },
-      )}
-    </Button>
+    <>
+      <Button className={buttonStyles} size="SMALL" onClick={open}>
+        {t(
+          {
+            scope: "tab_payments",
+            place: "subscription",
+            name: "buy",
+            parameter: subscription.autoPaymentsAvailable ? "button_auto_payments" : "button_one_time",
+          },
+          { price: subscription.pricePerMonth },
+        )}
+      </Button>
+      <BuySubscriptionModal opened={opened} subscription={subscription} onClose={close} />
+    </>
   );
 }
 

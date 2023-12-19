@@ -8,6 +8,8 @@ export class RequestCreateTicketBoardDTO {
 
   @Expose() @IsDefined({ message: dtoMessageIsDefined }) @IsString({ message: dtoMessageIsValidValue }) name!: string;
 
+  @Expose() @IsDefined({ message: dtoMessageIsDefined }) @IsString({ message: dtoMessageIsValidValue }) slug!: string;
+
   @Expose()
   @IsDefined({ message: dtoMessageIsDefined })
   @IsBoolean({ message: dtoMessageIsValidValue })

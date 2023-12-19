@@ -25,7 +25,7 @@ export class DeleteDocumentRevisionCommentsService {
   @Transactional()
   async deleteComment(
     commentId: string,
-    { checkPermissions = true, emitEvent = true }: { checkPermissions?: boolean; emitEvent?: boolean } = {},
+    { checkPermissions = true, emitEvents = true }: { checkPermissions?: boolean; emitEvents?: boolean } = {},
   ) {
     const comment = await this.getDocumentRevisionCommentForEditService.getCommentForUpdateOrFail(commentId, {
       checkPermissions,
@@ -37,7 +37,7 @@ export class DeleteDocumentRevisionCommentsService {
       comment.discussions.map((discussion) =>
         this.deleteDocumentRevisionCommentDiscussionsService.deleteDiscussion(discussion.id, {
           checkPermissions: false,
-          emitEvent: false,
+          emitEvents: false,
         }),
       ),
     );
@@ -46,14 +46,14 @@ export class DeleteDocumentRevisionCommentsService {
       comment.files.map((commentFile) =>
         this.deleteDocumentRevisionCommentFilesService.deleteCommentFile(commentFile.file.id, {
           checkPermissions: false,
-          emitEvent: false,
+          emitEvents: false,
         }),
       ),
     );
 
     await this.commentsRepository.delete(comment.id);
 
-    if (emitEvent)
+    if (emitEvents)
       await this.eventEmitter.emitAsync(
         DocumentRevisionCommentDeleted.eventName,
         new DocumentRevisionCommentDeleted(comment.revision.id, comment.id),

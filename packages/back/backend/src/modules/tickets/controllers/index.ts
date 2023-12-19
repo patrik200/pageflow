@@ -57,8 +57,8 @@ export class TicketsController {
   ) {
     const tickets = await this.getTicketsListService.getTicketsListOrFail(
       {
-        boardId: queryParams.boardId,
-        pagination: pagination ?? undefined,
+        boardId: queryParams.boardId ?? null,
+        pagination: pagination,
         search: queryParams.search,
         searchInAttachments: queryParams.searchInAttachments,
         sorting: queryParams.sorting,
@@ -88,10 +88,10 @@ export class TicketsController {
     return new ControllerResponse(ResponseTicketsListDTO, { list: tickets });
   }
 
-  @Get(":ticketId")
+  @Get(":ticketSlug")
   @withUserAuthorized([UserRole.USER])
-  async ticketDetail(@Param("ticketId") ticketId: string) {
-    const ticket = await this.getTicketService.getTicketOrFail(ticketId, {
+  async ticketDetail(@Param("ticketSlug") ticketSlug: string) {
+    const ticket = await this.getTicketService.getTicketOrFail(ticketSlug, "slug", {
       loadFavourites: true,
       loadResponsible: true,
       loadResponsibleAvatar: true,

@@ -27,7 +27,7 @@ export class TicketBoardsController {
   @Get()
   @withUserAuthorized([UserRole.USER])
   async ticketBoardsList(@Query() body: RequestGetTicketBoardsDTO) {
-    const boards = await this.getTicketBoardsListService.getTicketBoardsListOrFail(
+    const boards = await this.getTicketBoardsListService.getTicketBoardsList(
       {
         projectId: body.projectId ?? null,
       },
@@ -42,10 +42,14 @@ export class TicketBoardsController {
   @Post()
   @withUserAuthorized([UserRole.USER])
   async createTicketBoard(@Body() body: RequestCreateTicketBoardDTO) {
-    const boardId = await this.createTicketBoardService.createTicketBoardOrFail(body.projectId ?? null, {
-      name: body.name,
-      isPrivate: body.isPrivate,
-    });
+    const boardId = await this.createTicketBoardService.createTicketBoardOrFail(
+      body.projectId ? { projectId: body.projectId } : {},
+      {
+        name: body.name,
+        slug: body.slug,
+        isPrivate: body.isPrivate,
+      },
+    );
 
     return new ControllerResponse(ResponseIdDTO, { id: boardId });
   }

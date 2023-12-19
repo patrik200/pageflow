@@ -207,5 +207,19 @@
     "tooltips": {
       "unavailable_until": "Не доступен до {date}"
     }
+  },
+  "ticket_relation": {
+    "main_types": {
+      "dependency": "Блокирует",
+      "children": "Родитель для",
+      "duplicator": "Дубликат",
+      "relation": "Относится к"
+    },
+    "related_types": {
+      "dependency": "Зависит от",
+      "children": "Потомок для",
+      "duplicator": "Дубликат",
+      "relation": "Относится к"
+    }
   }
 }

@@ -32,7 +32,7 @@ export class DeleteCorrespondenceService {
   @Transactional()
   async deleteCorrespondenceOrFail(
     correspondenceId: string,
-    { checkPermissions = true }: { checkPermissions?: boolean } = {},
+    { checkPermissions = true, emitEvents = true }: { checkPermissions?: boolean; emitEvents?: boolean } = {},
   ) {
     if (checkPermissions) {
       await this.permissionAccessService.validateToEditOrDelete(
@@ -50,9 +50,12 @@ export class DeleteCorrespondenceService {
       ...correspondence.revisions.map((revision) =>
         this.deleteCorrespondenceRevisionsService.deleteRevisionOrFail(revision.id, {
           checkPermissions: false,
+          emitEvents: false,
         }),
       ),
-      this.removeCorrespondenceFavouritesService.removeCorrespondenceFavouriteOrFail(correspondence.id),
+      this.removeCorrespondenceFavouritesService.removeCorrespondenceFavouriteOrFail(correspondence.id, {
+        forAllUsers: true,
+      }),
     ]);
 
     await Promise.all([
@@ -64,6 +67,7 @@ export class DeleteCorrespondenceService {
       this.deleteCorrespondenceElasticService.elasticDeleteCorrespondenceIndexOrFail(correspondence.id),
     ]);
 
-    this.eventEmitter.emit(CorrespondenceDeleted.eventName, new CorrespondenceDeleted(correspondence.id));
+    if (emitEvents)
+      this.eventEmitter.emit(CorrespondenceDeleted.eventName, new CorrespondenceDeleted(correspondence.id));
   }
 }

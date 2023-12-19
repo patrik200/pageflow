@@ -13,11 +13,11 @@ import ViewMode from "./Modes/View";
 
 function DetailTicketView() {
   const { t } = useTranslation("ticket-detail");
-  const { id } = useRouter().query as { id: string };
+  const { slug } = useRouter().query as { slug: string };
 
   const { ticketDetail, loadTicketDetail } = useViewContext().containerInstance.get(TicketsStorage);
   const [{ loading }, asyncLoadTicketDetail] = useAsyncFn(loadTicketDetail, [loadTicketDetail], { loading: true });
-  React.useEffect(() => void asyncLoadTicketDetail(id), [asyncLoadTicketDetail, id]);
+  React.useEffect(() => void asyncLoadTicketDetail(slug), [asyncLoadTicketDetail, slug]);
 
   const [editEntity, setEditEntity] = React.useState<EditTicketEntity | null>(null);
 
@@ -28,7 +28,14 @@ function DetailTicketView() {
   );
 
   return (
-    <PageWrapper loading={loading} title={t({ scope: "meta", name: "view" }, { name: ticketDetail?.name ?? "" })}>
+    <PageWrapper
+      loading={loading}
+      title={
+        ticketDetail
+          ? t({ scope: "meta", name: "view" }, { name: ticketDetail.name })
+          : t({ scope: "meta", name: "view_placeholder" })
+      }
+    >
       {ticketDetail && (
         <>
           {editEntity ? (

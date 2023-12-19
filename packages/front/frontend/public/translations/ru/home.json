@@ -2,7 +2,7 @@
   "meta": {
     "title": "Главная"
   },
-  "need_to_add_to_favourites_card": {
+  "no_favourites": {
     "title": "Добавьте элементы в избранное и они отобразятся на главной странице"
   },
   "documents_card": {
@@ -28,5 +28,12 @@
   },
   "tickets_card": {
     "title": "Запросы"
+  },
+  "statistics": {
+    "tickets_where_i_am_an_author": "Запросы, где я автор",
+    "tickets_where_i_am_a_responsible": "Запросы, где я ответственный",
+    "tickets_where_i_am_a_customer": "Запросы, где я заказчик",
+    "projects_where_i_am_an_responsible": "Проекты, где я ответственный",
+    "document_revisions_where_i_am_an_responsible": "Ревизии документов, где я ответственный"
   }
 }

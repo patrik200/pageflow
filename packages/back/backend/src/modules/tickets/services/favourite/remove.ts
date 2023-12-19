@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { Repository } from "typeorm";
+import { FindOptionsWhere, Repository } from "typeorm";
 import { Transactional } from "typeorm-transactional";
 
 import { TicketEntity } from "entities/Ticket";
@@ -11,19 +11,28 @@ import { getCurrentUser } from "modules/auth";
 @Injectable()
 export class RemoveTicketFavouritesService {
   constructor(
-    @InjectRepository(TicketEntity)
-    private ticketRepository: Repository<TicketEntity>,
-    @InjectRepository(TicketFavouriteEntity)
-    private favouriteRepository: Repository<TicketFavouriteEntity>,
+    @InjectRepository(TicketEntity) private ticketRepository: Repository<TicketEntity>,
+    @InjectRepository(TicketFavouriteEntity) private favouriteRepository: Repository<TicketFavouriteEntity>,
   ) {}
 
   @Transactional()
-  async removeFavouriteOrFail(ticketId: string) {
-    const { clientId, userId } = getCurrentUser();
+  async removeFavouriteOrFail(ticketId: string, { forAllUsers }: { forAllUsers: boolean }) {
+    const ticketFindOptions: FindOptionsWhere<TicketEntity> = { id: ticketId };
+    const favouriteFindOptions: FindOptionsWhere<TicketFavouriteEntity> = {};
+
+    const currentUser = getCurrentUser();
+    ticketFindOptions.client = { id: currentUser.clientId };
+
+    if (!forAllUsers) {
+      favouriteFindOptions.user = { id: currentUser.userId };
+    }
+
     const ticket = await this.ticketRepository.findOneOrFail({
-      withDeleted: true,
-      where: { id: ticketId, client: { id: clientId } },
+      where: ticketFindOptions,
     });
-    await this.favouriteRepository.delete({ ticket: { id: ticket.id }, user: { id: userId } });
+
+    favouriteFindOptions.ticket = { id: ticket.id };
+
+    await this.favouriteRepository.delete(favouriteFindOptions);
   }
 }

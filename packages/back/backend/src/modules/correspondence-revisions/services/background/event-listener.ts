@@ -2,6 +2,7 @@ import { forwardRef, Inject, Injectable, OnApplicationBootstrap } from "@nestjs/
 import { EventEmitter2 } from "@nestjs/event-emitter";
 import { Transactional } from "typeorm-transactional";
 import { ChangeFeedEntityType } from "@app/shared-enums";
+import { SentryTextService } from "@app/back-kit";
 
 import { CorrespondenceRevisionEntity } from "entities/Correspondence/Correspondence/Revision";
 
@@ -29,6 +30,7 @@ export class CorrespondenceRevisionEventListenerService implements OnApplication
     private deleteChangeFeedEventService: DeleteChangeFeedEventService,
     @Inject(forwardRef(() => ChangeFeedEventChangeDetectionService))
     private feedEventChangeDetectionService: ChangeFeedEventChangeDetectionService,
+    private sentryTextService: SentryTextService,
   ) {}
 
   @Transactional()
@@ -116,13 +118,28 @@ export class CorrespondenceRevisionEventListenerService implements OnApplication
 
   onApplicationBootstrap() {
     this.eventEmitter.on(CorrespondenceRevisionCreated.eventName, (event: CorrespondenceRevisionCreated) =>
-      this.handleRevisionCreated(event.revisionId, event.triggerUserId).catch(() => null),
+      this.handleRevisionCreated(event.revisionId, event.triggerUserId).catch((e) =>
+        this.sentryTextService.error(e, {
+          context: CorrespondenceRevisionCreated.eventName,
+          contextService: CorrespondenceRevisionEventListenerService.name,
+        }),
+      ),
     );
     this.eventEmitter.on(CorrespondenceRevisionDeleted.eventName, (event: CorrespondenceRevisionDeleted) =>
-      this.handleRevisionDeleted(event.revisionId).catch(() => null),
+      this.handleRevisionDeleted(event.revisionId).catch((e) =>
+        this.sentryTextService.error(e, {
+          context: CorrespondenceRevisionDeleted.eventName,
+          contextService: CorrespondenceRevisionEventListenerService.name,
+        }),
+      ),
     );
     this.eventEmitter.on(CorrespondenceRevisionUpdated.eventName, (event: CorrespondenceRevisionUpdated) =>
-      this.handleRevisionUpdated(event.revisionId, event.oldRevision, event.triggerUserId).catch(() => null),
+      this.handleRevisionUpdated(event.revisionId, event.oldRevision, event.triggerUserId).catch((e) =>
+        this.sentryTextService.error(e, {
+          context: CorrespondenceRevisionUpdated.eventName,
+          contextService: CorrespondenceRevisionEventListenerService.name,
+        }),
+      ),
     );
   }
 }

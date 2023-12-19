@@ -51,6 +51,10 @@ import { ReactComponent as editorArrowGoForwardLine } from "remixicon/icons/Arro
 import { ReactComponent as shareLine } from "remixicon/icons/System/share-line.svg";
 import { ReactComponent as errorWarningLine } from "remixicon/icons/System/error-warning-line.svg";
 import { ReactComponent as fileTextLine } from "remixicon/icons/Document/file-text-line.svg";
+import { ReactComponent as menuLine } from "remixicon/icons/System/menu-2-line.svg";
+import { ReactComponent as filterLine } from "remixicon/icons/System/filter-2-line.svg";
+import { ReactComponent as filterFilled } from "remixicon/icons/System/filter-2-fill.svg";
+import { ReactComponent as fileCopyLine } from "remixicon/icons/Document/file-copy-line.svg";
 
 export const internalIcons = {
   arrowUpLine,
@@ -106,4 +110,8 @@ export const internalIcons = {
   shareLine,
   errorWarningLine,
   fileTextLine,
+  menuLine,
+  filterLine,
+  filterFilled,
+  fileCopyLine,
 };

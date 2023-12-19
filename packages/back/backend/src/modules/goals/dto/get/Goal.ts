@@ -8,11 +8,6 @@ import { ResponseTimepointDTO } from "./Timepoint";
 export class ResponseGoalDTO {
   @Expose()
   @IsDefined({ message: dtoMessageIsDefined })
-  @IsBoolean({ message: dtoMessageIsValidValue })
-  implemented!: boolean;
-
-  @Expose()
-  @IsDefined({ message: dtoMessageIsDefined })
   @IsString({ message: dtoMessageIsValidValue })
   id!: string;
 

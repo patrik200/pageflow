@@ -2,6 +2,8 @@ import { forwardRef, Inject, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { FindOptionsWhere, IsNull, Repository, FindOptionsRelations } from "typeorm";
 import { PermissionEntityType } from "@app/shared-enums";
+import { FindManyOptions } from "typeorm/find-options/FindManyOptions";
+import { isArray } from "@worksolutions/utils";
 
 import { TicketBoardEntity } from "entities/TicketBoard";
 
@@ -22,7 +24,7 @@ export class GetTicketBoardsListService {
     @Inject(forwardRef(() => PermissionAccessService)) private permissionAccessService: PermissionAccessService,
   ) {}
 
-  async getTicketBoardsListOrFail(
+  async getTicketBoardsList(
     query: GetTicketBoardsListQueryOptions,
     { loadFavourites, ...options }: { loadFavourites?: boolean; loadAuthor?: boolean; loadAuthorAvatar?: boolean } = {},
   ) {
@@ -68,5 +70,23 @@ export class GetTicketBoardsListService {
     }
 
     return ticketBoards;
+  }
+
+  async dangerGetTicketBoardsListByQuery(
+    query: GetTicketBoardsListQueryOptions,
+    options?: FindManyOptions<TicketBoardEntity>,
+  ) {
+    const findOptionsWhere: FindOptionsWhere<TicketBoardEntity> = {};
+    if (query.projectId !== undefined) findOptionsWhere.project = query.projectId ? { id: query.projectId } : IsNull();
+
+    if (options && isArray(options.where)) throw new Error("Array in where options is not supported");
+
+    return await this.ticketBoardsRepository.find({
+      ...options,
+      where: {
+        ...options?.where,
+        ...findOptionsWhere,
+      },
+    });
   }
 }

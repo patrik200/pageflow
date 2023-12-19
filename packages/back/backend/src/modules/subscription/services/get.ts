@@ -14,7 +14,7 @@ export class GetSubscriptionService {
     @Inject(forwardRef(() => GetPaymentService)) private getPaymentService: GetPaymentService,
   ) {}
 
-  async unsafeGetSubscriptionByClientIdOrFail(clientId: string) {
+  async dangerGetSubscriptionByClientIdOrFail(clientId: string) {
     return await this.subscriptionRepository.findOneOrFail({
       where: { client: { id: clientId } },
       relations: { client: true },
@@ -22,7 +22,7 @@ export class GetSubscriptionService {
   }
 
   private async getCurrentSubscription() {
-    return await this.unsafeGetSubscriptionByClientIdOrFail(getCurrentUser().clientId);
+    return await this.dangerGetSubscriptionByClientIdOrFail(getCurrentUser().clientId);
   }
 
   async getSubscriptionInfoForCurrentUser() {
@@ -32,11 +32,12 @@ export class GetSubscriptionService {
       autoRenew: subscription.autoRenewPaymentMethodId !== null,
       pricePerMonth: subscription.tariffFixture.price,
       nextPaymentAt: subscription.payedUntil,
+      autoPaymentsAvailable: subscription.autoPaymentsAvailable,
     };
   }
 
   async getPaymentsList() {
     const subscription = await this.getCurrentSubscription();
-    return await this.getPaymentService.unsafeGetPaymentsListForSubscription(subscription.id);
+    return await this.getPaymentService.dangerGetPaymentsListForSubscription(subscription.id);
   }
 }

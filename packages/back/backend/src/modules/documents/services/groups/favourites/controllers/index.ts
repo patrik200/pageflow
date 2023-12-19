@@ -39,6 +39,6 @@ export class DocumentGroupFavouritesController {
   @Delete(":groupId")
   @withUserAuthorized([UserRole.USER])
   async deleteGroupFavourite(@Param("groupId") groupId: string) {
-    await this.removeDocumentGroupFavouritesService.removeGroupFavouriteOrFail(groupId);
+    await this.removeDocumentGroupFavouritesService.removeGroupFavouriteOrFail(groupId, { forAllUsers: false });
   }
 }

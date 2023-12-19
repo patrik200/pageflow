@@ -1,15 +1,20 @@
 import { style } from "@vanilla-extract/css";
-import { globalThemeColorVars, h1boldStyles, windowInnerHeightVar } from "@app/ui-kit";
+import { globalThemeColorVars, h1boldStyles, windowInnerHeightVar, createBreakpointFrom } from "@app/ui-kit";
 import { padding } from "polished";
 
 export const rootWrapperStyle = style({
   minHeight: windowInnerHeightVar,
   display: "flex",
-  justifyContent: "flex-end",
-  ...padding(0, 100),
-  backgroundImage: "url(/images/auth/background.jpg)",
+  justifyContent: "center",
   backgroundSize: "100%",
   backgroundPositionY: "30%",
+  "@media": {
+    ...createBreakpointFrom("miniDesktop", {
+      backgroundImage: "url(/images/auth/background.jpg)",
+      justifyContent: "flex-end",
+      ...padding(0, 100),
+    }),
+  },
 });
 
 export const contentWrapperStyle = style({
@@ -19,7 +24,12 @@ export const contentWrapperStyle = style({
   flexDirection: "column",
   background: globalThemeColorVars.backgroundCard,
   gap: 64,
-  ...padding(48, 32),
+  ...padding(32, 16),
+  "@media": {
+    ...createBreakpointFrom("miniDesktop", {
+      ...padding(48, 32),
+    }),
+  },
 });
 
 export const logoStyles = style({

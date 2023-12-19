@@ -30,7 +30,7 @@ function CreateTicketView() {
       if (query.project) {
         await push.current({
           pathname: "/projects/[projectId]",
-          query: { board: query.board as string, projectId: query.project as string },
+          query: { board: query.board as string, projectId: query.project as string, tab: "tickets" },
         });
         return;
       }

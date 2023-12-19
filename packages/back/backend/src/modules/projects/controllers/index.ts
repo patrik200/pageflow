@@ -11,7 +11,7 @@ import { Body, Controller, Delete, Get, Param, Patch, Post, Query, Req } from "@
 
 import { ResponseIdDTO } from "constants/ResponseId";
 
-import { getCurrentUser, withUserAuthorized } from "modules/auth";
+import { withUserAuthorized } from "modules/auth";
 
 import { BaseExpressRequest } from "types/express";
 
@@ -101,7 +101,6 @@ export class ProjectsController {
       endDateForecast: body.endDateForecast,
       endDateFact: body.endDateFact,
       isPrivate: body.isPrivate,
-      authorId: getCurrentUser().userId,
       notifyInDays: body.notifyInDays,
     });
 

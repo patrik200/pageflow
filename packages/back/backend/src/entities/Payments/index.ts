@@ -41,6 +41,6 @@ export class PaymentEntity extends BaseGeneratedIDEntity {
   subscription!: SubscriptionEntity;
 
   get paymentInProgress() {
-    return this.status === PaymentStatus.WAITING_FOR_PAYMENT || this.status === PaymentStatus.WAITING_FOR_ACCEPT;
+    return this.status === PaymentStatus.WAITING_FOR_PAYMENT;
   }
 }

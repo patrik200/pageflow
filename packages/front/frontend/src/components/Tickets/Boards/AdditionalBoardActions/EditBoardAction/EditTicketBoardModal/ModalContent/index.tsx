@@ -1,6 +1,17 @@
 import React from "react";
 import { observer } from "mobx-react-lite";
-import { Checkbox, ModalActions, ModalTitle, TextField } from "@app/ui-kit";
+import {
+  Checkbox,
+  Icon,
+  MaskedField,
+  ModalActions,
+  ModalTitle,
+  PopupManagerMode,
+  PopupManagerModifierOffset,
+  TextField,
+  Tooltip,
+  Typography,
+} from "@app/ui-kit";
 import { getErrorMessageWithCommonIntl, useTranslation, useViewContext } from "@app/front-kit";
 import { useAsyncFn, useObservableAsDeferredMemo } from "@worksolutions/react-utils";
 
@@ -11,7 +22,7 @@ import { EditTicketBoardEntity } from "core/storages/ticket/entities/EditTicketB
 
 import { TicketBoardsStorage } from "core/storages/ticket/boards";
 
-import { wrapperStyles } from "./style.css";
+import { slugInformerTooltipTextStyles, wrapperStyles } from "./style.css";
 
 interface EditTicketBoardModalContentInterface {
   boardId?: string;
@@ -44,7 +55,7 @@ function EditTicketBoardModalContent({ projectId, boardId, onClose, onSuccess }:
     }
 
     emitRequestError(
-      undefined,
+      entity,
       result.error,
       t({
         scope: "edit_board_modal",
@@ -62,6 +73,7 @@ function EditTicketBoardModalContent({ projectId, boardId, onClose, onSuccess }:
     [asyncHandleEditTicketBoard, entity],
   );
 
+  const slugFieldDisabled = boardId !== undefined;
   return (
     <>
       <ModalTitle>{t({ scope: "edit_board_modal", name: "title", parameter: board ? "edit" : "create" })}</ModalTitle>
@@ -72,6 +84,32 @@ function EditTicketBoardModalContent({ projectId, boardId, onClose, onSuccess }:
           value={entity.name}
           errorMessage={getErrorMessageWithCommonIntl(entity.viewErrors.name, t)}
           onChangeInput={entity.setName}
+        />
+        <MaskedField
+          mask={slugMask}
+          renderAsSimpleTextField={slugFieldDisabled}
+          placeholder={t({ scope: "edit_board_modal", name: "slug_field", parameter: "placeholder" })}
+          required
+          disabled={slugFieldDisabled}
+          value={entity.slug}
+          informer={
+            <Tooltip
+              disabled={slugFieldDisabled}
+              triggerElement={<Icon icon="informationLine" />}
+              mode={PopupManagerMode.HOVER}
+              primaryPlacement="top-start"
+              showDelay={0}
+              strategy="fixed"
+              offset={slugInformerTooltipOffset}
+              popupElement={
+                <Typography className={slugInformerTooltipTextStyles}>
+                  {t({ scope: "edit_board_modal", name: "slug_field", parameter: "informer" })}
+                </Typography>
+              }
+            />
+          }
+          errorMessage={getErrorMessageWithCommonIntl(entity.viewErrors.slug, t)}
+          onChangeInput={entity.setSlug}
         />
         <Checkbox value={entity.isPrivate} onChange={entity.setIsPrivate}>
           {t({ scope: "edit_board_modal", name: "private_field", parameter: "placeholder" })}
@@ -85,5 +123,8 @@ function EditTicketBoardModalContent({ projectId, boardId, onClose, onSuccess }:
     </>
   );
 }
+
+const slugMask = Array.from({ length: EditTicketBoardEntity.MAX_SLUG_LENGTH }).fill("#").join("");
+const slugInformerTooltipOffset: PopupManagerModifierOffset = [-20, 12];
 
 export default observer(EditTicketBoardModalContent);

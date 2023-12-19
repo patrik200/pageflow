@@ -10,11 +10,11 @@ import { TicketEntity } from "entities/Ticket";
 
 import { getCurrentUser } from "modules/auth";
 import { GetDictionaryValueService } from "modules/dictionary";
-import { GetTicketBoardService } from "modules/ticket-boards";
+import { GetTicketBoardService, IncrementNextTicketNumberService } from "modules/ticket-boards";
 import { GetUserService } from "modules/users";
 
-import { TicketCreated } from "../../events/TicketCreated";
 import { CreateTicketElasticService } from "./create-elastic";
+import { TicketCreated } from "../../events/TicketCreated";
 
 interface CreateTicketInterface {
   statusKey: string;
@@ -32,6 +32,8 @@ export class CreateTicketService {
   constructor(
     @InjectRepository(TicketEntity) private ticketsRepository: Repository<TicketEntity>,
     @Inject(forwardRef(() => GetTicketBoardService)) private getTicketBoardService: GetTicketBoardService,
+    @Inject(forwardRef(() => IncrementNextTicketNumberService))
+    private incrementNextTicketNumberService: IncrementNextTicketNumberService,
     @Inject(forwardRef(() => GetDictionaryValueService)) private getDictionaryValueService: GetDictionaryValueService,
     @Inject(forwardRef(() => GetUserService)) private getUserService: GetUserService,
     private eventEmitter: EventEmitter2,
@@ -76,6 +78,7 @@ export class CreateTicketService {
     });
 
     const savedTicket = await this.ticketsRepository.save({
+      slug: `${board.slug}_${board.nextTicketNumber}`,
       status: { id: status.id },
       type: type ? { id: type.id } : undefined,
       sort: ticketCounts,
@@ -89,6 +92,8 @@ export class CreateTicketService {
       customer: customer ? { id: customer.id } : undefined,
       priority: data.priority ?? TicketPriorities.MEDIUM,
     });
+
+    await this.incrementNextTicketNumberService.dangerIncrementNextTicketNumberOrFail(board.id);
 
     await this.createTicketElasticService.elasticCreateTicketIndexOrFail(savedTicket.id);
 

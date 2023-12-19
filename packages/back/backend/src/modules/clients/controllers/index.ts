@@ -8,7 +8,7 @@ import { BaseExpressRequest } from "types/express";
 
 import { DeleteClientLogoService } from "../services/logo/delete";
 import { EditClientLogoService } from "../services/logo/edit";
-import { GetClientsService } from "../services/client/get";
+import { GetClientService } from "../services/client/get";
 import { EditClientService } from "../services/client/edit";
 import { GetClientNotificationsService } from "../services/client/notifications";
 
@@ -21,7 +21,7 @@ import { ResponseClientNotificationsListDTO } from "../dto/get/Notification";
 @Controller("clients")
 export class ClientsController {
   constructor(
-    private getClientsService: GetClientsService,
+    private getClientService: GetClientService,
     private editClientService: EditClientService,
     private editClientLogoService: EditClientLogoService,
     private deleteClientService: DeleteClientLogoService,
@@ -31,7 +31,7 @@ export class ClientsController {
   @Get("current")
   @withUserAuthorized([UserRole.USER])
   async getCurrentClient() {
-    const client = await this.getClientsService.getCurrentClientOrFail({ loadLogo: true });
+    const client = await this.getClientService.getCurrentClientOrFail({ loadLogo: true });
     return new ControllerResponse(ResponseClientDTO, client);
   }
 
@@ -39,7 +39,7 @@ export class ClientsController {
   @withUserAuthorized([])
   async updateCurrentClient(@Body() body: RequestUpdateClientDTO) {
     await this.editClientService.editClientOrFail({ name: body.name });
-    const client = await this.getClientsService.getCurrentClientOrFail({ loadLogo: true });
+    const client = await this.getClientService.getCurrentClientOrFail({ loadLogo: true });
     return new ControllerResponse(ResponseClientDTO, client);
   }
 
@@ -59,14 +59,14 @@ export class ClientsController {
 
   @Get("tenant")
   async getTenant(@Query() body: RequestTenantDTO) {
-    const client = await this.getClientsService.getClientTenant(body.domain);
+    const client = await this.getClientService.getClientByDomainOrFail(body.domain, { loadLogo: true });
     return new ControllerResponse(ResponseClientDTO, client);
   }
 
   @Get("current/storage-info")
   @withUserAuthorized([])
   async getStorageUsageInfo() {
-    const storageUsageInfo = await this.getClientsService.getCurrentClientStorageUsageInfoOrFail();
+    const storageUsageInfo = await this.getClientService.getCurrentClientStorageUsageInfoOrFail();
     return new ControllerResponse(ResponseStorageUsageInfoDTO, storageUsageInfo);
   }
 

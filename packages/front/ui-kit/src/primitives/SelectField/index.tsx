@@ -1,6 +1,7 @@
 import React from "react";
 import { isSymbol } from "@worksolutions/utils";
 import cn from "classnames";
+import { useEffectSkipFirst } from "@worksolutions/react-utils";
 
 import PopupSelectableList, {
   SelectableListItem,
@@ -43,6 +44,7 @@ export type SelectFieldInterface<ValueType extends SelectableListValue> = Omit<
 > & {
   value: ValueType;
   searchable?: boolean;
+  customOnSearch?: (searchString: string) => void;
   emptyListText?: string;
   searchPlaceholder?: string;
   placeholder?: string;
@@ -72,6 +74,7 @@ function SelectField<ValueType extends SelectableListValue>({
   style,
   className,
   searchable,
+  customOnSearch,
   emptyListText,
   searchPlaceholder,
   options,
@@ -102,8 +105,9 @@ function SelectField<ValueType extends SelectableListValue>({
   ...props
 }: SelectFieldInterface<ValueType>) {
   const [search, setSearch] = React.useState("");
+  useEffectSkipFirst(() => customOnSearch?.(search), [customOnSearch, search]);
 
-  const viewOptions = useViewOptions(search, options);
+  const viewOptions = useViewOptions(!customOnSearch, search, options);
 
   const { value: fieldValue, fieldItemLeft } = useSelectFieldValue(value, options, {
     fieldItemLeft: fieldItemLeftProp,

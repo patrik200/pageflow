@@ -35,6 +35,8 @@ function EditTicketCard({ entity }: EditTicketCardInterface) {
       <TicketStatus entity={entity} />
       <Divider />
       <TicketAttachments entity={entity} />
+      {/*<Divider />*/}
+      {/*<TicketRelations entity={entity} />*/}
     </div>
   );
 }

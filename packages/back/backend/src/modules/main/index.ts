@@ -21,13 +21,15 @@ import { TicketCommentsModule } from "../ticket-comments";
 import { ContractorsModule } from "../contractor";
 import { EmailModule } from "../email";
 import { NotificationsModule } from "../notifications";
-import { UserFlowModule } from "../userFlow/module";
+import { UserFlowModule } from "../userFlow";
 import { LandingModule } from "../landing";
 import { InvitationsModule } from "../invitations";
 import { TicketBoardsModule } from "../ticket-boards";
 import { ChangeFeedModule } from "../change-feed";
 import { PaymentsModule } from "../payments";
 import { SubscriptionModule } from "../subscription";
+import { TicketRelationsModule } from "../ticket-relations";
+import { StatisticsModule } from "../statistics";
 
 @Global()
 @Module({
@@ -60,6 +62,8 @@ import { SubscriptionModule } from "../subscription";
     ChangeFeedModule,
     PaymentsModule,
     SubscriptionModule,
+    TicketRelationsModule,
+    StatisticsModule,
   ],
 })
 export class MainModule {}

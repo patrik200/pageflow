@@ -11,6 +11,7 @@ import { getCurrentUser } from "modules/auth";
 import { DeleteTicketService } from "modules/tickets";
 import { DeletePermissionService, PermissionAccessService } from "modules/permissions";
 
+import { RemoveTicketBoardFavouritesService } from "../favourite/remove";
 import { TicketBoardDeleted } from "../../events/TicketBoardDeleted";
 
 @Injectable()
@@ -21,10 +22,14 @@ export class DeleteTicketBoardService {
     private eventEmitter: EventEmitter2,
     @Inject(forwardRef(() => DeletePermissionService)) private deletePermissionService: DeletePermissionService,
     @Inject(forwardRef(() => PermissionAccessService)) private permissionAccessService: PermissionAccessService,
+    private removeTicketBoardFavouritesService: RemoveTicketBoardFavouritesService,
   ) {}
 
   @Transactional()
-  async deleteTicketBoardOrFail(boardId: string, { checkPermissions = true } = {}) {
+  async deleteTicketBoardOrFail(
+    boardId: string,
+    { checkPermissions = true, emitEvents = true }: { checkPermissions?: boolean; emitEvents?: boolean } = {},
+  ) {
     if (checkPermissions) {
       await this.permissionAccessService.validateToEditOrDelete(
         { entityId: boardId, entityType: PermissionEntityType.TICKET_BOARD },
@@ -37,15 +42,20 @@ export class DeleteTicketBoardService {
       relations: { tickets: true },
     });
 
-    await Promise.all(board.tickets.map((ticket) => this.deleteTicketService.deleteTicketOrFail(ticket.id)));
+    await Promise.all(
+      board.tickets.map((ticket) => this.deleteTicketService.deleteTicketOrFail(ticket.id, { emitEvents: false })),
+    );
 
-    await this.deletePermissionService.deleteAllPermissionsOrFail({
-      entityId: board.id,
-      entityType: PermissionEntityType.TICKET_BOARD,
-    });
+    await Promise.all([
+      this.deletePermissionService.deleteAllPermissionsOrFail({
+        entityId: board.id,
+        entityType: PermissionEntityType.TICKET_BOARD,
+      }),
+      this.removeTicketBoardFavouritesService.removeFavouriteOrFail(board.id, { forAllUsers: true }),
+    ]);
 
     await this.ticketBoardsRepository.delete(board.id);
 
-    this.eventEmitter.emit(TicketBoardDeleted.eventName, new TicketBoardDeleted(board.id));
+    if (emitEvents) this.eventEmitter.emit(TicketBoardDeleted.eventName, new TicketBoardDeleted(board.id));
   }
 }

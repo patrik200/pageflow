@@ -31,10 +31,10 @@ function TicketsCard({ projectId, boardId }: TicketsCardInterface) {
 
   const { loading } = useTicketsLoading();
 
-  const getTicketHref = React.useCallback((ticket: TicketEntity) => `/tickets/${ticket.id}`, []);
-  const [selectedTicket, setSelectedTicket] = React.useState<string | null>(null);
-  const handleTicketClick = React.useCallback((ticket: TicketEntity) => setSelectedTicket(ticket.id), []);
-  const handleCloseTicketModal = React.useCallback(() => setSelectedTicket(null), []);
+  const getTicketHref = React.useCallback((ticket: TicketEntity) => `/tickets/${ticket.slug}`, []);
+  const [selectedTicketSlug, setSelectedTicketSlug] = React.useState<string | null>(null);
+  const handleTicketClick = React.useCallback((ticket: TicketEntity) => setSelectedTicketSlug(ticket.slug), []);
+  const handleCloseTicketModal = React.useCallback(() => setSelectedTicketSlug(null), []);
 
   return (
     <>
@@ -59,7 +59,7 @@ function TicketsCard({ projectId, boardId }: TicketsCardInterface) {
           <TicketsList loading={loading} getTicketHref={getTicketHref} onTicketClick={handleTicketClick} />
         )}
       </CardTablePreset>
-      <TicketDetailModal ticketId={selectedTicket} onClose={handleCloseTicketModal} />
+      <TicketDetailModal ticketSlug={selectedTicketSlug} onClose={handleCloseTicketModal} />
     </>
   );
 }

@@ -18,7 +18,6 @@ interface CreateUserInterface {
   name: string;
   position?: string;
   phone?: string;
-  system?: boolean;
 }
 
 @Injectable()
@@ -37,7 +36,7 @@ export class CreateUserService {
   }
 
   @Transactional()
-  async createUserByInvitationOrFail(data: Omit<CreateUserInterface, "system"> & { clientId: string }) {
+  async createUserByInvitationOrFail(data: CreateUserInterface & { clientId: string }) {
     return this.createUserForClientOrFail(data, data.clientId);
   }
 
@@ -55,11 +54,10 @@ export class CreateUserService {
       name: data.name,
       position: data.position,
       phone: data.phone,
-      system: data.system,
     });
 
     const user = await this.usersRepository.findOneOrFail({ where: { id: savedUser.id }, relations: { client: true } });
-    if (!data.system) await this.createUserElasticService.createElasticIndexUserOrFail(user.id);
+    await this.createUserElasticService.createElasticIndexUserOrFail(user.id);
 
     return user;
   }

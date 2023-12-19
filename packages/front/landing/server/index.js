@@ -20,7 +20,7 @@ class RealNextAppSpawner {
       hostname: "localhost",
     });
     nextApp.server = await nextApp.getServer();
-    if (isDev) await nextApp.prepare();
+    await nextApp.prepare();
     return nextApp.getRequestHandler();
   }
 
@@ -29,6 +29,7 @@ class RealNextAppSpawner {
     const handleRequest = await this.createNextRequestHandler();
     const rootPath = path.join(process.cwd(), "..", "..", "..");
     app.use(express.static(path.resolve(rootPath, "node_modules", "@app/ui-kit", "public")));
+    app.use("/favicon", express.static(path.resolve(process.cwd(), ".next", "favicon")));
     app.use("/", (req, res) => handleRequest(req, res));
     app.listen(3001, "0.0.0.0");
     console.log("Listening on http://0.0.0.0:3001");

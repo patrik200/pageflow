@@ -1,4 +1,4 @@
-import { Controller, Get, Post } from "@nestjs/common";
+import { Body, Controller, Get, Post } from "@nestjs/common";
 import { ControllerResponse } from "@app/back-kit";
 
 import { withUserAuthorized } from "modules/auth";
@@ -8,7 +8,7 @@ import { BuySubscriptionService } from "../services/buy";
 import { CancelSubscriptionService } from "../services/cancel";
 
 import { ResponseSubscriptionDTO } from "../dto/get/subscription/Subscription";
-import { ResponseBuySubscriptionDTO } from "../dto/get/subscription/BuySubscription";
+import { RequestBuySubscriptionDTO, ResponseBuySubscriptionDTO } from "../dto/get/subscription/BuySubscription";
 import { ResponsePaymentsListDTO } from "../dto/get/payment/Payment";
 
 @Controller("subscription")
@@ -35,8 +35,8 @@ export class SubscriptionController {
 
   @Post("buy")
   @withUserAuthorized([], { processAsGet: true })
-  async buySubscription() {
-    const result = await this.buySubscriptionService.buySubscriptionOrFail();
+  async buySubscription(@Body() body: RequestBuySubscriptionDTO) {
+    const result = await this.buySubscriptionService.buySubscriptionOrFail({ paymentType: body.paymentType });
     return new ControllerResponse(ResponseBuySubscriptionDTO, result);
   }
 

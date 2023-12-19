@@ -2,6 +2,7 @@ import { forwardRef, Inject, Injectable, OnApplicationBootstrap } from "@nestjs/
 import { EventEmitter2 } from "@nestjs/event-emitter";
 import { Transactional } from "typeorm-transactional";
 import { ChangeFeedEntityType, PermissionEntityType } from "@app/shared-enums";
+import { SentryTextService } from "@app/back-kit";
 
 import { CorrespondenceEntity } from "entities/Correspondence/Correspondence";
 
@@ -37,6 +38,7 @@ export class CorrespondenceEventListenerService implements OnApplicationBootstra
     private feedEventChangeDetectionService: ChangeFeedEventChangeDetectionService,
     @Inject(forwardRef(() => NotificationService)) private notificationService: NotificationService,
     @Inject(forwardRef(() => PermissionAccessService)) private permissionAccessService: PermissionAccessService,
+    private sentryTextService: SentryTextService,
   ) {}
 
   private async handleCorrespondencePermissionsNotify(
@@ -232,14 +234,28 @@ export class CorrespondenceEventListenerService implements OnApplicationBootstra
 
   onApplicationBootstrap() {
     this.eventEmitter.on(CorrespondenceCreated.eventName, (event: CorrespondenceCreated) =>
-      this.handleCorrespondenceCreated(event.correspondenceId, event.triggerUserId).catch(() => null),
+      this.handleCorrespondenceCreated(event.correspondenceId, event.triggerUserId).catch((e) =>
+        this.sentryTextService.error(e, {
+          context: CorrespondenceCreated.eventName,
+          contextService: CorrespondenceEventListenerService.name,
+        }),
+      ),
     );
     this.eventEmitter.on(CorrespondenceDeleted.eventName, (event: CorrespondenceDeleted) =>
-      this.handleCorrespondenceDeleted(event.correspondenceId).catch(() => null),
+      this.handleCorrespondenceDeleted(event.correspondenceId).catch((e) =>
+        this.sentryTextService.error(e, {
+          context: CorrespondenceDeleted.eventName,
+          contextService: CorrespondenceEventListenerService.name,
+        }),
+      ),
     );
     this.eventEmitter.on(CorrespondenceUpdated.eventName, (event: CorrespondenceUpdated) =>
       this.handleCorrespondenceUpdated(event.correspondenceId, event.oldCorrespondence, event.triggerUserId).catch(
-        () => null,
+        (e) =>
+          this.sentryTextService.error(e, {
+            context: CorrespondenceUpdated.eventName,
+            contextService: CorrespondenceEventListenerService.name,
+          }),
       ),
     );
   }

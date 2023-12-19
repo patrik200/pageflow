@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { Repository } from "typeorm";
+import { FindOptionsWhere, Repository } from "typeorm";
 import { Transactional } from "typeorm-transactional";
 
 import { CorrespondenceGroupEntity } from "entities/Correspondence/Group/group";
@@ -14,16 +14,27 @@ export class RemoveCorrespondenceGroupFavouritesService {
     @InjectRepository(CorrespondenceGroupEntity)
     private groupRepository: Repository<CorrespondenceGroupEntity>,
     @InjectRepository(CorrespondenceGroupFavouriteEntity)
-    private groupFavouriteRepository: Repository<CorrespondenceGroupFavouriteEntity>,
+    private favouriteRepository: Repository<CorrespondenceGroupFavouriteEntity>,
   ) {}
 
   @Transactional()
-  async removeGroupFavouriteOrFail(groupId: string) {
-    const { clientId, userId } = getCurrentUser();
-    const group = await this.groupRepository.findOneOrFail({
-      withDeleted: true,
-      where: { id: groupId, client: { id: clientId } },
+  async removeGroupFavouriteOrFail(groupId: string, { forAllUsers }: { forAllUsers: boolean }) {
+    const groupFindOptions: FindOptionsWhere<CorrespondenceGroupEntity> = { id: groupId };
+    const favouriteFindOptions: FindOptionsWhere<CorrespondenceGroupFavouriteEntity> = {};
+
+    const currentUser = getCurrentUser();
+    groupFindOptions.client = { id: currentUser.clientId };
+
+    if (!forAllUsers) {
+      favouriteFindOptions.user = { id: currentUser.userId };
+    }
+
+    const revision = await this.groupRepository.findOneOrFail({
+      where: groupFindOptions,
     });
-    await this.groupFavouriteRepository.delete({ group: { id: group.id }, user: { id: userId } });
+
+    favouriteFindOptions.group = { id: revision.id };
+
+    await this.favouriteRepository.delete(favouriteFindOptions);
   }
 }

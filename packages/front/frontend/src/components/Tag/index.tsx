@@ -1,9 +1,9 @@
 import React from "react";
-import { observer } from "mobx-react-lite";
-import { Icon, Typography } from "@app/ui-kit";
+import { Icon, InternalIcons, Typography } from "@app/ui-kit";
 import cn from "classnames";
+import { observer } from "mobx-react-lite";
 
-import { alertIconStyle, textModeStyleVariants, textStyles, textVariantStyleVariants } from "./style.css";
+import { iconStyle, textModeStyleVariants, textStyles, textVariantStyleVariants } from "./style.css";
 
 export type TagTextVariantType = keyof typeof textVariantStyleVariants;
 export type TagModeType = keyof typeof textModeStyleVariants;
@@ -11,18 +11,21 @@ export type TagModeType = keyof typeof textModeStyleVariants;
 interface TagInterface {
   className?: string;
   text: string;
-  alert?: boolean;
+  icon?: InternalIcons;
   variant?: TagTextVariantType;
   mode: TagModeType;
 }
 
-function Tag({ className, alert, text, variant = "default", mode }: TagInterface) {
+function Tag({ className, icon, text, variant = "default", mode }: TagInterface, ref: React.Ref<HTMLSpanElement>) {
   return (
-    <Typography className={cn(className, textStyles, textVariantStyleVariants[variant], textModeStyleVariants[mode])}>
-      {alert && <Icon className={alertIconStyle} icon="errorWarningLine" />}
+    <Typography
+      ref={ref}
+      className={cn(className, textStyles, textVariantStyleVariants[variant], textModeStyleVariants[mode])}
+    >
+      {icon && <Icon className={iconStyle} icon={icon} />}
       {text}
     </Typography>
   );
 }
 
-export default observer(Tag);
+export default observer(React.forwardRef(Tag));

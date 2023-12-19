@@ -46,13 +46,11 @@ export class ProjectStorage extends Storage {
       })({ body: { page, perPage: 20, ...filterEntity.apiReady } });
       const intlDate = this.intlDateStorage.getIntlDate();
       projects.items.forEach((project) => project.configure(intlDate, this.profileStorage.user));
-      if (page === 1) {
-        this.projects.items = projects.items;
-      } else {
-        this.projects.items.push(...projects.items);
-      }
+      this.projects = {
+        pagination: projects.pagination,
+        items: page === 1 ? projects.items : this.projects.items.concat(projects.items),
+      } as unknown as PaginatedEntities<ProjectEntity>;
 
-      this.projects.pagination = projects.pagination;
       return { success: true } as const;
     } catch (error) {
       return { success: false, error: parseServerError(error) } as const;

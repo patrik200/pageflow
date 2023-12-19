@@ -1,4 +1,4 @@
-import { errorLogBeautifier, INTLService, INTLServiceLang } from "@app/back-kit";
+import { INTLService, INTLServiceLang, SentryTextService } from "@app/back-kit";
 import { config } from "@app/core-config";
 import { DictionaryTypes } from "@app/shared-enums";
 import { forwardRef, Inject, Injectable, Logger, OnApplicationBootstrap, OnApplicationShutdown } from "@nestjs/common";
@@ -17,9 +17,8 @@ export class TicketAutoArchiverService implements OnApplicationBootstrap, OnAppl
     @Inject(INTLServiceLang.RU) private intlService: INTLService,
     @InjectRepository(TicketEntity) private ticketRepository: Repository<TicketEntity>,
     @Inject(forwardRef(() => GetDictionaryValueService)) private getDictionaryValueService: GetDictionaryValueService,
+    private sentryTextService: SentryTextService,
   ) {}
-
-  private loggerContext = "Ticket auto archiver";
 
   private async checkTicket(ticket: TicketEntity) {
     const archivedStatus = await this.getDictionaryValueService.dangerGetDictionaryValueOrFail(
@@ -56,8 +55,10 @@ export class TicketAutoArchiverService implements OnApplicationBootstrap, OnAppl
       try {
         await this.checkTicket(ticket);
       } catch (e) {
-        Logger.error(`Error while check ticket:`, this.loggerContext);
-        errorLogBeautifier(e);
+        this.sentryTextService.error(e, {
+          context: "check ticket",
+          contextService: TicketAutoArchiverService.name,
+        });
       }
     }
   }
@@ -67,7 +68,7 @@ export class TicketAutoArchiverService implements OnApplicationBootstrap, OnAppl
     await this.checkTickets();
     Logger.log(
       `Run checking with interval [${chalk.cyan(`${config.tickets.autoArchiveCheckIntervalMs}ms`)}]`,
-      this.loggerContext,
+      TicketAutoArchiverService.name,
     );
     this.disposeTimer = setAsyncInterval(() => this.checkTickets(), config.tickets.autoArchiveCheckIntervalMs);
   }

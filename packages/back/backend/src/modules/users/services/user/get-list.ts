@@ -52,20 +52,14 @@ export class GetUserListService {
       },
     });
 
-    const users = searchResults.hits.map((hit) => unsortedUsers.find((user) => user.id === hit._id)!);
+    const users = searchResults.hits.map((hit) => unsortedUsers.find((user) => user.id === hit._id)!).filter(Boolean);
 
     users.forEach((user) => user.calculateAllCans(currentUser));
 
     return users;
   }
 
-  async dangerGetUsersOrFail(findOptions: FindManyOptions<UserEntity> & { withDeleted?: boolean }) {
-    return await this.usersRepository.find({
-      ...findOptions,
-      where: {
-        ...findOptions.where,
-        system: false,
-      },
-    });
+  async dangerGetUsersList(findOptions: FindManyOptions<UserEntity>) {
+    return await this.usersRepository.find(findOptions);
   }
 }

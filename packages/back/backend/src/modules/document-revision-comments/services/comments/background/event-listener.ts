@@ -1,6 +1,7 @@
 import { forwardRef, Inject, Injectable, OnApplicationBootstrap } from "@nestjs/common";
 import { EventEmitter2 } from "@nestjs/event-emitter";
 import { Transactional } from "typeorm-transactional";
+import { SentryTextService } from "@app/back-kit";
 
 import { AppNotification, NotificationService } from "modules/notifications";
 import { GetDocumentRevisionService } from "modules/document-revisions";
@@ -17,6 +18,7 @@ export class DocumentRevisionCommentEventListenerService implements OnApplicatio
     @Inject(forwardRef(() => GetDocumentRevisionService))
     private getDocumentRevisionService: GetDocumentRevisionService,
     private eventEmitter: EventEmitter2,
+    private sentryTextService: SentryTextService,
   ) {}
 
   @Transactional()
@@ -83,10 +85,20 @@ export class DocumentRevisionCommentEventListenerService implements OnApplicatio
 
   onApplicationBootstrap() {
     this.eventEmitter.on(DocumentRevisionCommentCreated.eventName, (event: DocumentRevisionCommentCreated) =>
-      this.handleCommentCreated(event.commentId, event.triggerUserId).catch(() => null),
+      this.handleCommentCreated(event.commentId, event.triggerUserId).catch((e) =>
+        this.sentryTextService.error(e, {
+          context: DocumentRevisionCommentCreated.eventName,
+          contextService: DocumentRevisionCommentEventListenerService.name,
+        }),
+      ),
     );
     this.eventEmitter.on(DocumentRevisionCommentResolved.eventName, (event: DocumentRevisionCommentResolved) =>
-      this.handleCommentResolved(event.commentId, event.triggerUserId).catch(() => null),
+      this.handleCommentResolved(event.commentId, event.triggerUserId).catch((e) =>
+        this.sentryTextService.error(e, {
+          context: DocumentRevisionCommentResolved.eventName,
+          contextService: DocumentRevisionCommentEventListenerService.name,
+        }),
+      ),
     );
   }
 }

@@ -14,7 +14,7 @@ module.exports = {
   pages: {
     "*": ["common"],
     "/": ["home"],
-    "/privacy": ["privacy"],
+    "/license": ["license"],
     "/terms": ["terms"],
   },
   logBuild: false,

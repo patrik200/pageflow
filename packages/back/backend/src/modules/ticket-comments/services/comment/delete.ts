@@ -21,7 +21,10 @@ export class DeleteTicketCommentsService {
   ) {}
 
   @Transactional()
-  async deleteCommentOrFail(commentId: string, { checkPermissions = true }: { checkPermissions?: boolean } = {}) {
+  async deleteCommentOrFail(
+    commentId: string,
+    { checkPermissions = true, emitEvents = true }: { checkPermissions?: boolean; emitEvents?: boolean } = {},
+  ) {
     const originalComment = await this.getCommentsService.getCommentOrFail(commentId, {
       loadFiles: true,
     });
@@ -34,12 +37,14 @@ export class DeleteTicketCommentsService {
       originalComment.files.map((commentFile) =>
         this.deleteFilesService.deleteCommentFileOrFail(originalComment.id, commentFile.file.id, {
           checkPermissions,
+          emitEvents: false,
         }),
       ),
     );
 
     await this.commentsRepository.delete(originalComment.id);
 
-    this.eventEmitter.emit(TicketCommentDeleted.eventName, new TicketCommentDeleted(originalComment.id));
+    if (emitEvents)
+      this.eventEmitter.emit(TicketCommentDeleted.eventName, new TicketCommentDeleted(originalComment.id));
   }
 }

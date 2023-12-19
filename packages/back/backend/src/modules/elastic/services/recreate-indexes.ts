@@ -1,4 +1,4 @@
-import { typeormAlias, errorLogBeautifier, ElasticService } from "@app/back-kit";
+import { typeormAlias, ElasticService, SentryTextService } from "@app/back-kit";
 import { Inject, forwardRef, LoggerService } from "@nestjs/common";
 import { isString } from "@worksolutions/utils";
 
@@ -35,6 +35,8 @@ import { GetUserListService, CreateUserElasticService, InitElasticUserService } 
 
 export class ElasticRecreateIndexesService {
   constructor(
+    private sentryTextService: SentryTextService,
+    //
     @Inject(forwardRef(() => InitElasticProjectsService))
     private initElasticProjectsService: InitElasticProjectsService,
     @Inject(forwardRef(() => CreateProjectElasticService))
@@ -323,7 +325,7 @@ export class ElasticRecreateIndexesService {
       return;
     }
 
-    const allUsers = await this.getUserListService.dangerGetUsersOrFail({
+    const allUsers = await this.getUserListService.dangerGetUsersList({
       where: { client: { id: clientId } },
       select: ["id"],
       withDeleted: true,
@@ -357,7 +359,10 @@ export class ElasticRecreateIndexesService {
       logger.log("Success", label);
     } catch (e) {
       logger.error("Error", label);
-      errorLogBeautifier(e);
+      this.sentryTextService.error(e, {
+        context: label,
+        contextService: ElasticRecreateIndexesService.name,
+      });
     } finally {
       console.timeEnd(label);
     }

@@ -20,7 +20,7 @@ export class DeleteUserAvatarService {
   private async getUserForUpdating(userId: string) {
     const currentUser = getCurrentUser();
     const user = await this.usersRepository.findOneOrFail({
-      where: { id: userId, client: { id: currentUser.clientId }, system: false },
+      where: { id: userId, client: { id: currentUser.clientId } },
       relations: { client: true, avatar: true },
       withDeleted: true,
     });

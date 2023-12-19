@@ -1,6 +1,6 @@
-import { CryptoModule } from "modules/crypto/module";
-import { INTLModule } from "modules/intl/module";
-import { NestModule } from "modules/nest/module";
+import { CryptoModule } from "modules/crypto";
+import { INTLModule } from "modules/intl";
+import { NestModule } from "modules/nest";
 
 export function initializeGlobalModules() {
   return [CryptoModule, INTLModule, NestModule];

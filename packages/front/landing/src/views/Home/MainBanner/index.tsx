@@ -1,17 +1,28 @@
 import React from "react";
+import { Image } from "@app/front-kit";
 import { observer } from "mobx-react-lite";
 import { scrollToElement } from "@app/ui-kit";
 
 import Typography from "components/Typography";
 
 import {
-  buttonInfoTextStyles,
-  circleStyles,
+  tryButtonInfoTextStyles,
   contentStyles,
-  descriptionStyles,
+  contentWrapperStyles,
+  logoImageStyles,
+  logoTextStyles,
+  logoWrapperStyles,
+  titleDocumentsTextStyles,
   titleStyles,
+  titleSystemTextStyles,
   tryButtonStyles,
+  tryFreeWrapperStyles,
   wrapperStyles,
+  tryFreeDividerStyles,
+  tryButtonHighlightTextStyles,
+  tryButtonShadowStyles,
+  tryFreeSpacingStyles,
+  tryButtonTextStyles,
 } from "./style.css";
 
 function MainBanner() {
@@ -21,16 +32,31 @@ function MainBanner() {
 
   return (
     <div className={wrapperStyles}>
-      <div className={circleStyles} />
-      <div className={contentStyles}>
-        <Typography className={titleStyles}>Система управления документами</Typography>
-        <Typography className={descriptionStyles}>
-          Оптимизируйте процесс создания, организации и обмена технической документацией с помощью PageFlow.
-        </Typography>
-        <button className={tryButtonStyles} onClick={handleClick}>
-          Попробуйте бесплатно
-        </button>
-        <Typography className={buttonInfoTextStyles}>1 месяц тестового периода • Без ограничений</Typography>
+      <div className={contentWrapperStyles}>
+        <div className={logoWrapperStyles}>
+          <Image className={logoImageStyles} src="/icons/logo.svg" preload />
+          <Typography className={logoTextStyles}>PageFlow</Typography>
+        </div>
+        <div className={contentStyles}>
+          <Typography className={titleSystemTextStyles}>СИСТЕМА</Typography>
+          <Typography className={titleStyles}>УПРАВЛЕНИЯ</Typography>
+          <Typography className={titleDocumentsTextStyles}>ДОКУМЕНТАМИ</Typography>
+          <div className={tryFreeWrapperStyles}>
+            <div className={tryFreeSpacingStyles}>
+              <button className={tryButtonStyles} onClick={handleClick}>
+                <div className={tryButtonTextStyles}>Попробуйте бесплатно</div>
+                <div className={tryButtonShadowStyles} />
+              </button>
+            </div>
+            <div className={tryFreeDividerStyles} />
+            <div className={tryFreeSpacingStyles}>
+              <Typography className={tryButtonInfoTextStyles}>
+                1 МЕСЯЦ ТЕСТОВОГО ПЕРИОДА{" "}
+                <Typography className={tryButtonHighlightTextStyles}>БЕЗ ОГРАНИЧЕНИЙ</Typography>
+              </Typography>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

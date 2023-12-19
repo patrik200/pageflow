@@ -1,7 +1,7 @@
 import { action, computed, observable } from "mobx";
 import { BaseEntity, cachedProperty, makeFnTransformableObject } from "@app/kit";
 import { Expose } from "class-transformer";
-import { IsDefined, IsNumber, IsString } from "class-validator";
+import { IsBoolean, IsDefined, IsNumber, IsString } from "class-validator";
 import { FileInterface } from "@worksolutions/utils";
 import uuid from "uuidjs";
 
@@ -23,8 +23,10 @@ export class FileEntity extends BaseEntity {
 
   @observable @Expose() @IsDefined() @IsNumber() size!: number;
 
+  @observable @Expose() @IsDefined() @IsBoolean() public!: boolean;
+
   @computed get url() {
-    const path = `/api/storage/files/${this.bucket}/${this.id}`;
+    const path = `/api/storage/files/${this.bucket}/${this.id}${this.public ? "/public" : ""}`;
     if (process.env.NODE_ENV === "development") return `http://localhost:8000${path}`;
     return path;
   }

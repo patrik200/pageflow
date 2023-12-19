@@ -9,7 +9,6 @@ export class GetExternalPaymentInfoService {
     const payment = await checkout.getPayment(externalPaymentId);
     if (payment.status === "canceled") return { status: PaymentStatus.CANCELED } as const;
     if (payment.status === "pending") return { status: PaymentStatus.WAITING_FOR_PAYMENT } as const;
-    if (payment.status === "waiting_for_capture") return { status: PaymentStatus.WAITING_FOR_ACCEPT } as const;
     if (payment.status === "succeeded")
       return {
         status: PaymentStatus.COMPLETED,

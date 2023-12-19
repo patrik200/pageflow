@@ -1,9 +1,14 @@
 import React from "react";
-import { Button } from "@app/ui-kit";
+import { Button, Icon } from "@app/ui-kit";
 import { useTranslation } from "@app/front-kit";
 import cn from "classnames";
 
-import { filterButtonIconOpenedStyles, filterButtonIconStyles } from "./style.css";
+import {
+  filterButtonDesktopStyles,
+  filterButtonIconOpenedStyles,
+  filterButtonIconStyles,
+  filterButtonMobileStyles,
+} from "./style.css";
 
 interface FilterButtonInterface {
   opened: boolean;
@@ -12,15 +17,22 @@ interface FilterButtonInterface {
 
 function FilterButton({ opened, toggle }: FilterButtonInterface) {
   const { t } = useTranslation();
+
   return (
-    <Button
-      rightIconClassName={cn(filterButtonIconStyles, opened && filterButtonIconOpenedStyles)}
-      iconRight="arrowDownSLine"
-      type="OUTLINE"
-      onClick={toggle}
-    >
-      {t({ scope: "filters", name: "expander" })}
-    </Button>
+    <>
+      <Button type="WITHOUT_BORDER" onClick={toggle} size="SMALL" className={filterButtonMobileStyles}>
+        {opened ? <Icon icon="filterFilled" /> : <Icon icon="filterLine" />}
+      </Button>
+      <Button
+        rightIconClassName={cn(filterButtonIconStyles, opened && filterButtonIconOpenedStyles)}
+        iconRight="arrowDownSLine"
+        type="OUTLINE"
+        onClick={toggle}
+        className={filterButtonDesktopStyles}
+      >
+        {t({ scope: "filters", name: "expander" })}
+      </Button>
+    </>
   );
 }
 

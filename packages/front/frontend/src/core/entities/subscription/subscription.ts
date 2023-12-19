@@ -17,6 +17,8 @@ export class SubscriptionEntity extends BaseEntity {
 
   @observable @Expose() @IsOptional() @IsDate() nextPaymentAt!: Date | null;
 
+  @observable @Expose() @IsDefined() @IsBoolean() autoPaymentsAvailable!: boolean;
+
   @action cancel = () => {
     this.autoRenew = false;
   };

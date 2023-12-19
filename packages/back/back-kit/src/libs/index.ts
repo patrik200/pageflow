@@ -1,7 +1,6 @@
 export * from "./asyncModuleResolver";
 export * from "./controllerResponse";
 export * from "./createClassValidatorErrorMessage";
-export * from "./errorLogBeautifier";
 export * from "./getRequestFromExecutionContext";
 export * from "./IPDetector";
 export * from "./pagination";

@@ -37,6 +37,6 @@ export class CorrespondenceGroupFavouritesController {
   @Delete(":groupId")
   @withUserAuthorized([UserRole.USER])
   async deleteGroupFavourite(@Param("groupId") groupId: string) {
-    await this.removeGroupFavouritesService.removeGroupFavouriteOrFail(groupId);
+    await this.removeGroupFavouritesService.removeGroupFavouriteOrFail(groupId, { forAllUsers: false });
   }
 }

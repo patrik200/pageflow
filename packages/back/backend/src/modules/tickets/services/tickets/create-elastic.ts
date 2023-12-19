@@ -33,6 +33,7 @@ export class CreateTicketElasticService {
         clientId: ticket.client.id,
         boardId: ticket.board.id,
         name: ticket.name,
+        slug: ticket.slug,
         description: ticket.description ?? "",
         authorId: ticket.author.id,
         customerId: ticket.customer?.id,

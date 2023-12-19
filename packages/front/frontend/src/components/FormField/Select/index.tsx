@@ -22,6 +22,7 @@ type FormFieldSelectEditPart<VALUE extends SelectableListValue> = {
   popupWidth?: PopupManagerInterface["popupWidth"];
   primaryPlacement?: PopupManagerInterface["primaryPlacement"];
   searchable?: boolean;
+  customOnSearch?: (value: string) => void;
   edit: true;
   placeholder?: string;
   errorMessage?: string;
@@ -87,6 +88,7 @@ function FormFieldSelect<VALUE extends SelectableListValue>({
           options={options}
           errorMessage={getErrorMessageWithCommonIntl(props.errorMessage, t)}
           searchable={props.searchable}
+          customOnSearch={props.customOnSearch}
           searchPlaceholder={t({ scope: "common:common_form_fields", place: "select", name: "search_placeholder" })}
           emptyListText={t({ scope: "common:common_form_fields", place: "select", name: "empty_list" })}
           onChange={props.onChange}

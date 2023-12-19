@@ -14,7 +14,8 @@
         "placeholder": "Пароль"
       }
     },
-    "signInButton": "Войти"
+    "sign_in_button": "Войти",
+    "reset_password_link": "Забыли пароль?"
   },
   "error_messages": {
     "unexpected": "Произошла неожиданная ошибка. Пожалуйста, попробуйте позже"

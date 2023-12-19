@@ -44,9 +44,9 @@ export class DeleteCorrespondenceGroupService {
     await Promise.all([
       ...group.childrenGroups.map(({ id }) => this.deleteGroupOrFail(id, { checkPermissions: false })),
       ...group.childrenCorrespondences.map(({ id }) =>
-        this.deleteCorrespondenceService.deleteCorrespondenceOrFail(id, { checkPermissions: false }),
+        this.deleteCorrespondenceService.deleteCorrespondenceOrFail(id, { checkPermissions: false, emitEvents: false }),
       ),
-      this.removeCorrespondenceGroupFavouritesService.removeGroupFavouriteOrFail(group.id),
+      this.removeCorrespondenceGroupFavouritesService.removeGroupFavouriteOrFail(group.id, { forAllUsers: true }),
       this.deleteCorrespondenceGroupElasticService.elasticDeleteGroupIndexOrFail(group.id),
     ]);
 

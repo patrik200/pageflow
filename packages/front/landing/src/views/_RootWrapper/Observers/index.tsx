@@ -8,7 +8,7 @@ function RootObservers() {
   return (
     <>
       <SupportChat />
-      <YandexMetrica />
+      {process.env.NODE_ENV !== "development" && <YandexMetrica />}
     </>
   );
 }

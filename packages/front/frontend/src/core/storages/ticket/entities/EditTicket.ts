@@ -8,6 +8,8 @@ import { NOT_EMPTY_VALIDATION } from "core/commonValidationErrors";
 import { EditableFileEntity } from "core/entities/file";
 import { TicketDetailEntity } from "core/entities/ticket/ticketDetail";
 
+import { EditTicketRelationEntity } from "./EditTicketRelation";
+
 export class EditTicketEntity extends BaseEntity {
   static buildEmpty(boardId: string) {
     return new EditTicketEntity(boardId);
@@ -15,7 +17,8 @@ export class EditTicketEntity extends BaseEntity {
 
   static buildFromTicketEntity(ticket: TicketDetailEntity) {
     const editTicketEntity = new EditTicketEntity(ticket.author.id);
-    editTicketEntity.setId(ticket.id);
+    editTicketEntity.id = ticket.id;
+    editTicketEntity.slug = ticket.slug;
     editTicketEntity.setName(ticket.name);
     editTicketEntity.setStatus(ticket.status.key);
     editTicketEntity.setPriority(ticket.priority);
@@ -33,8 +36,8 @@ export class EditTicketEntity extends BaseEntity {
     this.initEntity();
   }
 
-  @observable id = "";
-  setId = this.createSetter("id");
+  id = "";
+  slug = "";
 
   @observable @MinLength(1, { message: NOT_EMPTY_VALIDATION }) name = "";
   setName = this.createSetter("name");
@@ -63,6 +66,11 @@ export class EditTicketEntity extends BaseEntity {
   @observable files: EditableFileEntity[] = [];
   addFiles = this.createPushArray("files");
   deleteFilesByIndex = this.createDeleteByIndex("files");
+
+  @observable relations: EditTicketRelationEntity[] = [];
+  addRelation = this.createPush("relations");
+  setRelations = this.createSetter("relations");
+  deleteRelationByIndex = this.createDeleteByIndex("relations");
 
   @computed get apiReady() {
     return {

@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
-import { ExpressMultipartFile, FileUploaderService, ServiceError } from "@app/back-kit";
+import { ExpressMultipartFile, ServiceError } from "@app/back-kit";
 import { Transactional } from "typeorm-transactional";
 import { EventEmitter2 } from "@nestjs/event-emitter";
 
@@ -9,9 +9,10 @@ import { TicketCommentEntity } from "entities/Ticket/Comment";
 import { TicketCommentFileEntity } from "entities/Ticket/Comment/File";
 
 import { getCurrentUser } from "modules/auth";
+import { UploadFileService } from "modules/storage";
 
-import { TicketCommentUpdated } from "../../events/CommentUpdated";
 import { GetTicketCommentsForEditService } from "../comment/get-for-edit";
+import { TicketCommentUpdated } from "../../events/CommentUpdated";
 
 @Injectable()
 export class EditTicketCommentFilesService {
@@ -19,7 +20,7 @@ export class EditTicketCommentFilesService {
     @InjectRepository(TicketCommentEntity) private commentsRepository: Repository<TicketCommentEntity>,
     @InjectRepository(TicketCommentFileEntity)
     private commentFilesRepository: Repository<TicketCommentFileEntity>,
-    private fileUploaderService: FileUploaderService,
+    private uploadFileService: UploadFileService,
     private getCommentsForEditService: GetTicketCommentsForEditService,
     private eventEmitter: EventEmitter2,
   ) {}
@@ -31,7 +32,7 @@ export class EditTicketCommentFilesService {
 
     await this.commentsRepository.update(comment.id, {});
 
-    const uploadedFile = await this.fileUploaderService.uploadFileOrFail(
+    const uploadedFile = await this.uploadFileService.uploadFileOrFail(
       `client.${getCurrentUser().clientId}.tickets`,
       file,
     );

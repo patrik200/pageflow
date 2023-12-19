@@ -32,7 +32,7 @@ export class GetUserService {
     { unsafe = false, withDeleted, ...options }: UserSelectOptions & { withDeleted?: boolean } = {},
   ) {
     const currentUser = unsafe ? undefined : getCurrentUser();
-    const findOptions: FindOptionsWhere<UserEntity> = { [keyMode === "id" ? "id" : "email"]: key, system: false };
+    const findOptions: FindOptionsWhere<UserEntity> = { [keyMode === "id" ? "id" : "email"]: key };
     if (currentUser) findOptions.client = { id: currentUser.clientId };
 
     const user = await this.usersRepository.findOne({

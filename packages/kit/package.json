@@ -21,7 +21,8 @@
     "ms": "2.1.2",
     "reflect-metadata": "0.1.13",
     "typedi": "0.10.0",
-    "utility-types": "3.10.0"
+    "utility-types": "3.10.0",
+    "transliteration": "2.3.5"
   },
   "sideEffects": false,
   "types": "dist/main.d.ts",

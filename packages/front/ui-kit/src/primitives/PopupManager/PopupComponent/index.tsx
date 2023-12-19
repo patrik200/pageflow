@@ -10,7 +10,7 @@ import { defaultAppearanceAnimationStyleVariants, hiddenStyle } from "./style.cs
 
 export interface PopupComponentInterface {
   forceVisible?: boolean;
-  children: JSX.Element;
+  children: React.JSX.Element;
   appearanceAnimation?: AppearanceAnimation;
   stopPropagation?: boolean;
 }

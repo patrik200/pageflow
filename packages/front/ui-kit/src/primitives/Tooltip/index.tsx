@@ -6,9 +6,12 @@ import PopupManager, { PopupManagerInterface } from "primitives/PopupManager";
 
 import TooltipPopup from "./Popup";
 
-export type TooltipInterface = PopupManagerInterface & { className?: string };
+export type TooltipInterface = PopupManagerInterface & { className?: string; tooltipPopupClassName?: string };
 
-function Tooltip({ className, popupElement, triggerElement, ...props }: TooltipInterface, ref: React.Ref<HTMLElement>) {
+function Tooltip(
+  { className, tooltipPopupClassName, popupElement, triggerElement, ...props }: TooltipInterface,
+  ref: React.Ref<HTMLElement>,
+) {
   const newTriggerElement = React.cloneElement(triggerElement, {
     ref: useProvideRef(ref, (triggerElement as any).ref),
     className: cn(className, triggerElement.props.className),
@@ -18,7 +21,7 @@ function Tooltip({ className, popupElement, triggerElement, ...props }: TooltipI
     <PopupManager
       maxHeight={false}
       triggerElement={newTriggerElement}
-      popupElement={<TooltipPopup>{popupElement}</TooltipPopup>}
+      popupElement={<TooltipPopup className={tooltipPopupClassName}>{popupElement}</TooltipPopup>}
       {...props}
     />
   );

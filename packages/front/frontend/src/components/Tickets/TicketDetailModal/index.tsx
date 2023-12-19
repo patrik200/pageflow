@@ -7,20 +7,20 @@ import AsyncModalContent from "components/AsyncModalContent";
 import { modalHeaderStyles } from "./styles.css";
 
 interface TicketDetailModalInterface {
-  ticketId: string | null;
+  ticketSlug: string | null;
   onClose: () => void;
 }
 
 const ModalContent = () => import("./ModalContent");
 
-function TicketDetailModal({ ticketId, onClose }: TicketDetailModalInterface) {
+function TicketDetailModal({ ticketSlug, onClose }: TicketDetailModalInterface) {
   return (
     <Modal
       beforeContent={<div id="ticket-modal-header" className={modalHeaderStyles} />}
-      opened={!!ticketId}
+      opened={!!ticketSlug}
       onClose={onClose}
     >
-      <AsyncModalContent asyncComponent={ModalContent} ticketId={ticketId} close={onClose} />
+      <AsyncModalContent asyncComponent={ModalContent} ticketSlug={ticketSlug} close={onClose} />
     </Modal>
   );
 }

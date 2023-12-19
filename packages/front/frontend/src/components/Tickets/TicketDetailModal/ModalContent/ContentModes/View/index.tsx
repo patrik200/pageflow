@@ -39,14 +39,20 @@ function ViewTicketCard({ ticket }: ViewTicketCardInterface) {
       <TicketStatus entity={ticket} />
       <Divider />
       <TicketAttachments entity={ticket} />
+      {/*<Divider />*/}
+      {/*<TicketRelations />*/}
       <Divider />
       <Comments />
-      <Divider />
-      <div>
-        {ticket.changeFeedEvents.map((event, key) => (
-          <ChangeFeedEvents key={key} event={event} />
-        ))}
-      </div>
+      {ticket.changeFeedEvents.length !== 0 && (
+        <>
+          <Divider />
+          <div>
+            {ticket.changeFeedEvents.map((event, key) => (
+              <ChangeFeedEvents key={key} event={event} />
+            ))}
+          </div>
+        </>
+      )}
     </div>
   );
 }

@@ -2,15 +2,17 @@ import { observer } from "mobx-react-lite";
 import { useTranslation } from "@app/front-kit";
 import React from "react";
 import { TabItemInterface } from "@app/ui-kit";
+import dynamic from "next/dynamic";
 
 import CardTitleTabsPreset from "components/Card/pressets/CardTitleTabs";
 
 import ClientView from "./ClientView";
-import DictionariesView from "./DictionariesView";
 import SettingsPaymentsView from "./Payments";
 import PageWrapper from "../_PageWrapper";
 
 import { useTabs } from "internal/hooks/useTags";
+
+const DictionariesView = dynamic(() => import("./DictionariesView"), { ssr: false });
 
 type Tabs = "client" | "dictionaries" | "payments";
 

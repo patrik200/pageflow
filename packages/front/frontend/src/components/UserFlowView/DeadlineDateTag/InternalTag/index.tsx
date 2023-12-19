@@ -17,7 +17,7 @@ function InternalTag({ alert, textPreTag, textTag, tagModeType }: TagInterface) 
   return (
     <div className={wrapperStyles}>
       <Typography className={descriptionStyles}>{textPreTag}</Typography>
-      <Tag alert={alert} text={textTag} mode={tagModeType} />
+      <Tag icon={alert ? "errorWarningLine" : undefined} text={textTag} mode={tagModeType} />
     </div>
   );
 }

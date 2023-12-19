@@ -1,7 +1,14 @@
 {
   "meta": {
+    "view_placeholder": "Запрос",
     "view": "{name}",
     "create": "Создание запроса"
+  },
+  "ticket_title": {
+    "copy_to_clipboard": {
+      "copy_text": "Скопировать ID и название",
+      "copied_text": "Скопировано"
+    }
   },
   "main_tab": {
     "name_field": {
@@ -45,6 +52,14 @@
     },
     "answer_field": {
       "title": "Ответ"
+    },
+    "relations_field": {
+      "title": "Зависимости",
+      "empty_value": "Не заполнено",
+      "error_messages": {
+        "create_unexpected": "Неожиданная ошибка при создании зависимости. Пожалуйста, попробуйте позже",
+        "delete_unexpected": "Неожиданная ошибка при удалении зависимости. Пожалуйста, попробуйте позже"
+      }
     }
   },
   "create_ticket": {

@@ -1,12 +1,14 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
-import { FileUploaderService, ServiceError } from "@app/back-kit";
+import { ServiceError } from "@app/back-kit";
 import { Transactional } from "typeorm-transactional";
 import { EventEmitter2 } from "@nestjs/event-emitter";
 
 import { TicketCommentEntity } from "entities/Ticket/Comment";
 import { TicketCommentFileEntity } from "entities/Ticket/Comment/File";
+
+import { DeleteFileService } from "modules/storage";
 
 import { GetTicketCommentsForEditService } from "../comment/get-for-edit";
 import { TicketCommentUpdated } from "../../events/CommentUpdated";
@@ -17,7 +19,7 @@ export class DeleteTicketCommentFilesService {
     @InjectRepository(TicketCommentEntity) private commentsRepository: Repository<TicketCommentEntity>,
     @InjectRepository(TicketCommentFileEntity)
     private commentFilesRepository: Repository<TicketCommentFileEntity>,
-    private fileUploaderService: FileUploaderService,
+    private deleteFileService: DeleteFileService,
     private getCommentsForEditService: GetTicketCommentsForEditService,
     private eventEmitter: EventEmitter2,
   ) {}
@@ -26,7 +28,7 @@ export class DeleteTicketCommentFilesService {
   async deleteCommentFileOrFail(
     commentId: string,
     fileId: string,
-    { checkPermissions = true }: { checkPermissions?: boolean } = {},
+    { checkPermissions = true, emitEvents = true }: { checkPermissions?: boolean; emitEvents?: boolean } = {},
   ) {
     const comment = await this.getCommentsForEditService.getCommentForUpdating(commentId);
     if (checkPermissions) {
@@ -40,8 +42,8 @@ export class DeleteTicketCommentFilesService {
       relations: { comment: true, file: true },
     });
     await this.commentFilesRepository.delete(commentFile.id);
-    await this.fileUploaderService.deleteFileOrFail(commentFile.file);
+    await this.deleteFileService.deleteFileOrFail(commentFile.file);
 
-    this.eventEmitter.emit(TicketCommentUpdated.eventName, new TicketCommentUpdated(comment.id));
+    if (emitEvents) this.eventEmitter.emit(TicketCommentUpdated.eventName, new TicketCommentUpdated(comment.id));
   }
 }

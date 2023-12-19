@@ -15,5 +15,3 @@ export type BaseExpressRequest<USER> = Omit<Request, "user"> & {
   files: Record<string, ExpressMultipartFile | undefined>;
   user: USER;
 };
-
-export type BaseExpressRequestWithoutUser = BaseExpressRequest<{}>;

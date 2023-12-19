@@ -9,9 +9,6 @@ import { UserFlowEntity } from "../index";
 export class UserFlowReviewerEntity extends BaseGeneratedIDEntity {
   @ManyToOne(() => UserEntity, { nullable: false }) user!: UserEntity;
 
-  @OneToOne(() => UserFlowEntity, (userFlow) => userFlow.reviewer, {
-    nullable: false,
-    onDelete: "CASCADE",
-  })
+  @OneToOne(() => UserFlowEntity, (userFlow) => userFlow.reviewer, { nullable: false })
   userFlow!: UserFlowEntity;
 }

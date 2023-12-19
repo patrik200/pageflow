@@ -2,6 +2,7 @@ import { Global, Module } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
 
 import { ClientEntity } from "entities/Client";
+import { SubscriptionEntity } from "entities/Subscription";
 
 import { ClientsController } from "./controllers";
 
@@ -9,28 +10,30 @@ import { DeleteClientService } from "./services/client/delete";
 import { DeleteClientLogoService } from "./services/logo/delete";
 import { EditClientService } from "./services/client/edit";
 import { EditClientLogoService } from "./services/logo/edit";
-import { GetClientsService } from "./services/client/get";
+import { GetClientService } from "./services/client/get";
 import { CreateClientService } from "./services/client/create";
 import { GetClientNotificationsService } from "./services/client/notifications";
+import { UnusedClientsBackgroundDeleterService } from "./services/client/background/UnusedClientsBackgroundDeleter";
 
 @Global()
 @Module({
-  imports: [TypeOrmModule.forFeature([ClientEntity])],
+  imports: [TypeOrmModule.forFeature([ClientEntity, SubscriptionEntity])],
   controllers: [ClientsController],
   providers: [
     CreateClientService,
     DeleteClientService,
     EditClientService,
-    GetClientsService,
+    GetClientService,
     DeleteClientLogoService,
     EditClientLogoService,
     GetClientNotificationsService,
+    UnusedClientsBackgroundDeleterService,
   ],
   exports: [
     CreateClientService,
     DeleteClientService,
     EditClientService,
-    GetClientsService,
+    GetClientService,
     DeleteClientLogoService,
     EditClientLogoService,
   ],

@@ -7,7 +7,7 @@ import {
 } from "@app/ui-kit";
 import { padding } from "polished";
 
-export const alertIconStyle = style({
+export const iconStyle = style({
   width: 16,
   height: 16,
   marginBottom: -4,
@@ -37,5 +37,9 @@ export const textModeStyleVariants = styleVariants({
   success: {
     backgroundColor: globalThemeColorVars.green10,
     color: globalThemeColorVars.green,
+  },
+  info: {
+    backgroundColor: globalThemeColorVars.strokeCard,
+    color: globalThemeColorVars.textSecondary,
   },
 });

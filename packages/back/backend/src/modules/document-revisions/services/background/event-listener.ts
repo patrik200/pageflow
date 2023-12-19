@@ -2,6 +2,7 @@ import { forwardRef, Inject, Injectable, OnApplicationBootstrap } from "@nestjs/
 import { EventEmitter2 } from "@nestjs/event-emitter";
 import { Transactional } from "typeorm-transactional";
 import { ChangeFeedEntityType } from "@app/shared-enums";
+import { SentryTextService } from "@app/back-kit";
 
 import { DocumentRevisionEntity } from "entities/Document/Document/Revision";
 import { DocumentRevisionResponsibleUserEntity } from "entities/Document/Document/Revision/Approving/UserApproving";
@@ -31,6 +32,7 @@ export class DocumentRevisionEventListenerService implements OnApplicationBootst
     private deleteChangeFeedEventService: DeleteChangeFeedEventService,
     @Inject(forwardRef(() => ChangeFeedEventChangeDetectionService))
     private feedEventChangeDetectionService: ChangeFeedEventChangeDetectionService,
+    private sentryTextService: SentryTextService,
   ) {}
 
   @Transactional()
@@ -234,13 +236,28 @@ export class DocumentRevisionEventListenerService implements OnApplicationBootst
 
   onApplicationBootstrap() {
     this.eventEmitter.on(DocumentRevisionCreated.eventName, (event: DocumentRevisionCreated) =>
-      this.handleRevisionCreated(event.revisionId, event.triggerUserId).catch(() => null),
+      this.handleRevisionCreated(event.revisionId, event.triggerUserId).catch((e) =>
+        this.sentryTextService.error(e, {
+          context: DocumentRevisionCreated.eventName,
+          contextService: DocumentRevisionEventListenerService.name,
+        }),
+      ),
     );
     this.eventEmitter.on(DocumentRevisionDeleted.eventName, (event: DocumentRevisionDeleted) =>
-      this.handleRevisionDeleted(event.revisionId).catch(() => null),
+      this.handleRevisionDeleted(event.revisionId).catch((e) =>
+        this.sentryTextService.error(e, {
+          context: DocumentRevisionDeleted.eventName,
+          contextService: DocumentRevisionEventListenerService.name,
+        }),
+      ),
     );
     this.eventEmitter.on(DocumentRevisionUpdated.eventName, (event: DocumentRevisionUpdated) =>
-      this.handleRevisionUpdated(event.revisionId, event.oldRevision, event.triggerUserId).catch(() => null),
+      this.handleRevisionUpdated(event.revisionId, event.oldRevision, event.triggerUserId).catch((e) =>
+        this.sentryTextService.error(e, {
+          context: DocumentRevisionUpdated.eventName,
+          contextService: DocumentRevisionEventListenerService.name,
+        }),
+      ),
     );
   }
 }

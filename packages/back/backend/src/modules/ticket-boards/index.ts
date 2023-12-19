@@ -22,6 +22,7 @@ import { GetTicketBoardPermissionsService } from "./services/permissions/get";
 import { CreateTicketBoardPermissionsService } from "./services/permissions/create";
 import { DeleteTicketBoardPermissionsService } from "./services/permissions/delete";
 import { EditTicketBoardPermissionsService } from "./services/permissions/edit";
+import { IncrementNextTicketNumberService } from "./services/boards/increment-next-ticket-number";
 
 @Global()
 @Module({
@@ -41,6 +42,7 @@ import { EditTicketBoardPermissionsService } from "./services/permissions/edit";
     CreateTicketBoardPermissionsService,
     DeleteTicketBoardPermissionsService,
     EditTicketBoardPermissionsService,
+    IncrementNextTicketNumberService,
   ],
   exports: [
     AddTicketBoardFavouritesService,
@@ -56,6 +58,7 @@ import { EditTicketBoardPermissionsService } from "./services/permissions/edit";
     CreateTicketBoardPermissionsService,
     DeleteTicketBoardPermissionsService,
     EditTicketBoardPermissionsService,
+    IncrementNextTicketNumberService,
   ],
 })
 export class TicketBoardsModule implements NestModule {}
@@ -69,6 +72,7 @@ export * from "./services/boards/delete";
 export * from "./services/boards/edit";
 export * from "./services/boards/get";
 export * from "./services/boards/get-list";
+export * from "./services/boards/increment-next-ticket-number";
 export * from "./services/permissions/create";
 export * from "./services/permissions/delete";
 export * from "./services/permissions/edit";

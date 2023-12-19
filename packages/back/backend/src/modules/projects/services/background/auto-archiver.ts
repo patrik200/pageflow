@@ -1,4 +1,4 @@
-import { errorLogBeautifier, INTLService, INTLServiceLang } from "@app/back-kit";
+import { INTLService, INTLServiceLang, SentryTextService } from "@app/back-kit";
 import { config } from "@app/core-config";
 import { ChangeFeedEntityType, ProjectsStatus } from "@app/shared-enums";
 import { forwardRef, Inject, Injectable, Logger, OnApplicationBootstrap, OnApplicationShutdown } from "@nestjs/common";
@@ -23,9 +23,8 @@ export class ProjectAutoArchiverService implements OnApplicationBootstrap, OnApp
     private createChangeFeedEventService: CreateChangeFeedEventService,
     @Inject(forwardRef(() => ChangeFeedEventChangeDetectionService))
     private feedEventChangeDetectionService: ChangeFeedEventChangeDetectionService,
+    private sentryTextService: SentryTextService,
   ) {}
-
-  private loggerContext = "Project auto archiver";
 
   private async checkProject(project: ProjectEntity) {
     await this.projectRepository.update(project.id, { status: ProjectsStatus.ARCHIVE });
@@ -53,8 +52,10 @@ export class ProjectAutoArchiverService implements OnApplicationBootstrap, OnApp
       try {
         await this.checkProject(project);
       } catch (e) {
-        Logger.error(`Error while check project:`, this.loggerContext);
-        errorLogBeautifier(e);
+        this.sentryTextService.error(e, {
+          context: "Check project",
+          contextService: ProjectAutoArchiverService.name,
+        });
       }
     }
   }
@@ -64,7 +65,7 @@ export class ProjectAutoArchiverService implements OnApplicationBootstrap, OnApp
     await this.archiveProject();
     Logger.log(
       `Run checking with interval [${chalk.cyan(`${config.projects.autoArchiveCheckIntervalMs}ms`)}]`,
-      this.loggerContext,
+      ProjectAutoArchiverService.name,
     );
     this.disposeTimer = setAsyncInterval(() => this.archiveProject(), config.projects.autoArchiveCheckIntervalMs);
   }

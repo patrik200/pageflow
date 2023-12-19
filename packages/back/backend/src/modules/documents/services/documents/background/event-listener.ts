@@ -2,6 +2,7 @@ import { forwardRef, Inject, Injectable, OnApplicationBootstrap } from "@nestjs/
 import { EventEmitter2 } from "@nestjs/event-emitter";
 import { Transactional } from "typeorm-transactional";
 import { ChangeFeedEntityType, PermissionEntityType } from "@app/shared-enums";
+import { SentryTextService } from "@app/back-kit";
 
 import { DocumentEntity } from "entities/Document/Document";
 import { UserEntity } from "entities/User";
@@ -37,6 +38,7 @@ export class DocumentEventListenerService implements OnApplicationBootstrap {
     @Inject(forwardRef(() => PermissionAccessService)) private permissionAccessService: PermissionAccessService,
     @Inject(forwardRef(() => GetDocumentGroupService)) private getDocumentGroupService: GetDocumentGroupService,
     @Inject(forwardRef(() => GetProjectService)) private getProjectService: GetProjectService,
+    private sentryTextService: SentryTextService,
   ) {}
 
   private async handleDocumentPermissionsNotify(
@@ -237,13 +239,28 @@ export class DocumentEventListenerService implements OnApplicationBootstrap {
 
   onApplicationBootstrap() {
     this.eventEmitter.on(DocumentCreated.eventName, (event: DocumentCreated) =>
-      this.handleDocumentCreated(event.documentId, event.triggerUserId).catch(() => null),
+      this.handleDocumentCreated(event.documentId, event.triggerUserId).catch((e) =>
+        this.sentryTextService.error(e, {
+          context: DocumentCreated.eventName,
+          contextService: DocumentEventListenerService.name,
+        }),
+      ),
     );
     this.eventEmitter.on(DocumentDeleted.eventName, (event: DocumentDeleted) =>
-      this.handleDocumentDeleted(event.documentId).catch(() => null),
+      this.handleDocumentDeleted(event.documentId).catch((e) =>
+        this.sentryTextService.error(e, {
+          context: DocumentDeleted.eventName,
+          contextService: DocumentEventListenerService.name,
+        }),
+      ),
     );
     this.eventEmitter.on(DocumentUpdated.eventName, (event: DocumentUpdated) =>
-      this.handleDocumentUpdated(event.documentId, event.oldDocument, event.triggerUserId).catch(() => null),
+      this.handleDocumentUpdated(event.documentId, event.oldDocument, event.triggerUserId).catch((e) =>
+        this.sentryTextService.error(e, {
+          context: DocumentUpdated.eventName,
+          contextService: DocumentEventListenerService.name,
+        }),
+      ),
     );
   }
 }

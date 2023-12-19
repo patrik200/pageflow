@@ -22,6 +22,7 @@ import {
   CorrespondenceRevisionEntity,
 } from "core/entities/correspondenceRevision/revision";
 import { arrayOfProjectEntitiesDecoder, ProjectEntity } from "core/entities/project/project";
+import { StatisticsEntity } from "core/entities/statistics";
 
 import { IntlDateStorage } from "core/storages/intl-date";
 import { ProfileStorage } from "core/storages/profile/profile";
@@ -39,6 +40,7 @@ export class HomeStorage extends Storage {
   @Inject() private intlDateStorage!: IntlDateStorage;
   @Inject() private profileStorage!: ProfileStorage;
 
+  @observable statistics: StatisticsEntity | null = null;
   @observable documents: DocumentEntity[] = [];
   @observable documentGroups: DocumentGroupEntity[] = [];
   @observable documentRevisions: DocumentRevisionEntity[] = [];
@@ -131,6 +133,14 @@ export class HomeStorage extends Storage {
     this.projects = array;
   };
 
+  @action private loadStatistics = async () => {
+    this.statistics = await this.requestManager.createRequest({
+      url: "/statistics",
+      method: METHODS.GET,
+      serverDataEntityDecoder: StatisticsEntity,
+    })();
+  };
+
   @action loadAll = async () => {
     await Promise.all([
       this.loadDocuments(),
@@ -140,6 +150,7 @@ export class HomeStorage extends Storage {
       this.loadDocumentRevisions(),
       this.loadCorrespondenceRevisions(),
       this.loadProjects(),
+      this.loadStatistics(),
     ]);
   };
 }

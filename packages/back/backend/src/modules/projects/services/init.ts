@@ -1,10 +1,10 @@
-import { ElasticService, errorLogBeautifier } from "@app/back-kit";
+import { ElasticService, SentryTextService } from "@app/back-kit";
 import { Injectable, Logger } from "@nestjs/common";
 import { isString } from "@worksolutions/utils";
 
 @Injectable()
 export class InitElasticProjectsService {
-  constructor(private elasticService: ElasticService) {}
+  constructor(private elasticService: ElasticService, private sentryTextService: SentryTextService) {}
 
   async createIndex() {
     const created = await this.elasticService.createIndexIfNotCreatedOrFail("projects");
@@ -34,7 +34,10 @@ export class InitElasticProjectsService {
     } catch (e) {
       return {
         message: "Can not create projects elastic index mapping...",
-        logBeautifulError: () => errorLogBeautifier(e),
+        logBeautifulError: () =>
+          this.sentryTextService.log(e as Error, {
+            contextService: InitElasticProjectsService.name,
+          }),
       };
     }
   }
@@ -42,13 +45,13 @@ export class InitElasticProjectsService {
   async appBootstrap() {
     const index = await this.createIndex();
     if (isString(index)) {
-      Logger.error(index, "Projects module bootstrap");
+      Logger.error(index, InitElasticProjectsService.name);
       process.exit(1);
     }
 
     const mapping = await this.createMapping();
     if (mapping !== true) {
-      Logger.error(mapping.message, "Projects module bootstrap");
+      Logger.error(mapping.message, InitElasticProjectsService.name);
       mapping.logBeautifulError();
       process.exit(1);
     }

@@ -4,6 +4,13 @@ export enum TicketPriorities {
   HIGH = "high",
 }
 
+export enum TicketRelationTypes {
+  DEPENDENCY = "dependency",
+  CHILDREN = "children",
+  DUPLICATOR = "duplicator",
+  RELATION = "relation",
+}
+
 export enum TicketSortingFields {
   NAME = "name",
   STATUS = "statusId",

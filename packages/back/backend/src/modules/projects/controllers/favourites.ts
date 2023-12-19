@@ -38,6 +38,6 @@ export class ProjectFavouritesController {
   @Delete(":projectId")
   @withUserAuthorized([UserRole.USER])
   async deleteFavourite(@Param("projectId") projectId: string) {
-    await this.removeProjectFavouritesService.removeFavouriteOrFail(projectId);
+    await this.removeProjectFavouritesService.removeFavouriteOrFail(projectId, { forAllUsers: false });
   }
 }

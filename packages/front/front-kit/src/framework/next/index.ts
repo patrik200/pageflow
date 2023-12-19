@@ -1,10 +1,12 @@
 import { globalBrowserInitializer, globalInternalPageDataLoader } from "framework/page/serverSideProps";
 
 import { initializeAcceptLanguage, initializeAcceptLanguageByContext } from "./acceptLanguage";
+import { initializeSendRequestHeadersToRequestManager } from "./headers";
 
 if (typeof window === "undefined") {
   globalInternalPageDataLoader.set("initial logic", async function (context, container) {
     initializeAcceptLanguageByContext(context, container);
+    initializeSendRequestHeadersToRequestManager(context, container);
     return [];
   });
 }

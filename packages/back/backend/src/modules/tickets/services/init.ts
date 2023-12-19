@@ -1,10 +1,10 @@
 import { Injectable, Logger } from "@nestjs/common";
-import { ElasticService, errorLogBeautifier } from "@app/back-kit";
+import { ElasticService, SentryTextService } from "@app/back-kit";
 import { isString } from "@worksolutions/utils";
 
 @Injectable()
 export class InitElasticTicketService {
-  constructor(private elasticService: ElasticService) {}
+  constructor(private elasticService: ElasticService, private sentryTextService: SentryTextService) {}
 
   async createIndex() {
     const created = await this.elasticService.createIndexIfNotCreatedOrFail("tickets");
@@ -18,6 +18,7 @@ export class InitElasticTicketService {
         clientId: { type: "keyword" },
         boardId: { type: "keyword" },
         name: { type: "text", fielddata: true },
+        slug: { type: "text", fielddata: true },
         description: { type: "text", fielddata: true },
         priority: { type: "integer" },
         statusId: { type: "keyword" },
@@ -34,7 +35,10 @@ export class InitElasticTicketService {
     } catch (e) {
       return {
         message: "Can not create tickets elastic index mapping...",
-        logBeautifulError: () => errorLogBeautifier(e),
+        logBeautifulError: () =>
+          this.sentryTextService.log(e as Error, {
+            contextService: InitElasticTicketService.name,
+          }),
       };
     }
   }
@@ -43,13 +47,13 @@ export class InitElasticTicketService {
     const index = await this.createIndex();
 
     if (isString(index)) {
-      Logger.error(index, "Tickets module bootstrap");
+      Logger.error(index, InitElasticTicketService);
       process.exit(1);
     }
 
     const mapping = await this.createMapping();
     if (mapping !== true) {
-      Logger.error(mapping.message, "Tickets module bootstrap");
+      Logger.error(mapping.message, InitElasticTicketService);
       mapping.logBeautifulError();
       process.exit(1);
     }

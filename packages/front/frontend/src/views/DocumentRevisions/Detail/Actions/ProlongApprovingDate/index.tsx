@@ -5,9 +5,9 @@ import { Button } from "@app/ui-kit";
 import { useBoolean } from "@worksolutions/react-utils";
 
 import { DocumentRevisionsStorage } from "core/storages/document/revisions";
+import { DocumentStorage } from "core/storages/document";
 
 import DocumentRevisionProlongApprovingDateModal from "./ProlongApprovingDateModal";
-import { DocumentStorage } from "../../../../../core/storages/document";
 
 import { buttonStyles } from "./style.css";
 
@@ -21,7 +21,7 @@ function DocumentRevisionProlongApprovingDateAction() {
   const { revisionDetail } = containerInstance.get(DocumentRevisionsStorage);
   const { documentDetail } = containerInstance.get(DocumentStorage);
 
-  if (documentDetail?.resultCanEdit) return null;
+  if (!documentDetail?.resultCanEdit) return null;
   if (!revisionDetail!.canRunProlongApprovingDeadline) return null;
 
   return (

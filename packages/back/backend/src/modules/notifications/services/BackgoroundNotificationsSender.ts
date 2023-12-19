@@ -5,6 +5,7 @@ import { config } from "@app/core-config";
 import { isDateBefore, isDeepEqual, setAsyncInterval } from "@worksolutions/utils";
 import chalk from "chalk";
 import { DateTime } from "luxon";
+import { SentryTextService } from "@app/back-kit";
 
 import { QueueNotificationEntity, QueueNotificationType } from "entities/Queue/Notification";
 
@@ -20,6 +21,7 @@ export class BackgroundNotificationsSenderService implements OnApplicationBootst
     @Inject(forwardRef(() => GetUserService)) private getUserService: GetUserService,
     @Inject(forwardRef(() => EmailRendererService)) private emailRendererService: EmailRendererService,
     @Inject(forwardRef(() => EmailSenderService)) private emailSenderService: EmailSenderService,
+    private sentryTextService: SentryTextService,
   ) {}
 
   private deleteDuplicatesInQueue(queue: QueueNotificationEntity[]) {
@@ -35,7 +37,18 @@ export class BackgroundNotificationsSenderService implements OnApplicationBootst
   private async checkNotifications() {
     const dbQueue = await this.queueRepository.find({ where: { type: QueueNotificationType.PENDING } });
     const queue = this.deleteDuplicatesInQueue(dbQueue);
-    await Promise.all(queue.map((item) => this.sendNotificationIfNeed(item)));
+    await Promise.all(
+      queue.map(async (notification) => {
+        try {
+          await this.sendNotificationIfNeed(notification);
+        } catch (e) {
+          this.sentryTextService.error(e, {
+            context: "send notification",
+            contextService: BackgroundNotificationsSenderService.name,
+          });
+        }
+      }),
+    );
   }
 
   private needSendNotificationByCreatedAt(entity: QueueNotificationEntity) {
@@ -84,7 +97,7 @@ export class BackgroundNotificationsSenderService implements OnApplicationBootst
     await this.checkNotifications();
     Logger.log(
       `Run checking with interval [${chalk.cyan(`${config.notifications.checkIntervalMs}ms`)}]`,
-      "Background notifications sender",
+      BackgroundNotificationsSenderService.name,
     );
     this.disposeTimer = setAsyncInterval(() => this.checkNotifications(), config.notifications.checkIntervalMs);
   }
